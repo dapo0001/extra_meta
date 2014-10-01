@@ -10,13 +10,18 @@
 #include <iostream>
 using namespace std;
 
-
-CargaFichero::CargaFichero(string nombreFich) {
+CargaFichero::CargaFichero(){
+    
+}
+void CargaFichero::abrir(string nombreFich) {
 
     ifstream fich;
     fich.open(nombreFich.c_str(),ios::in);
-    cout<<"Nombre introducido "<<nombreFich<<endl;
     if(fich){
+        int num;
+        fich>>numComp;
+        
+        
         cout<<"abierto"<<endl;
     } else {
         cout<<"no encontrado"<<endl;

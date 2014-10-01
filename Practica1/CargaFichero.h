@@ -14,7 +14,8 @@ using namespace std;
 
 class CargaFichero {
 public:
-    CargaFichero(string nombreFich);
+    CargaFichero();
+    void abrir(string nombreFich);
     CargaFichero(const CargaFichero& orig);
     virtual ~CargaFichero();
 private:
