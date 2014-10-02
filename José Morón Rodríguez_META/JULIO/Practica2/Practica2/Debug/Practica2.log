@@ -1,0 +1,31 @@
+﻿Compilación iniciada a las 27/06/2014 18:48:05.
+     1>Proyecto "C:\Users\jmoron\Documents\Universidad\3º Curso\Meta\Practicas\JULIO\Practica2\Practica2\Practica2.vcxproj" en el nodo 2 (Build destinos).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         main.cpp
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(167): warning C4018: '<' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(184): warning C4018: '<' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(193): warning C4018: '<' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(213): warning C4018: '<' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(235): warning C4018: '<' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(251): warning C4018: '<' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(279): warning C4018: '<' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(290): warning C4018: '<' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(335): warning C4018: '<' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(342): warning C4018: '<' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(359): warning C4018: '>=' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(361): warning C4018: '<' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(372): warning C4018: '<' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(404): warning C4018: '<' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(422): warning C4018: '>=' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(464): warning C4018: '>=' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(466): warning C4018: '<' : no coinciden signed/unsigned
+     1>c:\users\jmoron\documents\universidad\3º curso\meta\practicas\julio\practica2\practica2\main.cpp(477): warning C4018: '<' : no coinciden signed/unsigned
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\jmoron\Documents\Universidad\3º Curso\Meta\Practicas\JULIO\Practica2\Debug\Practica2.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\jmoron\Documents\Universidad\3º Curso\Meta\Practicas\JULIO\Practica2\Debug\Practica2.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\jmoron\Documents\Universidad\3º Curso\Meta\Practicas\JULIO\Practica2\Debug\Practica2.lib" /MACHINE:X86 Debug\main.obj
+         Practica2.vcxproj -> C:\Users\jmoron\Documents\Universidad\3º Curso\Meta\Practicas\JULIO\Practica2\Debug\Practica2.exe
+     1>Compilación del proyecto terminada "C:\Users\jmoron\Documents\Universidad\3º Curso\Meta\Practicas\JULIO\Practica2\Practica2\Practica2.vcxproj" (Build destinos).
+
+Compilación correcta.
+
+Tiempo transcurrido 00:00:08.80
