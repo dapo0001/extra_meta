@@ -10,11 +10,12 @@ public:
     CargaFichero();
     void abrir(string nombreFich);
     CargaFichero(const CargaFichero& orig);
+	void imprimirMatrizDistancia();
     virtual ~CargaFichero();
 private:
     int numComp;
+    vector<vector<int> * > matrizFlujo;
     vector<vector<int> * > matrizDistancia;
-    vector<vector<int> * > matrizLocalizacion;
 };
 
 #endif	/* CARGAFICHERO_H */

@@ -41,73 +41,71 @@ int menuFichero(){
     return val;
 }
 
-CargaFichero cargarFich(int valor){
-    CargaFichero fich;
+void cargarFich(int valor,CargaFichero &fichero){
     switch(valor){
         case 1:
-            fich.abrir("ficheros/bur26a.dat");
+            fichero.abrir("ficheros/bur26a.dat");
             break;
         case 2:
-            fich.abrir("ficheros/bur26b.dat");
+            fichero.abrir("ficheros/bur26b.dat");
             break;
         case 3:
-            fich.abrir("ficheros/chr20a.dat");
+            fichero.abrir("ficheros/chr20a.dat");
             break;
         case 4:
-            fich.abrir("ficheros/chr25a.dat");
+            fichero.abrir("ficheros/chr25a.dat");
             break;
         case 5:
-            fich.abrir("ficheros/els19.dat");
+            fichero.abrir("ficheros/els19.dat");
             break;
         case 6:
-            fich.abrir("ficheros/esc32a.dat");
+            fichero.abrir("ficheros/esc32a.dat");
             break;
         case 7:
-            fich.abrir("ficheros/kra32.dat");
+            fichero.abrir("ficheros/kra32.dat");
             break;
         case 8:
-            fich.abrir("ficheros/lipa90a.dat");
+            fichero.abrir("ficheros/lipa90a.dat");
             break;
         case 9:
-            fich.abrir("ficheros/nug25.dat");
+            fichero.abrir("ficheros/nug25.dat");
             break;
         case 10:
-            fich.abrir("ficheros/sko42.dat");
+            fichero.abrir("ficheros/sko42.dat");
             break;
         case 11:
-            fich.abrir("ficheros/sko49.dat");
+            fichero.abrir("ficheros/sko49.dat");
             break;
         case 12:
-            fich.abrir("ficheros/tai30a.dat");
+            fichero.abrir("ficheros/tai30a.dat");
             break;
         case 13:
-            fich.abrir("ficheros/tai30b.dat");
+            fichero.abrir("ficheros/tai30b.dat");
             break;
         case 14:
-            fich.abrir("ficheros/tai35a.dat");
+            fichero.abrir("ficheros/tai35a.dat");
             break;
         case 15:
-            fich.abrir("ficheros/tai35b.dat");
+            fichero.abrir("ficheros/tai35b.dat");
             break;
         case 16:
-            fich.abrir("ficheros/tai40a.dat");
+            fichero.abrir("ficheros/tai40a.dat");
             break;
         case 17:
-            fich.abrir("ficheros/tai50a.dat");
+            fichero.abrir("ficheros/tai50a.dat");
             break;
         case 18:
-            fich.abrir("ficheros/tai50b.dat");
+            fichero.abrir("ficheros/tai50b.dat");
             break;
         case 19:
-            fich.abrir("ficheros/tai60a.dat");
+            fichero.abrir("ficheros/tai60a.dat");
             break;
         case 20:
-            fich.abrir("ficheros/tho40.dat");
+            fichero.abrir("ficheros/tho40.dat");
             break;
         case 21:
             system("EXIT");
     }
-    return fich;
 }
 
 
@@ -115,6 +113,9 @@ CargaFichero cargarFich(int valor){
 
 int main(int argc, char** argv) {
     int val = menuFichero();
-    cargarFich(val);
+    CargaFichero fichero;
+	cargarFich(val,fichero);
+	fichero.imprimirMatrizDistancia();
+	system("PAUSE");
     return 0;
 }
