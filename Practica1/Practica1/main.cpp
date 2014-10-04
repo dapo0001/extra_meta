@@ -1,7 +1,12 @@
+/*
+@authors: Pablo Molina Gonzalez y Diego Alberto Pérez Ortega
+*/
+
 
 #include <cstdlib>
 #include <iostream>
-#include "CargaFichero.h"
+#include "QAP.h"
+#include "Permutacion.h"
 
 using namespace std;
 
@@ -9,9 +14,10 @@ using namespace std;
  * 
  */
 
-
+//Menú para la lectura de ficheros
 int menuFichero(){
     int val = 0;
+	cout<<endl;
     cout<<"Escoja el fichero a leer"<<endl;
     cout<<"1. bur26a"<<endl;
     cout<<"2. bur26b"<<endl;
@@ -41,7 +47,22 @@ int menuFichero(){
     return val;
 }
 
-void cargarFich(int valor,CargaFichero &fichero){
+//Menú para seleccionar el algoritmo que se desea ejecutar
+int menuAlgoritmo(){
+	int val = 0;
+	cout<<endl;
+	cout<<"Selecciona el algoritmo que deseas usar"<<endl;
+	cout<<"1. Busqueda local"<<endl;
+	cout<<"2. Busqueda tabu"<<endl;
+    do{
+        cin>>val;
+    }while (val < 1 || val > 2);
+    
+    return val;
+}
+
+//Método que carga el fichero seleccionado
+void cargarFich(int valor,QAP &fichero){
     switch(valor){
         case 1:
             fichero.abrir("ficheros/bur26a.dat");
@@ -112,10 +133,18 @@ void cargarFich(int valor,CargaFichero &fichero){
 
 
 int main(int argc, char** argv) {
+	int semilla = 0;
+	cout<<"Introduzca la semilla ";
+	cin>>semilla;
     int val = menuFichero();
-    CargaFichero fichero;
+    QAP fichero;
 	cargarFich(val,fichero);
-	fichero.imprimirMatrizDistancia();
+	int algoritmo = menuAlgoritmo();
+	Permutacion permuta(fichero.getNumComp());
+	permuta.solInicial(semilla);
+
+
+	//fichero.imprimirMatrizDistancia();
 	system("PAUSE");
     return 0;
 }
