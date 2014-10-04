@@ -64,6 +64,5 @@ void QAP::imprimirMatrizDistancia(){
 }
 
 
-
 QAP::~QAP() {
 }

@@ -11,6 +11,8 @@ using namespace std;
 
 class QAP {
 public:
+	vector<vector<int> * > matrizFlujo;
+    vector<vector<int> * > matrizDistancia;
     QAP();
     void abrir(string nombreFich);
     QAP(const QAP& orig);
@@ -19,8 +21,7 @@ public:
     virtual ~QAP();
 private:
     int numComp;
-    vector<vector<int> * > matrizFlujo;
-    vector<vector<int> * > matrizDistancia;
+
 };
 
 #endif	/* CARGAFICHERO_H */

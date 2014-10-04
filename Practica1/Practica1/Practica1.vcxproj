@@ -78,11 +78,11 @@
   <ItemGroup>
     <ClCompile Include="QAP.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Permutacion.cpp" />
+    <ClCompile Include="Practica.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QAP.h" />
-    <ClInclude Include="Permutacion.h" />
+    <ClInclude Include="Practica.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
