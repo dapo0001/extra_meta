@@ -1,33 +1,28 @@
-/*
-@authors: Pablo Molina Gonzalez y Diego Alberto Pérez Ortega
-*/
+/**
+ * @file main.cpp
+ * @authors: Pablo Molina González y Diego Alberto Pérez Ortega
+ */
 
 
 #include <cstdlib>
 #include <iostream>
+using namespace std;
+
 #include "QAP.h"
 #include "Practica.h"
 
-using namespace std;
-
-/*
- * 
- */
-
-
-
-
-
 int main(int argc, char** argv) {
 	int semilla = 0;
-	cout<<"Introduzca la semilla ";
-	cin>>semilla;
+	
+	cout << "Introduzca la semilla ";
+	cin >> semilla;
 
 	Practica prac;
 	prac.menuFichero();
 	prac.menuAlgoritmo();
 	prac.solInicial(semilla);
 	prac.funcionObjetivo();
+	
 	/*
     int val = menuFichero();
     QAP fichero;

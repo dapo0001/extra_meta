@@ -1,59 +1,70 @@
-/*
-@authors: Pablo Molina Gonzalez y Diego Alberto Pérez Ortega
-*/
+/**
+ * @file Practica.cpp
+ * @authors: Pablo Molina González y Diego Alberto Pérez Ortega
+ */
 
 #include "Practica.h"
 #include <math.h>
 #include <iostream>
 using namespace std;
 
+Practica::Practica():
+	valorMinimo(999999)
+{}
 
-//Cambia 2 posiciones del vector
-void Practica::cambiarPosicion(unsigned int pos1,unsigned int pos2){
+/**
+ * Cambia dos posiciones del vector
+ * @pre Si las posiciones pasadas no son válidas dará error
+ */
+void Practica::cambiarPosicion (unsigned int pos1, unsigned int pos2) {
 	int valor = permutacion[pos1];
 	permutacion[pos1] = permutacion[pos2];
 	permutacion[pos2] = valor;
 }
 
-//Se encarga de permutar valores de forma aleatoria según la semilla asignada
-void Practica::solInicial(int semilla){
+/**
+ * Se encarga de permutar valores de forma aleatoria según la semilla asignada
+ * @pre La semilla debe ser un valor admisible por srand
+ */
+void Practica::solInicial (int semilla){
 	srand(semilla);
-	for(int i=0;i<permutacion.size();i++){
+	for(unsigned int i = 0; i < permutacion.size(); i++){
 		unsigned int pos1 = rand()%permutacion.size();
 		unsigned int pos2 = rand()%permutacion.size();
-		cambiarPosicion(pos1,pos2);
+		cambiarPosicion(pos1, pos2);
 	}
 }
 
-//imprime el vector permutacion
+/**
+ * Imprime el vector permutación en la salida estándar
+ */
 void Practica::imprimir(){
-	for(int i=0;i<permutacion.size();i++){
-		cout<<permutacion[i]<<" ";
+	for(unsigned int i = 0; i < permutacion.size(); i++){
+		cout << permutacion[i] << " ";
 	}
-	cout<<endl;
+	cout << endl;
 }
 
+/**
+ *
+ */
 void Practica::funcionObjetivo(){
 	int valor = 0;
 
-	for(int i=0;i<permutacion.size();i++){
-		for(int j=0;j<permutacion.size();j++){
-		int flujo =matrices.matrizFlujo[i]->at(j);
-		int distancia = matrices.matrizDistancia[i]->at(permutacion[i]);
-		valor += flujo*distancia;
+	for(unsigned int i = 0; i < permutacion.size(); i++) {
+		for(unsigned int j = 0; j < permutacion.size(); j++) {
+			int flujo = matrices.matrizFlujo[i]->at(j);
+			int distancia = matrices.matrizDistancia[i]->at(permutacion[i]);
+			valor += flujo * distancia;
 		}
 	}
-	cout<<"valor minimo "<<valor<<endl;
+	cout << "valor minimo " << valor << endl;
 	valorMinimo = valor;
 }
 
-
-
-Practica::~Practica(){
-}
-
-
-//Menú para la lectura de ficheros
+/**
+ * Menú para la lectura de ficheros
+ */
 void Practica::menuFichero(){
     int val = 0;
 	cout<<endl;
@@ -86,7 +97,9 @@ void Practica::menuFichero(){
     cargarFich(val);
 }
 
-//Menú para seleccionar el algoritmo que se desea ejecutar
+/**
+ * Menú para seleccionar el algoritmo que se desea ejecutar
+ */
 void Practica::menuAlgoritmo(){
 	int val = 0;
 	cout<<endl;
@@ -100,7 +113,9 @@ void Practica::menuAlgoritmo(){
   //  return val;
 }
 
-//Método que carga el fichero seleccionado
+/**
+ * Método que carga el fichero seleccionado
+ */
 void Practica::cargarFich(int valor){
     switch(valor){
         case 1:
@@ -171,4 +186,10 @@ void Practica::cargarFich(int valor){
 		permutacion.push_back(i);
 	}
 
+}
+
+/**
+ *
+ */
+Practica::~Practica(){
 }
