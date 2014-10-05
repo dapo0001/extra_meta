@@ -9,8 +9,15 @@
 using namespace std;
 
 Practica::Practica():
-	valorMinimo(999999)
+	valorActual(999999),
+	valorSiguiente(999999)
 {}
+
+Practica::~Practica()
+{}
+
+
+/* Métodos del proceso *********************************************************************/
 
 /**
  * Cambia dos posiciones del vector
@@ -36,31 +43,74 @@ void Practica::solInicial (int semilla){
 }
 
 /**
- * Imprime el vector permutación en la salida estándar
- */
-void Practica::imprimir(){
-	for(unsigned int i = 0; i < permutacion.size(); i++){
-		cout << permutacion[i] << " ";
-	}
-	cout << endl;
-}
-
-/**
- *
+ * Calcula el valor de la solución actual aplicando la fórmula a todos
+ * los operandos de las matrices de flujo y distancia.
  */
 void Practica::funcionObjetivo(){
-	int valor = 0;
+	int valor = 0,
+		flujo,
+		distancia;
 
 	for(unsigned int i = 0; i < permutacion.size(); i++) {
 		for(unsigned int j = 0; j < permutacion.size(); j++) {
-			int flujo = matrices.matrizFlujo[i]->at(j);
-			int distancia = matrices.matrizDistancia[i]->at(permutacion[i]);
+			flujo = matrices.matrizFlujo[i]->at(j);
+			distancia = matrices.matrizDistancia[permutacion[i]]->at(permutacion[j]);
 			valor += flujo * distancia;
 		}
 	}
 	cout << "valor minimo " << valor << endl;
-	valorMinimo = valor;
+	valorActual = valor;
+	valorSiguiente = 0;
 }
+
+/**
+ * Calcula el valor de la solución actual sin tener que recorrer todo el
+ * contenido de las matrices. Para ello usa la solucion actual y el vector
+ * de cambios en la permutacion.
+ */
+void Practica::factorizacion () {
+	int flujo,
+		distancia;
+	
+	valorSiguiente = valorActual;
+	for (unsigned int i = 0; i < cambios.size(); i++) {
+		// 1. Resto el valor de la posicion permutacion[cambios[i].first] del vector
+		// 2. Añado el valor de flujo y distancia para
+		//	  permutacion[cambios[i].first] = cambios[i].second
+	}
+}
+
+/**
+ * Aplica el vector de cambios a la solucion actual para llegar a un nuevo
+ * vecino. Si el valor de 'valorSiguiente' es el mismo que 'valorActual'
+ * calcula su nuevo valor mediante el método factorización, en caso contrario
+ * se considera que ya está correctamente calculado.
+ */
+void Practica::aplicarVecindad () {
+	if (!cambios.empty) {
+		if (valorActual != valorSiguiente) {
+			factorizacion();
+		}
+
+		for (unsigned int i = 0; i < cambios.size(); i++) {
+			permutacion[cambios[i].first] = permutacion[cambios[i].second];
+		}
+
+		cambios.clear();
+		valorActual = valorSiguiente;
+	}
+}
+
+void Practica::algoritmo () {
+	// 1. Escoge un vecino almacenando los cambios hechos en el vector de cambios.
+	// 2. Comprueba su calidad con factorizacion() y valorSiguiente.
+	// 3. Busca otro vecino si es necesario.
+	// ...
+	// 4. Aplica la vecindad con aplicarVecindad()
+	cout << "Esto no hace nada (de momento)" << endl;
+}
+
+/* Interfaz de la práctica *********************************************************************/
 
 /**
  * Menú para la lectura de ficheros
@@ -189,7 +239,11 @@ void Practica::cargarFich(int valor){
 }
 
 /**
- *
+ * Imprime el vector permutación en la salida estándar
  */
-Practica::~Practica(){
+void Practica::imprimir(){
+	for(unsigned int i = 0; i < permutacion.size(); i++){
+		cout << permutacion[i] << " ";
+	}
+	cout << endl;
 }

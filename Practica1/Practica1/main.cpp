@@ -22,6 +22,7 @@ int main(int argc, char** argv) {
 	prac.menuAlgoritmo();
 	prac.solInicial(semilla);
 	prac.funcionObjetivo();
+	prac.algoritmo();
 	
 	/*
     int val = menuFichero();
