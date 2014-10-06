@@ -38,6 +38,7 @@ public:
 	void solInicial (int semilla);
 	void cambiarPosicion (unsigned int pos1,unsigned int pos2);
 	void funcionObjetivo ();
+	void addCambio(unsigned int posicion, int valor);
 	void factorizacion ();
 	void aplicarVecindad();
 	void algoritmo();
@@ -50,7 +51,7 @@ public:
 
 private:
 	vector<int> permutacion; ///< Solución actual
-	vector<pair<int, int> > cambios; ///< Valores a cambiar para obtener el vecino deseado
+	vector<pair<unsigned int, int>*> cambios; ///< Valores a cambiar para obtener el vecino deseado
 	
 	QAP matrices; ///< Matrices de flujo y distancia que determinan la calidad de la solución
 

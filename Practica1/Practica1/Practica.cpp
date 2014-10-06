@@ -51,33 +51,52 @@ void Practica::funcionObjetivo(){
 		flujo,
 		distancia;
 
-	for(unsigned int i = 0; i < permutacion.size(); i++) {
-		for(unsigned int j = 0; j < permutacion.size(); j++) {
-			flujo = matrices.matrizFlujo[i]->at(j);
-			distancia = matrices.matrizDistancia[permutacion[i]]->at(permutacion[j]);
-			valor += flujo * distancia;
+	for (unsigned int i = 0; i < matrices.matrizFlujo.size(); i++) {
+		for (unsigned int j = 0; j < matrices.matrizFlujo.size(); j++) {
+			if (i != j) {
+				flujo = matrices.matrizFlujo[i]->at(j);
+				distancia = matrices.matrizDistancia[permutacion[i]]->at(permutacion[j]);
+				valor += flujo * distancia;
+			}
 		}
 	}
-	cout << "valor minimo " << valor << endl;
+
+	imprimir();
+	cout << "valor actual " << valor << endl;
 	valorActual = valor;
 	valorSiguiente = 0;
+}
+
+/**
+ * Añade un cambio al vector de cambios.
+ * @param posicion Posición de la permutación que se quiere modificar.
+ * @param valor Valor nuevo que se desea aplicar.
+ */
+void Practica::addCambio (unsigned int posicion, int valor) {
+	cambios.push_back(new pair<unsigned int, int>(posicion, valor));
 }
 
 /**
  * Calcula el valor de la solución actual sin tener que recorrer todo el
  * contenido de las matrices. Para ello usa la solucion actual y el vector
  * de cambios en la permutacion.
+ * @TODO Arreglar
  */
 void Practica::factorizacion () {
-	int flujo,
-		distancia;
-	
 	valorSiguiente = valorActual;
 	for (unsigned int i = 0; i < cambios.size(); i++) {
-		// 1. Resto el valor de la posicion permutacion[cambios[i].first] del vector
-		// 2. Añado el valor de flujo y distancia para
-		//	  permutacion[cambios[i].first] = cambios[i].second
+		for (unsigned int j = 0; j < matrices.matrizFlujo.size(); j++) {
+			valorSiguiente -=
+				matrices.matrizFlujo[cambios[i]->first]->at(j) *
+				matrices.matrizDistancia[permutacion[cambios[i]->first]]->at(permutacion[j]);
+
+			valorSiguiente +=
+				matrices.matrizFlujo[cambios[i]->first]->at(j) *
+				matrices.matrizDistancia[permutacion[cambios[i]->first]]->at(cambios[i]->second);
+		}
 	}
+
+	cout << "El valor siguiente sera " << valorSiguiente << endl;
 }
 
 /**
@@ -87,13 +106,14 @@ void Practica::factorizacion () {
  * se considera que ya está correctamente calculado.
  */
 void Practica::aplicarVecindad () {
-	if (!cambios.empty) {
+	if (!cambios.empty()) {
 		if (valorActual != valorSiguiente) {
 			factorizacion();
 		}
 
 		for (unsigned int i = 0; i < cambios.size(); i++) {
-			permutacion[cambios[i].first] = permutacion[cambios[i].second];
+			permutacion[cambios[i]->first] = cambios[i]->second;
+			delete cambios[i];
 		}
 
 		cambios.clear();
@@ -107,7 +127,11 @@ void Practica::algoritmo () {
 	// 3. Busca otro vecino si es necesario.
 	// ...
 	// 4. Aplica la vecindad con aplicarVecindad()
-	cout << "Esto no hace nada (de momento)" << endl;
+	
+	addCambio(0, 1);
+	addCambio(2, 0);
+	aplicarVecindad();
+	funcionObjetivo();
 }
 
 /* Interfaz de la práctica *********************************************************************/
@@ -138,11 +162,12 @@ void Practica::menuFichero(){
     cout<<"17. tai50a"<<endl;
     cout<<"18. tai50b"<<endl;
     cout<<"19. tai60a"<<endl;
-    cout<<"20. tho40"<<endl;    
-    cout<<"21. salir"<<endl;
+    cout<<"20. tho40"<<endl;
+	cout<<"21. _try"<<endl;
+    cout<<"22. salir"<<endl;
     do{
         cin>>val;
-    }while (val < 1 || val > 21);
+    }while (val < 0 || val > 21);
     
     cargarFich(val);
 }
@@ -228,7 +253,9 @@ void Practica::cargarFich(int valor){
         case 20:
             matrices.abrir("ficheros/tho40.dat");
             break;
-        case 21:
+		case 21:
+			matrices.abrir("ficheros/_try.dat");
+        case 22:
             system("EXIT");
     }
 
