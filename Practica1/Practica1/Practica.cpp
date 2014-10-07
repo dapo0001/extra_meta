@@ -40,6 +40,11 @@ void Practica::solInicial (int semilla){
 		unsigned int pos2 = rand()%permutacion.size();
 		cambiarPosicion(pos1, pos2);
 	}
+
+	cambiarPosicion(0, 2);
+	cambiarPosicion(0, 1);
+
+	imprimir();
 }
 
 /**
@@ -60,14 +65,13 @@ void Practica::funcionObjetivo(){
 	
 	for (int k = 0; k < n; k++) {
 		valor -=
-			matrices.matrizFlujo[permutacion[k]]->at(k) *
+			matrices.matrizFlujo[k]->at(k) *
 			matrices.matrizDistancia[k]->at(k);
 	}
 
-	imprimir();
-	cout << "valor actual " << valor << endl;
 	valorActual = valor;
-	valorSiguiente = 0;
+
+	cout << "a: " << valorActual << endl;
 }
 
 /**
@@ -86,20 +90,25 @@ void Practica::addCambio (unsigned int posicion, int valor) {
  * @TODO Arreglar
  */
 void Practica::factorizacion () {
+	int n = permutacion.size(),
+		flujo,
+		distancia;
 	valorSiguiente = valorActual;
-	for (unsigned int i = 0; i < cambios.size(); i++) {
-		for (unsigned int j = 0; j < matrices.matrizFlujo.size(); j++) {
-			valorSiguiente -=
-				matrices.matrizFlujo[cambios[i]->first]->at(j) *
-				matrices.matrizDistancia[permutacion[cambios[i]->first]]->at(permutacion[j]);
 
-			valorSiguiente +=
-				matrices.matrizFlujo[cambios[i]->first]->at(j) *
-				matrices.matrizDistancia[permutacion[cambios[i]->first]]->at(cambios[i]->second);
+	for (int i = 0; i < cambios.size(); i++) {
+		for (int j = 0; j < n; j++) {
+			flujo = matrices.matrizFlujo[permutacion[cambios[i]->first]]->at(j);
+			distancia = matrices.matrizDistancia[cambios[i]->first]->at(j);
+			valorSiguiente -= flujo * distancia;
+
+			flujo = matrices.matrizFlujo[cambios[i]->second]->at(j);
+			// La distancia se mantiene
+			// distancia = matrices.matrizDistancia[cambios[i]->first]->at(j);
+			valorSiguiente += flujo * distancia;
 		}
 	}
 
-	cout << "El valor siguiente sera " << valorSiguiente << endl;
+	cout << "s: " << valorSiguiente << endl;
 }
 
 /**
@@ -109,19 +118,15 @@ void Practica::factorizacion () {
  * se considera que ya está correctamente calculado.
  */
 void Practica::aplicarVecindad () {
-	if (!cambios.empty()) {
-		if (valorActual != valorSiguiente) {
-			factorizacion();
-		}
+	factorizacion();
 
-		for (unsigned int i = 0; i < cambios.size(); i++) {
-			permutacion[cambios[i]->first] = cambios[i]->second;
-			delete cambios[i];
-		}
-
-		cambios.clear();
-		valorActual = valorSiguiente;
+	for (unsigned int i = 0; i < cambios.size(); i++) {
+		permutacion[cambios[i]->first] = cambios[i]->second;
+		delete cambios[i];
 	}
+
+	cambios.clear();
+	valorActual = valorSiguiente;
 }
 
 void Practica::algoritmo () {
@@ -130,6 +135,12 @@ void Practica::algoritmo () {
 	// 3. Busca otro vecino si es necesario.
 	// ...
 	// 4. Aplica la vecindad con aplicarVecindad()
+
+	funcionObjetivo();
+	addCambio(0, 2);
+	addCambio(1, 0);
+	aplicarVecindad();
+	funcionObjetivo();
 }
 
 /* Interfaz de la práctica *********************************************************************/
