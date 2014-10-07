@@ -6,6 +6,7 @@
 #include "Practica.h"
 #include <math.h>
 #include <iostream>
+#include <ctime>
 using namespace std;
 
 Practica::Practica():
@@ -73,8 +74,9 @@ void Practica::funcionObjetivo(){
 	}
 
 	valorActual = valor;
-
-	cout << "a: " << valorActual << endl;
+	//cout<<"funcionObjetivo"<<endl;
+	//cout << "a: " << valorActual << endl;
+	//cout << "s: " << valorSiguiente << endl;
 }
 
 /**
@@ -111,7 +113,9 @@ void Practica::factorizacion () {
 		}
 	}
 
-	cout << "s: " << valorSiguiente << endl;
+	//cout<<"Factorizacion"<<endl;
+	//cout << "a: " << valorActual << endl;
+	//cout << "s: " << valorSiguiente << endl;
 }
 
 /**
@@ -156,24 +160,39 @@ void Practica::algoritmo (unsigned int valor) {
 
 
 void Practica::busquedaLocal(){
+	clock_t inicio,fin;
 	int numIteracciones = 0;
-	bool cambios = true;
+	int val1 =0,val2=1;
 
-	while(cambios && numIteracciones<10){
-		int val1 =0,val2=0;
-		do{
-		val1 = rand()%permutacion.size();
-		val2 = rand()%permutacion.size();
-		}while(val1 == val2);
-		addCambio(val1,val2);
-		addCambio(val2,val1);
+	inicio = clock();
+	
+	funcionObjetivo();
+	while(val1!=permutacion.size() && val2 < permutacion.size() && numIteracciones<10000){
+		addCambio(val1,permutacion[val2]);
+		addCambio(val2,permutacion[val1]);
 		factorizacion();
+		
 		if(valorSiguiente < valorActual){
+			cout<<"Se mejora la solucion"<<endl;
+			cout<<"Valor Actual "<<valorActual<<endl;
+			cout<<"Valor Siguiente "<<valorSiguiente<<endl;
 			aplicarVecindad();
+			imprimir();
+			val1 = 0;
+			val2 = 1;
 		}
 		numIteracciones++;
+		val2++;
+		cambios.clear();
+		if(val2 == permutacion.size()){
+			val1++;
+			val2=val1+1;
+		}
 	}
-
+	fin = clock();
+	cout << "Tiempo de ejecución: "    << (float) (fin - inicio)/1000 << endl;
+	cout<<"La mejor solución obtenida es "<<valorActual<<endl;
+	imprimir();
 
 }
 
@@ -332,7 +351,7 @@ void Practica::greedy () {
 
 	for (int i = 0; i < n; i++) {
 		mediaFlujoActual = 0;
-		mediaDistancia = 0;
+		mediaDistanciaActual = 0;
 		for (int j = 0; j < n; j++) {
 			mediaFlujoActual += matrices.matrizFlujo[i]->at(j);
 			mediaDistanciaActual += matrices.matrizDistancia[i]->at(j);
