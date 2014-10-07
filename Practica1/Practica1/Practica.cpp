@@ -174,10 +174,10 @@ void Practica::menuFichero(){
     cout<<"20. tho40"<<endl;
 	cout<<"21. _try"<<endl;
     cout<<"22. salir"<<endl;
-    do{
-        cin>>val;
-    }while (val < 0 || val > 21);
     
+	do {
+        cin >> val;
+    } while (val < 0 || val > 22);
     cargarFich(val);
 }
 
@@ -188,13 +188,13 @@ void Practica::menuAlgoritmo(){
 	int val = 0;
 	cout<<endl;
 	cout<<"Selecciona el algoritmo que deseas usar"<<endl;
-	cout<<"1. Busqueda local"<<endl;
-	cout<<"2. Busqueda tabu"<<endl;
-    do{
-        cin>>val;
-    }while (val < 1 || val > 2);
+	cout << "1. Busqueda local" << endl;
+	cout << "2. Busqueda tabu" << endl;
+	cout << "3. Algoritmo Greedy" << endl;
     
-  //  return val;
+	do {
+        cin>>val;
+    } while (val < 1 || val > 3);
 }
 
 /**
@@ -282,4 +282,29 @@ void Practica::imprimir(){
 		cout << permutacion[i] << " ";
 	}
 	cout << endl;
+}
+
+/* Algoritmos *******************************************************************************/
+
+void Practica::greedy () {
+	int n = matrices.matrizDistancia.size();
+	vector<int> mediaFlujo;
+	vector<int> mediaDistancia;
+	int mediaFlujoActual;
+	int mediaDistanciaActual;
+
+	for (int i = 0; i < n; i++) {
+		mediaFlujoActual = 0;
+		mediaDistancia = 0;
+		for (int j = 0; j < n; j++) {
+			mediaFlujoActual += matrices.matrizFlujo[i]->at(j);
+			mediaDistanciaActual += matrices.matrizDistancia[i]->at(j);
+		}
+		mediaFlujoActual /= n;
+		mediaDistanciaActual /= n;
+		mediaFlujo.push_back(mediaFlujoActual);
+		mediaDistancia.push_back(mediaDistanciaActual);
+	}
+
+	// TODO completar greedy
 }

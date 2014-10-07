@@ -42,6 +42,9 @@ public:
 	void factorizacion ();
 	void aplicarVecindad();
 	void algoritmo();
+
+	// Algoritmos
+	void greedy();
 	
 	// Interfaz de la practica
 	void menuFichero ();
