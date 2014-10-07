@@ -11,7 +11,10 @@ using namespace std;
 Practica::Practica():
 	valorActual(999999),
 	valorSiguiente(999999)
-{}
+{
+	cout << "Introduzca la semilla ";
+	cin >> semilla;
+}
 
 Practica::~Practica()
 {}
@@ -129,19 +132,51 @@ void Practica::aplicarVecindad () {
 	valorActual = valorSiguiente;
 }
 
-void Practica::algoritmo () {
+void Practica::algoritmo (unsigned int valor) {
 	// 1. Escoge un vecino almacenando los cambios hechos en el vector de cambios.
 	// 2. Comprueba su calidad con factorizacion() y valorSiguiente.
 	// 3. Busca otro vecino si es necesario.
 	// ...
 	// 4. Aplica la vecindad con aplicarVecindad()
 
+
+	if(valor == 1){
+		solInicial(semilla);
+		busquedaLocal();
+	}
+
+	/*
 	funcionObjetivo();
 	addCambio(0, 2);
 	addCambio(1, 0);
 	aplicarVecindad();
 	funcionObjetivo();
+	*/
 }
+
+
+void Practica::busquedaLocal(){
+	int numIteracciones = 0;
+	bool cambios = true;
+
+	while(cambios && numIteracciones<10){
+		int val1 =0,val2=0;
+		do{
+		val1 = rand()%permutacion.size();
+		val2 = rand()%permutacion.size();
+		}while(val1 == val2);
+		addCambio(val1,val2);
+		addCambio(val2,val1);
+		factorizacion();
+		if(valorSiguiente < valorActual){
+			aplicarVecindad();
+		}
+		numIteracciones++;
+	}
+
+
+}
+
 
 /* Interfaz de la práctica *********************************************************************/
 
@@ -195,6 +230,8 @@ void Practica::menuAlgoritmo(){
 	do {
         cin>>val;
     } while (val < 1 || val > 3);
+	algoritmo(val);
+  //  return val;
 }
 
 /**

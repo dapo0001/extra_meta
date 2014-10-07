@@ -41,10 +41,12 @@ public:
 	void addCambio(unsigned int posicion, int valor);
 	void factorizacion ();
 	void aplicarVecindad();
-	void algoritmo();
-
-	// Algoritmos
+		// Algoritmos
 	void greedy();
+	void algoritmo(unsigned int valor);
+
+	void busquedaLocal();
+
 	
 	// Interfaz de la practica
 	void menuFichero ();
@@ -55,7 +57,7 @@ public:
 private:
 	vector<int> permutacion; ///< Solución actual
 	vector<pair<unsigned int, int>*> cambios; ///< Valores a cambiar para obtener el vecino deseado
-	
+	int semilla;
 	QAP matrices; ///< Matrices de flujo y distancia que determinan la calidad de la solución
 
 	int valorActual; ///< Valor de la solución actual

@@ -12,17 +12,13 @@ using namespace std;
 #include "Practica.h"
 
 int main(int argc, char** argv) {
-	int semilla = 0;
-	
-	cout << "Introduzca la semilla ";
-	cin >> semilla;
 
 	Practica prac;
 	prac.menuFichero();
 	prac.menuAlgoritmo();
-	prac.solInicial(semilla);
+	
 	prac.funcionObjetivo();
-	prac.algoritmo();
+	//prac.algoritmo();
 	
 	/*
     int val = menuFichero();
