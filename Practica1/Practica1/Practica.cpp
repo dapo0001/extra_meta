@@ -48,17 +48,20 @@ void Practica::solInicial (int semilla){
  */
 void Practica::funcionObjetivo(){
 	int valor = 0,
-		flujo,
-		distancia;
+		n = permutacion.size();
 
-	for (unsigned int i = 0; i < matrices.matrizFlujo.size(); i++) {
-		for (unsigned int j = 0; j < matrices.matrizFlujo.size(); j++) {
-			if (i != j) {
-				flujo = matrices.matrizFlujo[i]->at(j);
-				distancia = matrices.matrizDistancia[permutacion[i]]->at(permutacion[j]);
-				valor += flujo * distancia;
-			}
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			valor +=
+				matrices.matrizFlujo[permutacion[i]]->at(j) *
+				matrices.matrizDistancia[i]->at(j);
 		}
+	}
+	
+	for (int k = 0; k < n; k++) {
+		valor -=
+			matrices.matrizFlujo[permutacion[k]]->at(k) *
+			matrices.matrizDistancia[k]->at(k);
 	}
 
 	imprimir();
@@ -127,11 +130,6 @@ void Practica::algoritmo () {
 	// 3. Busca otro vecino si es necesario.
 	// ...
 	// 4. Aplica la vecindad con aplicarVecindad()
-	
-	addCambio(0, 1);
-	addCambio(2, 0);
-	aplicarVecindad();
-	funcionObjetivo();
 }
 
 /* Interfaz de la práctica *********************************************************************/
