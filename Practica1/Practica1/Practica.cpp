@@ -147,6 +147,8 @@ void Practica::algoritmo (unsigned int valor) {
 	if(valor == 1){
 		solInicial(semilla);
 		busquedaLocal();
+	} else if (valor == 3) {
+		greedy();
 	}
 
 	/*
@@ -161,13 +163,13 @@ void Practica::algoritmo (unsigned int valor) {
 
 void Practica::busquedaLocal(){
 	clock_t inicio,fin;
-	int numIteracciones = 0;
+	int numIteraciones = 0;
 	int val1 =0,val2=1;
 
 	inicio = clock();
 	
 	funcionObjetivo();
-	while(val1!=permutacion.size() && val2 < permutacion.size() && numIteracciones<10000){
+	while(val1!=permutacion.size() && val2 < permutacion.size() && numIteraciones<10000){
 		addCambio(val1,permutacion[val2]);
 		addCambio(val2,permutacion[val1]);
 		factorizacion();
@@ -181,7 +183,7 @@ void Practica::busquedaLocal(){
 			val1 = 0;
 			val2 = 1;
 		}
-		numIteracciones++;
+		numIteraciones++;
 		val2++;
 		cambios.clear();
 		if(val2 == permutacion.size()){
@@ -190,8 +192,10 @@ void Practica::busquedaLocal(){
 		}
 	}
 	fin = clock();
-	cout << "Tiempo de ejecución: "    << (float) (fin - inicio)/1000 << endl;
-	cout<<"La mejor solución obtenida es "<<valorActual<<endl;
+	cout << endl <<
+	"Tiempo de ejecución: "    << (float) (fin - inicio) << "ms" << endl;
+	cout << "Número de iteraciones: " << numIteraciones << endl;
+	cout << "La mejor solución obtenida es " << valorActual << endl;
 	imprimir();
 
 }
@@ -343,24 +347,103 @@ void Practica::imprimir(){
 /* Algoritmos *******************************************************************************/
 
 void Practica::greedy () {
-	int n = matrices.matrizDistancia.size();
-	vector<int> mediaFlujo;
-	vector<int> mediaDistancia;
+	const int n = matrices.matrizDistancia.size();
+	clock_t inicio, fin;
+	
+	// Valores auxiliares
+	int i, j;
+	int j1;
+	int aux;
+	bool swapFlujo;
+	bool swapDistancia;
+	
+	// Vectores con las medias de flujo/distancia
+	int* mediaFlujo = new int[n];
+	int* mediaDistancia = new int[n];
 	int mediaFlujoActual;
 	int mediaDistanciaActual;
 
-	for (int i = 0; i < n; i++) {
+	// La media de la posicion i corresponde al
+	// edificio número posicionesFlujo[i]
+	// (ídem para distancia)
+	int* posicionesFlujo = new int[n];
+	int* posicionesDistancia = new int[n];
+
+	// Inicio del reloj
+	inicio = clock();
+
+	// Almacena la media de flujos y distancias para cada
+	// edificio/localizacion
+	for (i = 0; i < n; i++) {
+		
+		posicionesFlujo[i] = i;
+		posicionesDistancia[i] = i;
 		mediaFlujoActual = 0;
 		mediaDistanciaActual = 0;
-		for (int j = 0; j < n; j++) {
+
+		for (j = 0; j < n; j++) {
 			mediaFlujoActual += matrices.matrizFlujo[i]->at(j);
 			mediaDistanciaActual += matrices.matrizDistancia[i]->at(j);
 		}
+		
 		mediaFlujoActual /= n;
 		mediaDistanciaActual /= n;
-		mediaFlujo.push_back(mediaFlujoActual);
-		mediaDistancia.push_back(mediaDistanciaActual);
+		mediaFlujo[i] = mediaFlujoActual;
+		mediaDistancia[i] = mediaDistanciaActual;
+
+		// Hacemos insercion, ordenando los flujos
+		// de menor a mayor y las distancias de mayor a menor
+		swapFlujo = true;
+		swapDistancia = true;
+		for (j = i; j > 0 && (swapFlujo || swapDistancia); j--) {
+			j1 = j - 1;
+
+			// Swap de flujos
+			if (swapFlujo && mediaFlujo[j] > mediaFlujo[j1]) {
+				aux = mediaFlujo[j];
+				mediaFlujo[j] = mediaFlujo[j1];
+				mediaFlujo[j1] = aux;
+
+				aux = posicionesFlujo[j];
+				posicionesFlujo[j] = posicionesFlujo[j1];
+				posicionesFlujo[j1] = aux;
+			} else {
+				swapFlujo = false;
+			}
+
+			// Swap de distancias
+			if (swapDistancia && mediaDistancia[j] < mediaDistancia[j1]) {
+				aux = mediaDistancia[j];
+				mediaDistancia[j] = mediaDistancia[j1];
+				mediaDistancia[j1] = aux;
+
+				aux = posicionesDistancia[j];
+				posicionesDistancia[j] = posicionesDistancia[j1];
+				posicionesDistancia[j1] = aux;
+			} else {
+				swapDistancia = false;
+			}
+		}
 	}
 
-	// TODO completar greedy
+	// Guardamos los resultados
+	permutacion.clear();
+	permutacion.resize(n);
+	for (i = 0; i < n; i++) {
+		permutacion[posicionesDistancia[i]] = posicionesFlujo[i];
+	}
+
+	fin = clock();
+	funcionObjetivo();
+
+	cout << endl
+		 << "Tiempo total: " << (float)(fin - inicio) << "ms" << endl
+		 << "Valor: " << valorActual << endl;
+
+	imprimir();
+
+	delete mediaFlujo;
+	delete mediaDistancia;
+	delete posicionesFlujo;
+	delete posicionesDistancia;
 }
