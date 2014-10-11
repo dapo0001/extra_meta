@@ -165,28 +165,37 @@ void Practica::busquedaLocal(){
 	clock_t inicio,fin;
 	int numIteraciones = 0;
 	int val1 =0,val2=1;
+	bool* DLB = new bool[permutacion.size()];
+
+	for (int i = 0; i < permutacion.size(); i++) {
+		DLB[i] = false;
+	}
 
 	inicio = clock();
 	
 	funcionObjetivo();
 	while(val1!=permutacion.size() && val2 < permutacion.size() && numIteraciones<10000){
-		addCambio(val1,permutacion[val2]);
-		addCambio(val2,permutacion[val1]);
-		factorizacion();
+		if (DLB[val1] == false) {
+			addCambio(val1,permutacion[val2]);
+			addCambio(val2,permutacion[val1]);
+			factorizacion();
 		
-		if(valorSiguiente < valorActual){
-			cout<<"Se mejora la solucion"<<endl;
-			cout<<"Valor Actual "<<valorActual<<endl;
-			cout<<"Valor Siguiente "<<valorSiguiente<<endl;
-			aplicarVecindad();
-			imprimir();
-			val1 = 0;
-			val2 = 1;
+			if(valorSiguiente < valorActual){
+				cout<<"Se mejora la solucion"<<endl;
+				cout<<"Valor Actual "<<valorActual<<endl;
+				cout<<"Valor Siguiente "<<valorSiguiente<<endl;
+				aplicarVecindad();
+				imprimir();
+				val1 = 0;
+				val2 = 1;
+			}
 		}
+		
 		numIteraciones++;
 		val2++;
 		cambios.clear();
 		if(val2 == permutacion.size()){
+			DLB[val1] = true;
 			val1++;
 			val2=val1+1;
 		}
@@ -197,6 +206,8 @@ void Practica::busquedaLocal(){
 	cout << "Número de iteraciones: " << numIteraciones << endl;
 	cout << "La mejor solución obtenida es " << valorActual << endl;
 	imprimir();
+
+	delete DLB;
 
 }
 
@@ -446,4 +457,7 @@ void Practica::greedy () {
 	delete mediaDistancia;
 	delete posicionesFlujo;
 	delete posicionesDistancia;
+}
+
+void Practica::tabu () {
 }

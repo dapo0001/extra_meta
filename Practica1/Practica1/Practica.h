@@ -46,6 +46,7 @@ public:
 	void algoritmo(unsigned int valor);
 
 	void busquedaLocal();
+	void tabu();
 
 	
 	// Interfaz de la practica
