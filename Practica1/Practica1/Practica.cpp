@@ -18,7 +18,9 @@ Practica::Practica():
 }
 
 Practica::~Practica()
-{}
+{
+	delete solucionActual;
+}
 
 
 /* Métodos del proceso *********************************************************************/
@@ -28,20 +30,20 @@ Practica::~Practica()
  * @pre Si las posiciones pasadas no son válidas dará error
  */
 void Practica::cambiarPosicion (unsigned int pos1, unsigned int pos2) {
-	int valor = permutacion[pos1];
-	permutacion[pos1] = permutacion[pos2];
-	permutacion[pos2] = valor;
+	int valor = solucionActual[pos1];
+	solucionActual[pos1] = solucionActual[pos2];
+	solucionActual[pos2] = valor;
 }
 
 /**
  * Se encarga de permutar valores de forma aleatoria según la semilla asignada
  * @pre La semilla debe ser un valor admisible por srand
  */
-void Practica::solInicial (int semilla){
+void Practica::solucionInicial (int semilla){
 	srand(semilla);
-	for(unsigned int i = 0; i < permutacion.size(); i++){
-		unsigned int pos1 = rand()%permutacion.size();
-		unsigned int pos2 = rand()%permutacion.size();
+	for (unsigned int i = 0; i < n; i++) {
+		unsigned int pos1 = rand() % n;
+		unsigned int pos2 = rand() % n;
 		cambiarPosicion(pos1, pos2);
 	}
 
@@ -56,66 +58,48 @@ void Practica::solInicial (int semilla){
  * los operandos de las matrices de flujo y distancia.
  */
 void Practica::funcionObjetivo(){
-	int valor = 0,
-		n = permutacion.size();
+	valorActual = 0;
 
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			valor +=
-				matrices.matrizFlujo[permutacion[i]]->at(j) *
-				matrices.matrizDistancia[i]->at(j);
+	for (unsigned int i = 0; i < n; i++) {
+		for (unsigned int j = 0; j < n; j++) {
+			valorActual +=
+				matrices.flujo[i]->at(j) *
+				matrices.distancia[solucionActual[i]]->at(j);
 		}
 	}
 	
-	for (int k = 0; k < n; k++) {
-		valor -=
-			matrices.matrizFlujo[k]->at(k) *
-			matrices.matrizDistancia[k]->at(k);
+	for (unsigned int k = 0; k < n; k++) {
+		valorActual -=
+			matrices.flujo[k]->at(k) *
+			matrices.distancia[k]->at(k);
 	}
-
-	valorActual = valor;
-	//cout<<"funcionObjetivo"<<endl;
-	//cout << "a: " << valorActual << endl;
-	//cout << "s: " << valorSiguiente << endl;
-}
-
-/**
- * Añade un cambio al vector de cambios.
- * @param posicion Posición de la permutación que se quiere modificar.
- * @param valor Valor nuevo que se desea aplicar.
- */
-void Practica::addCambio (unsigned int posicion, int valor) {
-	cambios.push_back(new pair<unsigned int, int>(posicion, valor));
 }
 
 /**
  * Calcula el valor de la solución actual sin tener que recorrer todo el
  * contenido de las matrices. Para ello usa la solucion actual y el vector
- * de cambios en la permutacion.
- * @TODO Arreglar
+ * de cambios en la solucionActual.
  */
 void Practica::factorizacion () {
-	int n = permutacion.size(),
-		flujo,
-		distancia;
 	valorSiguiente = valorActual;
 
-	for (int i = 0; i < cambios.size(); i++) {
-		for (int j = 0; j < n; j++) {
-			flujo = matrices.matrizFlujo[permutacion[cambios[i]->first]]->at(j);
-			distancia = matrices.matrizDistancia[cambios[i]->first]->at(j);
-			valorSiguiente -= flujo * distancia;
+	for (unsigned int i = 0; i < n; i++) {
+		valorSiguiente -=
+			matrices.flujo[solucionVecina.primero]->at(i) *
+			matrices.distancia[solucionActual[solucionVecina.primero]]->at(i);
 
-			flujo = matrices.matrizFlujo[cambios[i]->second]->at(j);
-			// La distancia se mantiene
-			// distancia = matrices.matrizDistancia[cambios[i]->first]->at(j);
-			valorSiguiente += flujo * distancia;
-		}
+		valorSiguiente -=
+			matrices.flujo[solucionVecina.segundo]->at(i) *
+			matrices.distancia[solucionActual[solucionVecina.segundo]]->at(i);
+
+		valorSiguiente +=
+			matrices.flujo[solucionVecina.primero]->at(i) *
+			matrices.distancia[solucionActual[solucionVecina.segundo]]->at(i);
+
+		valorSiguiente +=
+			matrices.flujo[solucionVecina.segundo]->at(i) *
+			matrices.distancia[solucionActual[solucionVecina.primero]]->at(i);
 	}
-
-	//cout<<"Factorizacion"<<endl;
-	//cout << "a: " << valorActual << endl;
-	//cout << "s: " << valorSiguiente << endl;
 }
 
 /**
@@ -125,65 +109,52 @@ void Practica::factorizacion () {
  * se considera que ya está correctamente calculado.
  */
 void Practica::aplicarVecindad () {
-	factorizacion();
-
-	for (unsigned int i = 0; i < cambios.size(); i++) {
-		permutacion[cambios[i]->first] = cambios[i]->second;
-		delete cambios[i];
+	if (solucionVecina.primero != -1 && solucionVecina.segundo != -1) {
+		factorizacion();
+		cambiarPosicion(solucionVecina.primero, solucionVecina.segundo);
+		solucionVecina.primero = solucionVecina.segundo = -1;
+		valorActual = valorSiguiente;
 	}
-
-	cambios.clear();
-	valorActual = valorSiguiente;
 }
 
 void Practica::algoritmo (unsigned int valor) {
-	// 1. Escoge un vecino almacenando los cambios hechos en el vector de cambios.
-	// 2. Comprueba su calidad con factorizacion() y valorSiguiente.
-	// 3. Busca otro vecino si es necesario.
-	// ...
-	// 4. Aplica la vecindad con aplicarVecindad()
-
-
 	if(valor == 1){
-		solInicial(semilla);
+		solucionInicial(semilla);
 		busquedaLocal();
+	} else if (valor == 2) {
+		solucionInicial(semilla);
+		tabu();
 	} else if (valor == 3) {
 		greedy();
 	}
-
-	/*
-	funcionObjetivo();
-	addCambio(0, 2);
-	addCambio(1, 0);
-	aplicarVecindad();
-	funcionObjetivo();
-	*/
 }
 
 
 void Practica::busquedaLocal(){
 	clock_t inicio,fin;
 	int numIteraciones = 0;
-	int val1 =0,val2=1;
-	bool* DLB = new bool[permutacion.size()];
+	unsigned int val1 = 0;
+	unsigned int val2 = 1;
+	bool* DLB = new bool[n];
 
-	for (int i = 0; i < permutacion.size(); i++) {
+	for (unsigned int i = 0; i < n; i++) {
 		DLB[i] = false;
 	}
 
 	inicio = clock();
 	
 	funcionObjetivo();
-	while(val1!=permutacion.size() && val2 < permutacion.size() && numIteraciones<10000){
+	
+	while (val1 != n && val2 < n && numIteraciones < 10000) {
 		if (DLB[val1] == false) {
-			addCambio(val1,permutacion[val2]);
-			addCambio(val2,permutacion[val1]);
+			solucionVecina.primero = val1;
+			solucionVecina.segundo = val2;
 			factorizacion();
 		
-			if(valorSiguiente < valorActual){
-				cout<<"Se mejora la solucion"<<endl;
-				cout<<"Valor Actual "<<valorActual<<endl;
-				cout<<"Valor Siguiente "<<valorSiguiente<<endl;
+			if (valorSiguiente < valorActual) {
+				cout << "Se mejora la solucion" << endl;
+				cout << "Valor Actual " << valorActual << endl;
+				cout << "Valor Siguiente " << valorSiguiente << endl;
 				aplicarVecindad();
 				imprimir();
 				val1 = 0;
@@ -192,19 +163,26 @@ void Practica::busquedaLocal(){
 		}
 		
 		numIteraciones++;
+		
 		val2++;
-		cambios.clear();
-		if(val2 == permutacion.size()){
+		solucionVecina.primero = solucionVecina.segundo = -1;
+
+		if (val2 == n) {
 			DLB[val1] = true;
 			val1++;
-			val2=val1+1;
+			val2 = val1 + 1;
 		}
 	}
+
 	fin = clock();
+	
 	cout << endl <<
-	"Tiempo de ejecución: "    << (float) (fin - inicio) << "ms" << endl;
-	cout << "Número de iteraciones: " << numIteraciones << endl;
-	cout << "La mejor solución obtenida es " << valorActual << endl;
+		"Tiempo de ejecución: " << (float) (fin - inicio) / CLOCKS_PER_SEC << "ms"
+		<< endl <<
+		"Número de iteraciones: " << numIteraciones
+		<< endl <<
+		"La mejor solución obtenida es " << valorActual << endl;
+	
 	imprimir();
 
 	delete DLB;
@@ -339,8 +317,10 @@ void Practica::cargarFich(int valor){
             system("EXIT");
     }
 
-	for(int i=0;i<matrices.getNumComp();i++){
-		permutacion.push_back(i);
+	n = matrices.getNumComp();
+	solucionActual = new int[n];
+	for (unsigned int i = 0; i < n; i++) {
+		solucionActual[i] = i;
 	}
 
 }
@@ -349,8 +329,8 @@ void Practica::cargarFich(int valor){
  * Imprime el vector permutación en la salida estándar
  */
 void Practica::imprimir(){
-	for(unsigned int i = 0; i < permutacion.size(); i++){
-		cout << permutacion[i] << " ";
+	for(unsigned int i = 0; i < n; i++){
+		cout << solucionActual[i] << " ";
 	}
 	cout << endl;
 }
@@ -358,11 +338,10 @@ void Practica::imprimir(){
 /* Algoritmos *******************************************************************************/
 
 void Practica::greedy () {
-	const int n = matrices.matrizDistancia.size();
 	clock_t inicio, fin;
 	
 	// Valores auxiliares
-	int i, j;
+	unsigned int i, j;
 	int j1;
 	int aux;
 	bool swapFlujo;
@@ -393,8 +372,8 @@ void Practica::greedy () {
 		mediaDistanciaActual = 0;
 
 		for (j = 0; j < n; j++) {
-			mediaFlujoActual += matrices.matrizFlujo[i]->at(j);
-			mediaDistanciaActual += matrices.matrizDistancia[i]->at(j);
+			mediaFlujoActual += matrices.flujo[i]->at(j);
+			mediaDistanciaActual += matrices.distancia[i]->at(j);
 		}
 		
 		mediaFlujoActual /= n;
@@ -438,10 +417,8 @@ void Practica::greedy () {
 	}
 
 	// Guardamos los resultados
-	permutacion.clear();
-	permutacion.resize(n);
 	for (i = 0; i < n; i++) {
-		permutacion[posicionesDistancia[i]] = posicionesFlujo[i];
+		solucionActual[posicionesFlujo[i]] = posicionesDistancia[i];
 	}
 
 	fin = clock();

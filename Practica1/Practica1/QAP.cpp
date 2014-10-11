@@ -41,7 +41,7 @@ void QAP::abrir(string nombreFich) {
 				fich >> num;
 				vect->push_back(num);
 			}
-			matrizFlujo.push_back(vect);
+			flujo.push_back(vect);
 		}
 
 		//Matriz de distancia
@@ -51,7 +51,7 @@ void QAP::abrir(string nombreFich) {
 				fich >> num;
 				vect->push_back(num);
 			}
-			matrizDistancia.push_back(vect);
+			distancia.push_back(vect);
 		}
     } else {
         cout << "no se ha encontrado el archivo" << endl;
@@ -63,9 +63,9 @@ void QAP::abrir(string nombreFich) {
  *
  */
 void QAP::imprimirMatrizDistancia(){
-	for(unsigned int i = 0; i < matrizDistancia.size(); i++){
-		for(unsigned int j = 0; j < matrizDistancia[i]->size(); j++){
-			cout << matrizDistancia[i]->at(j) << " ";
+	for(unsigned int i = 0; i < distancia.size(); i++){
+		for(unsigned int j = 0; j < distancia[i]->size(); j++){
+			cout << distancia[i]->at(j) << " ";
 		}
 		cout << endl;
 	}

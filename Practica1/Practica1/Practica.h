@@ -13,21 +13,17 @@ using namespace std;
 #define	PRACTICA_H
 
 /**
+ * Estructura para almacenar la solucion
+ * vecina. Cambia las posiciones primero
+ * y segundo de la solucion actual
+ */
+typedef struct {
+	int primero;
+	int segundo;
+} CAMBIO;
+
+/**
  * Clase que procesa todo el algoritmo de búsqueda.
- * Para explorar el espacio de soluciones. Nuestro algoritmo
- * almacena los cambios que se van a hacer en la permutación
- * (solución) actual dentro de un vector de parejas, donde
- * los distintos valores indican la posición de la permutación
- * y el valor que tendrá respectivamente.
- *
- * El método aplicarVecindad se encargará de aplicar estos cambios
- * a la solución actual y de vaciar la lista de cambios para poder
- * generar nuevos vecinos.
- *
- * Ejemplo:
- *  permutacion: [1, 0, 2]
- *  cambios: [[0, 2], [2, 1]]
- *  aplicarVecindad() -> futura permutacion: [2, 0, 1]
  */
 class Practica {
 public:
@@ -35,19 +31,17 @@ public:
 	virtual ~Practica();
 
 	// Metodos del proceso
-	void solInicial (int semilla);
+	void solucionInicial (int semilla);
 	void cambiarPosicion (unsigned int pos1,unsigned int pos2);
 	void funcionObjetivo ();
-	void addCambio(unsigned int posicion, int valor);
 	void factorizacion ();
-	void aplicarVecindad();
-		// Algoritmos
-	void greedy();
-	void algoritmo(unsigned int valor);
-
-	void busquedaLocal();
-	void tabu();
-
+	void aplicarVecindad ();
+	
+	// Algoritmos
+	void algoritmo (unsigned int valor);
+	void greedy ();
+	void busquedaLocal ();
+	void tabu ();
 	
 	// Interfaz de la practica
 	void menuFichero ();
@@ -56,13 +50,13 @@ public:
 	void imprimir ();
 
 private:
-	vector<int> permutacion; ///< Solución actual
-	vector<pair<unsigned int, int>*> cambios; ///< Valores a cambiar para obtener el vecino deseado
-	int semilla;
-	QAP matrices; ///< Matrices de flujo y distancia que determinan la calidad de la solución
-
-	int valorActual; ///< Valor de la solución actual
-	int valorSiguiente; ///< Valor de la solución actual tras aplicar el vector de cambios
+	int semilla;			///< Valor usado para generar números aleatorios
+	unsigned int n;			///< Tamaño de las matrices y la solucion
+	int* solucionActual;	///< Solución actual
+	CAMBIO solucionVecina;	///< Valores a cambiar para obtener el vecino deseado
+	QAP matrices;			///< Matrices de flujo y distancia que determinan la calidad de la solución
+	int valorActual;		///< Valor de la solución actual
+	int valorSiguiente;		///< Valor de la solución actual tras aplicar la vecindad
 };
 
 #endif	/* PRACTICA_H */

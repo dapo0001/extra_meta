@@ -12,8 +12,8 @@ using namespace std;
 
 class QAP {
 public:
-	vector<vector<int> * > matrizFlujo;
-    vector<vector<int> * > matrizDistancia;
+	vector<vector<int> * > flujo;
+    vector<vector<int> * > distancia;
 
 	QAP();
 	QAP(const QAP& orig);
