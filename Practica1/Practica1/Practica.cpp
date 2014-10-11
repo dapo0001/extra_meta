@@ -10,8 +10,8 @@
 using namespace std;
 
 Practica::Practica():
-	valorActual(999999),
-	valorSiguiente(999999)
+	valorActual(99999999),
+	valorSiguiente(99999999)
 {
 	cout << "Introduzca la semilla ";
 	cin >> semilla;
@@ -50,7 +50,8 @@ void Practica::solucionInicial (int semilla){
 	cambiarPosicion(solucionActual, 0, 2);
 	cambiarPosicion(solucionActual, 0, 1);
 
-	cout << endl << "Nueva solucion: " << endl;
+	funcionObjetivo();
+	cout << endl << "Nueva solucion: " << valorActual << endl;
 	imprimir();
 }
 
@@ -83,8 +84,13 @@ void Practica::funcionObjetivo(){
  */
 void Practica::factorizacion () {
 	valorSiguiente = valorActual;
+	int fp; // FlujoPrimero
+	int dp; // DistanciaPrimera
+	int fs; // FlujoSegundo
+	int ds; // DistanciaSegunda
 
 	for (unsigned int i = 0; i < n; i++) {
+		/*
 		valorSiguiente -=
 			matrices.flujo[solucionVecina.primero]->at(i) *
 			matrices.distancia[solucionActual[solucionVecina.primero]]->at(i);
@@ -100,6 +106,17 @@ void Practica::factorizacion () {
 		valorSiguiente +=
 			matrices.flujo[solucionVecina.segundo]->at(i) *
 			matrices.distancia[solucionActual[solucionVecina.primero]]->at(i);
+		*/
+
+		// v = v + ( -fp*dp -fs*ds     +fp*ds +fs*dp ) =
+		//   = v + ((+fs*dp -fp*dp) + (+fp*ds +fs*ds)) =
+		//   = v + (dp*(fs -fp)     + ds*(fp - fs))
+		
+		fp = matrices.flujo[solucionVecina.primero]->at(i);
+		dp = matrices.distancia[solucionActual[solucionVecina.primero]]->at(i);
+		fs = matrices.flujo[solucionVecina.segundo]->at(i);
+		ds = matrices.distancia[solucionActual[solucionVecina.segundo]]->at(i);
+		valorSiguiente = valorSiguiente + (dp * (fs - fp) + ds * (fp - fs));
 	}
 }
 
@@ -124,7 +141,6 @@ void Practica::algoritmo (unsigned int valor) {
 		busquedaLocal();
 	} else if (valor == 2) {
 		solucionInicial(semilla);
-		funcionObjetivo();
 		tabu();
 	} else if (valor == 3) {
 		greedy();
@@ -144,8 +160,6 @@ void Practica::busquedaLocal(){
 	}
 
 	inicio = clock();
-	
-	funcionObjetivo();
 	
 	while (val1 != n && val2 < n && numIteraciones < 10000) {
 		if (DLB[val1] == false) {
@@ -440,6 +454,18 @@ void Practica::greedy () {
 
 /* Componentes para la lista tabu ******************************************************************************/
 
+bool has (const vector<CAMBIO>& v, const CAMBIO& c) {
+	for (unsigned int i = 0; i < v.size(); i++) {
+		if (v[i].primero == c.primero &&
+			v[i].segundo == c.segundo ||
+			v[i].segundo == c.primero &&
+			v[i].primero == c.segundo) {
+			return true;
+		}
+	}
+	return false;
+}
+
 void Practica::tabu () {
 	// Contadores de iteraciones y generaciones
 	// de vecinos
@@ -464,8 +490,9 @@ void Practica::tabu () {
 	// Inicialización de las memorias de corto
 	// y largo plazo
 
+	vector<CAMBIO> vecinosAleatorios;
 	vector<CAMBIO> memoriaCortoPlazo;
-	int maxMemoriaCortoPlazo = n / 2;
+	unsigned int maxMemoriaCortoPlazo = n / 2;
 	int** memoriaLargoPlazo = new int*[n];
 
 	for (unsigned int i = 0; i < n; i++) {
@@ -479,30 +506,35 @@ void Practica::tabu () {
 
 	while (++numIteraciones < 10000) {
 		vecinosGenerados = 0;
-		valorMejorVecino = 9999999;
+		valorMejorVecino = 99999999;
+		vecinosAleatorios.clear();
 
 		// Generamos vecinos hasta llegar al límite
 		do {
 			solucionMejorada = false;
 
-			solucionVecina.primero = rand() % n;
-			do { solucionVecina.segundo = rand() % n; }
-			while (solucionVecina.primero == solucionVecina.segundo);
+			// Evitamos generar varias veces el mismo vecino
+			do {
+				solucionVecina.segundo = rand() % n;
+				solucionVecina.primero = rand() % n;
+			} while (solucionVecina.primero == solucionVecina.segundo ||
+					 has(vecinosAleatorios, solucionVecina));
+			vecinosAleatorios.push_back(solucionVecina);
 			factorizacion();
 
 			// Comprobamos si el vecino generado es tabú activo
 			esTabuActivo = false;
 			for (unsigned int i = 0; i < memoriaCortoPlazo.size(); i++) {
-				if (memoriaCortoPlazo[i].primero == solucionVecina.primero &&
-					memoriaCortoPlazo[i].segundo == solucionVecina.segundo ||
-					memoriaCortoPlazo[i].primero == solucionVecina.segundo &&
-					memoriaCortoPlazo[i].segundo == solucionVecina.primero) {
+				if ((memoriaCortoPlazo[i].primero == solucionVecina.primero &&
+					memoriaCortoPlazo[i].segundo == solucionVecina.segundo) ||
+					(memoriaCortoPlazo[i].primero == solucionVecina.segundo &&
+					memoriaCortoPlazo[i].segundo == solucionVecina.primero)) {
 					esTabuActivo = true;
 				}
 			}
 
 			// Si el vecino generado nos sirve (criterio de aspiracion)
-			if (esTabuActivo && valorSiguiente < valorMejorSolucion || !esTabuActivo) {
+			if ((esTabuActivo && valorSiguiente < valorMejorSolucion) || (!esTabuActivo)) {
 				// Lo guardamos si es el mejor vecino
 				if (valorSiguiente < valorMejorVecino) {
 					valorMejorVecino = valorSiguiente;
@@ -521,7 +553,11 @@ void Practica::tabu () {
 		} while (++vecinosGenerados < 30);
 
 		// Contamos las soluciones sin mejorar
-		if (!solucionMejorada) { iteracionesSinMejorar++; }
+		if (solucionMejorada) {
+			iteracionesSinMejorar = 0;
+		} else {
+			iteracionesSinMejorar++;
+		}
 
 		// Actualizamos las memorias
 		memoriaLargoPlazo[solucionVecina.primero][solucionVecina.segundo]++;
@@ -551,13 +587,58 @@ void Practica::tabu () {
 					solucionActual[i] = mejorSolucion[i];
 					valorActual = valorMejorSolucion;
 				}
-			// Solucion a partir de memoria
+				cout << endl << "Mejor solucion: " << valorActual << endl;
+				imprimir();
+			
+				// Solucion a partir de memoria
 			} else {
-				cout << "gñé" << endl;
+				// Decidimos si queremos diversificar o intensificar
+				// cambiando el tamaño de la memoria a corto plazo...
+
+				// Aplicamos el cambio menos frecuente
+				int cambioI = 0;
+				int cambioJ = 0;
+				int cambioFrec = memoriaLargoPlazo[0][0];
+				for (unsigned int i = 0; i < n; i++) {
+					for (unsigned int j = i + 1; j < n; j++) {
+						if (cambioFrec > memoriaLargoPlazo[i][j]) {
+							cambioI = i;
+							cambioJ = j;
+							cambioFrec = memoriaLargoPlazo[i][j];
+						}
+					}
+				}
+				memoriaLargoPlazo[cambioI][cambioJ]++;
+				memoriaLargoPlazo[cambioJ][cambioI]++;
+				solucionVecina.primero = cambioI;
+				solucionVecina.segundo = cambioJ;
+				aplicarVecindad();
+				
+				// Decidimos si diversificar o intensificar aleatoriamente
+				cout << endl << "Solucion calculada: " << valorActual << endl;
+				imprimir();
+				if ((rand() % 100) < 50) {
+					maxMemoriaCortoPlazo += maxMemoriaCortoPlazo / 2;
+					cout << "Vamos a intensificar (" << maxMemoriaCortoPlazo << ")" << endl;
+				} else {
+					maxMemoriaCortoPlazo -= maxMemoriaCortoPlazo / 2;
+					if (maxMemoriaCortoPlazo < 2) { maxMemoriaCortoPlazo = 2; }
+					cout << "Vamos a diversificar (" << maxMemoriaCortoPlazo << ")" << endl;
+				}
+
+				// Fue una decisión difícil
 			}
 		}
 	}
 
-	cout << "La mejor solucion es: " << valorMejorSolucion << endl;
+	valorActual = valorMejorSolucion;
+	for (unsigned int i = 0; i < n; i++) {
+		solucionActual[i] = mejorSolucion[i];
+		valorActual = valorMejorSolucion;
+	}
+
+	cout << endl << "Mejor solucion encontrada: " << valorActual << endl;
+	imprimir();
+
 	delete mejorSolucion;
 }
