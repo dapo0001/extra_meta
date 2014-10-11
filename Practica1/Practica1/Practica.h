@@ -32,7 +32,7 @@ public:
 
 	// Metodos del proceso
 	void solucionInicial (int semilla);
-	void cambiarPosicion (unsigned int pos1,unsigned int pos2);
+	void cambiarPosicion (int* v, unsigned int pos1,unsigned int pos2);
 	void funcionObjetivo ();
 	void factorizacion ();
 	void aplicarVecindad ();

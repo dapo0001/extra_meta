@@ -29,7 +29,7 @@ Practica::~Practica()
  * Cambia dos posiciones del vector
  * @pre Si las posiciones pasadas no son válidas dará error
  */
-void Practica::cambiarPosicion (unsigned int pos1, unsigned int pos2) {
+void Practica::cambiarPosicion (int* v, unsigned int pos1, unsigned int pos2) {
 	int valor = solucionActual[pos1];
 	solucionActual[pos1] = solucionActual[pos2];
 	solucionActual[pos2] = valor;
@@ -44,12 +44,13 @@ void Practica::solucionInicial (int semilla){
 	for (unsigned int i = 0; i < n; i++) {
 		unsigned int pos1 = rand() % n;
 		unsigned int pos2 = rand() % n;
-		cambiarPosicion(pos1, pos2);
+		cambiarPosicion(solucionActual, pos1, pos2);
 	}
 
-	cambiarPosicion(0, 2);
-	cambiarPosicion(0, 1);
+	cambiarPosicion(solucionActual, 0, 2);
+	cambiarPosicion(solucionActual, 0, 1);
 
+	cout << endl << "Nueva solucion: " << endl;
 	imprimir();
 }
 
@@ -111,7 +112,7 @@ void Practica::factorizacion () {
 void Practica::aplicarVecindad () {
 	if (solucionVecina.primero != -1 && solucionVecina.segundo != -1) {
 		factorizacion();
-		cambiarPosicion(solucionVecina.primero, solucionVecina.segundo);
+		cambiarPosicion(solucionActual, solucionVecina.primero, solucionVecina.segundo);
 		solucionVecina.primero = solucionVecina.segundo = -1;
 		valorActual = valorSiguiente;
 	}
@@ -123,6 +124,7 @@ void Practica::algoritmo (unsigned int valor) {
 		busquedaLocal();
 	} else if (valor == 2) {
 		solucionInicial(semilla);
+		funcionObjetivo();
 		tabu();
 	} else if (valor == 3) {
 		greedy();
@@ -436,5 +438,126 @@ void Practica::greedy () {
 	delete posicionesDistancia;
 }
 
+/* Componentes para la lista tabu ******************************************************************************/
+
 void Practica::tabu () {
+	// Contadores de iteraciones y generaciones
+	// de vecinos
+
+	unsigned int numIteraciones = 0;
+	unsigned int iteracionesSinMejorar = 0;
+	unsigned int vecinosGenerados = 0;
+	
+	// Memoria para guardar la mejor
+	// solución encontrada y el mejor vecino de la iteración
+
+	CAMBIO cambiosMejorVecino;
+	int valorMejorVecino;
+
+	int* mejorSolucion = new int[n];
+	int valorMejorSolucion = valorActual;
+
+	// Flags para el proceso de búsqueda
+	bool esTabuActivo;
+	bool solucionMejorada;
+
+	// Inicialización de las memorias de corto
+	// y largo plazo
+
+	vector<CAMBIO> memoriaCortoPlazo;
+	int maxMemoriaCortoPlazo = n / 2;
+	int** memoriaLargoPlazo = new int*[n];
+
+	for (unsigned int i = 0; i < n; i++) {
+		memoriaLargoPlazo[i] = new int[n];
+		for (unsigned int j = 0; j < n; j++) {
+			memoriaLargoPlazo[i][j] = 0;
+		}
+	}
+
+	// Comienzo del algoritmo
+
+	while (++numIteraciones < 10000) {
+		vecinosGenerados = 0;
+		valorMejorVecino = 9999999;
+
+		// Generamos vecinos hasta llegar al límite
+		do {
+			solucionMejorada = false;
+
+			solucionVecina.primero = rand() % n;
+			do { solucionVecina.segundo = rand() % n; }
+			while (solucionVecina.primero == solucionVecina.segundo);
+			factorizacion();
+
+			// Comprobamos si el vecino generado es tabú activo
+			esTabuActivo = false;
+			for (unsigned int i = 0; i < memoriaCortoPlazo.size(); i++) {
+				if (memoriaCortoPlazo[i].primero == solucionVecina.primero &&
+					memoriaCortoPlazo[i].segundo == solucionVecina.segundo ||
+					memoriaCortoPlazo[i].primero == solucionVecina.segundo &&
+					memoriaCortoPlazo[i].segundo == solucionVecina.primero) {
+					esTabuActivo = true;
+				}
+			}
+
+			// Si el vecino generado nos sirve (criterio de aspiracion)
+			if (esTabuActivo && valorSiguiente < valorMejorSolucion || !esTabuActivo) {
+				// Lo guardamos si es el mejor vecino
+				if (valorSiguiente < valorMejorVecino) {
+					valorMejorVecino = valorSiguiente;
+					cambiosMejorVecino.primero = solucionVecina.primero;
+					cambiosMejorVecino.segundo = solucionVecina.segundo;
+				}
+
+				// Lo requeteguardamos si es la mejor solucion
+				if (valorSiguiente < valorMejorSolucion) {
+					valorMejorSolucion = valorSiguiente;
+					for (unsigned int j = 0; j < n; j++) { mejorSolucion[j] = solucionActual[j]; }
+					cambiarPosicion(mejorSolucion, solucionVecina.primero, solucionVecina.segundo);
+					solucionMejorada = true;
+				}
+			}
+		} while (++vecinosGenerados < 30);
+
+		// Contamos las soluciones sin mejorar
+		if (!solucionMejorada) { iteracionesSinMejorar++; }
+
+		// Actualizamos las memorias
+		memoriaLargoPlazo[solucionVecina.primero][solucionVecina.segundo]++;
+		memoriaLargoPlazo[solucionVecina.segundo][solucionVecina.primero]++;
+		memoriaCortoPlazo.insert(memoriaCortoPlazo.begin(), solucionVecina);
+		if (memoriaCortoPlazo.size() > maxMemoriaCortoPlazo) {
+			memoriaCortoPlazo.pop_back();
+		}
+
+		// Aplicamos el mejor vecino encontrado
+		aplicarVecindad();
+
+		// Comprobamos si tenemos que reinicializar
+		if (iteracionesSinMejorar >= 10) {
+			iteracionesSinMejorar = 0;
+			memoriaCortoPlazo.clear();
+
+			// Nueva solucion actual
+			int r = rand() % 100;
+			// Solucion inicial aleatoria
+			if (r < 25) {
+				solucionInicial(semilla + numIteraciones);
+				funcionObjetivo();
+			// Mejor solucion obtenida
+			} else if (r < 50) {
+				for (unsigned int i = 0; i < n; i++) {
+					solucionActual[i] = mejorSolucion[i];
+					valorActual = valorMejorSolucion;
+				}
+			// Solucion a partir de memoria
+			} else {
+				cout << "gñé" << endl;
+			}
+		}
+	}
+
+	cout << "La mejor solucion es: " << valorMejorSolucion << endl;
+	delete mejorSolucion;
 }
