@@ -148,63 +148,6 @@ void Practica::algoritmo (unsigned int valor) {
 }
 
 
-void Practica::busquedaLocal(){
-	clock_t inicio,fin;
-	int numIteraciones = 0;
-	unsigned int val1 = 0;
-	unsigned int val2 = 1;
-	bool* DLB = new bool[n];
-
-	for (unsigned int i = 0; i < n; i++) {
-		DLB[i] = false;
-	}
-
-	inicio = clock();
-	
-	while (val1 != n && val2 < n && numIteraciones < 10000) {
-		if (DLB[val1] == false) {
-			solucionVecina.primero = val1;
-			solucionVecina.segundo = val2;
-			factorizacion();
-		
-			if (valorSiguiente < valorActual) {
-				cout << "Se mejora la solucion" << endl;
-				cout << "Valor Actual " << valorActual << endl;
-				cout << "Valor Siguiente " << valorSiguiente << endl;
-				aplicarVecindad();
-				imprimir();
-				val1 = 0;
-				val2 = 1;
-			}
-		}
-		
-		numIteraciones++;
-		
-		val2++;
-		solucionVecina.primero = solucionVecina.segundo = -1;
-
-		if (val2 == n) {
-			DLB[val1] = true;
-			val1++;
-			val2 = val1 + 1;
-		}
-	}
-
-	fin = clock();
-	
-	cout << endl <<
-		"Tiempo de ejecución: " << (float) (fin - inicio) / CLOCKS_PER_SEC << "ms"
-		<< endl <<
-		"Número de iteraciones: " << numIteraciones
-		<< endl <<
-		"La mejor solución obtenida es " << valorActual << endl;
-	
-	imprimir();
-
-	delete DLB;
-
-}
-
 
 /* Interfaz de la práctica *********************************************************************/
 
@@ -353,6 +296,68 @@ void Practica::imprimir(){
 
 /* Algoritmos *******************************************************************************/
 
+
+void Practica::busquedaLocal(){
+	clock_t inicio,fin;
+	int numIteraciones = 0;
+	unsigned int val1 = 0;
+	unsigned int val2 = 1;
+	bool* DLB = new bool[n];
+
+	for (unsigned int i = 0; i < n; i++) {
+		DLB[i] = false;
+	}
+
+	inicio = clock();
+	
+	while (val1 != n && val2 < n && numIteraciones < 10000) {
+		if (DLB[val1] == false) {
+			solucionVecina.primero = val1;
+			solucionVecina.segundo = val2;
+			factorizacion();
+		
+			if (valorSiguiente < valorActual) {
+				cout << "Se mejora la solucion" << endl;
+				cout << "Valor Actual " << valorActual << endl;
+				cout << "Valor Siguiente " << valorSiguiente << endl;
+				aplicarVecindad();
+				imprimir();
+				val1 = 0;
+				val2 = 1;
+			}
+		}
+		
+		numIteraciones++;
+		
+		val2++;
+		solucionVecina.primero = solucionVecina.segundo = -1;
+
+		if (val2 == n) {
+			DLB[val1] = true;
+			val1++;
+			val2 = val1 + 1;
+		}
+	}
+
+	fin = clock();
+	
+	cout << endl <<
+		"Tiempo de ejecución: " << (float) (fin - inicio) / CLOCKS_PER_SEC << "ms"
+		<< endl <<
+		"Número de iteraciones: " << numIteraciones
+		<< endl <<
+		"La mejor solución obtenida es " << valorActual << endl;
+	
+	imprimir();
+
+	delete DLB;
+
+}
+
+
+
+
+
 void Practica::greedy () {
 	clock_t inicio, fin;
 	
@@ -441,7 +446,7 @@ void Practica::greedy () {
 	funcionObjetivo();
 
 	cout << endl
-		 << "Tiempo total: " << (float)(fin - inicio) << "ms" << endl
+		<< "Tiempo total: " << (float)(fin - inicio)/CLOCKS_PER_SEC << "ms" << endl
 		 << "Valor: " << valorActual << endl;
 
 	imprimir();
@@ -473,7 +478,8 @@ void Practica::tabu () {
 	unsigned int numIteraciones = 0;
 	unsigned int iteracionesSinMejorar = 0;
 	unsigned int vecinosGenerados = 0;
-	
+	clock_t inicio,fin;
+
 	// Memoria para guardar la mejor
 	// solución encontrada y el mejor vecino de la iteración
 
@@ -503,6 +509,7 @@ void Practica::tabu () {
 	}
 
 	// Comienzo del algoritmo
+	inicio = clock();
 
 	while (++numIteraciones < 10000) {
 		vecinosGenerados = 0;
@@ -636,7 +643,10 @@ void Practica::tabu () {
 		solucionActual[i] = mejorSolucion[i];
 		valorActual = valorMejorSolucion;
 	}
-
+		fin = clock();
+	
+	cout << endl <<
+		"Tiempo de ejecución: " << (float) (fin - inicio) / CLOCKS_PER_SEC << "ms"<< endl;
 	cout << endl << "Mejor solucion encontrada: " << valorActual << endl;
 	imprimir();
 
