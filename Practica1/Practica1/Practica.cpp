@@ -4,7 +4,7 @@
  */
 
 // Activar para mostrar cout
-//#define DEBUG 1
+#define DEBUG 1
 
 
 #include "Practica.h"
@@ -56,8 +56,8 @@ void Practica::solucionInicial (int semilla){
 
 	funcionObjetivo();
 #ifdef DEBUG
-	cout << endl << "Nueva solucion: " << valorActual << endl;
 	imprimir();
+	cout << endl << "Nueva: " << valorActual << endl;
 #endif
 }
 
@@ -612,8 +612,8 @@ void Practica::tabu () {
 					valorActual = valorMejorSolucion;
 				}
 #ifdef DEBUG
-				cout << endl << "Mejor solucion: " << valorActual << endl;
 				imprimir();
+				cout << endl << "Mejor: " << valorActual << endl;
 #endif
 				// Solucion a partir de memoria
 			} else {
@@ -642,20 +642,14 @@ void Practica::tabu () {
 				
 				// Decidimos si diversificar o intensificar aleatoriamente
 #ifdef DEBUG
-				cout << endl << "Solucion calculada: " << valorActual << endl;
 				imprimir();
+				cout << endl << "Calcu: " << valorActual << endl;
 #endif
 				if ((rand() % 100) < 50) {
 					maxMemoriaCortoPlazo += maxMemoriaCortoPlazo / 2;
-#ifdef DEBUG
-					cout << "Vamos a intensificar (" << maxMemoriaCortoPlazo << ")" << endl;
-#endif
 				} else {
 					maxMemoriaCortoPlazo -= maxMemoriaCortoPlazo / 2;
 					if (maxMemoriaCortoPlazo < 2) { maxMemoriaCortoPlazo = 2; }
-#ifdef DEBUG
-					cout << "Vamos a diversificar (" << maxMemoriaCortoPlazo << ")" << endl;
-#endif
 				}
 
 				// Fue una decisión difícil
@@ -670,7 +664,7 @@ void Practica::tabu () {
 	}
 
 #ifdef DEBUG
-	cout << "reinicializaciones " << reinicializaciones << endl;
+	cout << endl << "reinicializaciones " << reinicializaciones << endl;
 #endif
 	fin = clock();
 	cout << endl << "Tiempo de ejecución: " << (float) (fin - inicio) / CLOCKS_PER_SEC << "ms"<< endl;
