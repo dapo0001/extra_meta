@@ -485,6 +485,10 @@ void Practica::tabu () {
 	// Contadores de iteraciones y generaciones
 	// de vecinos
 
+#ifdef DEBUG
+	int reinicializaciones = 0;
+#endif
+
 	unsigned int numIteraciones = 0;
 	unsigned int iteracionesSinMejorar = 0;
 	unsigned int vecinosGenerados = 0;
@@ -589,6 +593,9 @@ void Practica::tabu () {
 
 		// Comprobamos si tenemos que reinicializar
 		if (iteracionesSinMejorar >= 10) {
+#ifdef DEBUG
+			reinicializaciones++;
+#endif
 			iteracionesSinMejorar = 0;
 			memoriaCortoPlazo.clear();
 
@@ -661,7 +668,10 @@ void Practica::tabu () {
 		solucionActual[i] = mejorSolucion[i];
 		valorActual = valorMejorSolucion;
 	}
-	
+
+#ifdef DEBUG
+	cout << "reinicializaciones " << reinicializaciones << endl;
+#endif
 	fin = clock();
 	cout << endl << "Tiempo de ejecución: " << (float) (fin - inicio) / CLOCKS_PER_SEC << "ms"<< endl;
 	cout  << "Mejor solucion encontrada: " << valorActual << endl;
