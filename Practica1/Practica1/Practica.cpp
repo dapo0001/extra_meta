@@ -3,6 +3,10 @@
  * @authors: Pablo Molina González y Diego Alberto Pérez Ortega
  */
 
+// Activar para mostrar cout
+//#define DEBUG 1
+
+
 #include "Practica.h"
 #include <math.h>
 #include <iostream>
@@ -51,8 +55,10 @@ void Practica::solucionInicial (int semilla){
 	cambiarPosicion(solucionActual, 0, 1);
 
 	funcionObjetivo();
+#ifdef DEBUG
 	cout << endl << "Nueva solucion: " << valorActual << endl;
 	imprimir();
+#endif
 }
 
 /**
@@ -70,11 +76,11 @@ void Practica::funcionObjetivo(){
 		}
 	}
 	
-	for (unsigned int k = 0; k < n; k++) {
-		valorActual -=
-			matrices.flujo[k]->at(k) *
-			matrices.distancia[k]->at(k);
-	}
+	//for (unsigned int k = 0; k < n; k++) {
+	//	valorActual -=
+	//		matrices.flujo[k]->at(k) *
+	//		matrices.distancia[k]->at(k);
+	//}
 }
 
 /**
@@ -317,11 +323,15 @@ void Practica::busquedaLocal(){
 			factorizacion();
 		
 			if (valorSiguiente < valorActual) {
+#ifdef DEBUG
 				cout << "Se mejora la solucion" << endl;
 				cout << "Valor Actual " << valorActual << endl;
 				cout << "Valor Siguiente " << valorSiguiente << endl;
+#endif
 				aplicarVecindad();
+#ifdef DEBUG
 				imprimir();
+#endif
 				val1 = 0;
 				val2 = 1;
 			}
@@ -594,15 +604,17 @@ void Practica::tabu () {
 					solucionActual[i] = mejorSolucion[i];
 					valorActual = valorMejorSolucion;
 				}
+#ifdef DEBUG
 				cout << endl << "Mejor solucion: " << valorActual << endl;
 				imprimir();
-			
+#endif
 				// Solucion a partir de memoria
 			} else {
 				// Decidimos si queremos diversificar o intensificar
 				// cambiando el tamaño de la memoria a corto plazo...
 
 				// Aplicamos el cambio menos frecuente
+
 				int cambioI = 0;
 				int cambioJ = 0;
 				int cambioFrec = memoriaLargoPlazo[0][0];
@@ -622,15 +634,21 @@ void Practica::tabu () {
 				aplicarVecindad();
 				
 				// Decidimos si diversificar o intensificar aleatoriamente
+#ifdef DEBUG
 				cout << endl << "Solucion calculada: " << valorActual << endl;
 				imprimir();
+#endif
 				if ((rand() % 100) < 50) {
 					maxMemoriaCortoPlazo += maxMemoriaCortoPlazo / 2;
+#ifdef DEBUG
 					cout << "Vamos a intensificar (" << maxMemoriaCortoPlazo << ")" << endl;
+#endif
 				} else {
 					maxMemoriaCortoPlazo -= maxMemoriaCortoPlazo / 2;
 					if (maxMemoriaCortoPlazo < 2) { maxMemoriaCortoPlazo = 2; }
+#ifdef DEBUG
 					cout << "Vamos a diversificar (" << maxMemoriaCortoPlazo << ")" << endl;
+#endif
 				}
 
 				// Fue una decisión difícil
@@ -643,11 +661,10 @@ void Practica::tabu () {
 		solucionActual[i] = mejorSolucion[i];
 		valorActual = valorMejorSolucion;
 	}
-		fin = clock();
 	
-	cout << endl <<
-		"Tiempo de ejecución: " << (float) (fin - inicio) / CLOCKS_PER_SEC << "ms"<< endl;
-	cout << endl << "Mejor solucion encontrada: " << valorActual << endl;
+	fin = clock();
+	cout << endl << "Tiempo de ejecución: " << (float) (fin - inicio) / CLOCKS_PER_SEC << "ms"<< endl;
+	cout  << "Mejor solucion encontrada: " << valorActual << endl;
 	imprimir();
 
 	delete mejorSolucion;
