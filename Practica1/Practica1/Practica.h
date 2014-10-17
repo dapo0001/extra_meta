@@ -27,7 +27,7 @@ typedef struct {
  */
 class Practica {
 public:
-	Practica ();
+	Practica (int _semilla = -1);
 	virtual ~Practica();
 
 	// Metodos del proceso
@@ -44,9 +44,9 @@ public:
 	void tabu ();
 	
 	// Interfaz de la practica
-	void menuFichero ();
+	void menuFichero (int num = 0);
 	void cargarFich (int valor);
-	void menuAlgoritmo ();
+	void menuAlgoritmo (int num = 0);
 	void imprimir ();
 
 private:

@@ -13,12 +13,19 @@
 #include <ctime>
 using namespace std;
 
-Practica::Practica():
+/**
+ * @param _semilla Si se especifica no se pide semilla
+ */
+Practica::Practica(int _semilla):
 	valorActual(99999999),
 	valorSiguiente(99999999)
 {
-	cout << "Introduzca la semilla ";
-	cin >> semilla;
+	if (_semilla == -1) {
+		cout << "Introduzca la semilla ";
+		cin >> semilla;
+	} else {
+		semilla = _semilla;
+	}
 }
 
 Practica::~Practica()
@@ -159,56 +166,68 @@ void Practica::algoritmo (unsigned int valor) {
 
 /**
  * Menú para la lectura de ficheros
+ * @param num Si se especifica un valor concreto carga este fichero directamente sin preguntar
  */
-void Practica::menuFichero(){
-    int val = 0;
-	cout<<endl;
-    cout<<"Escoja el fichero a leer"<<endl;
-    cout<<"1. bur26a"<<endl;
-    cout<<"2. bur26b"<<endl;
-    cout<<"3. chr20a"<<endl;
-    cout<<"4. chr25a"<<endl;
-    cout<<"5. els19"<<endl;
-    cout<<"6. esc32a"<<endl;
-    cout<<"7. kra32"<<endl;
-    cout<<"8. lipa90a"<<endl;
-    cout<<"9. nug25"<<endl;
-    cout<<"10. sko42"<<endl;
-    cout<<"11. sko49"<<endl;
-    cout<<"12. tai30a"<<endl;
-    cout<<"13. tai30b"<<endl;
-    cout<<"14. tai35a"<<endl;
-    cout<<"15. tai35b"<<endl;
-    cout<<"16. tai40a"<<endl;
-    cout<<"17. tai50a"<<endl;
-    cout<<"18. tai50b"<<endl;
-    cout<<"19. tai60a"<<endl;
-    cout<<"20. tho40"<<endl;
-	cout<<"21. _try"<<endl;
-    cout<<"22. salir"<<endl;
+void Practica::menuFichero(int num){
+	if (num == 0) {
+		int val = 0;
+		cout<<endl;
+		cout<<"Escoja el fichero a leer"<<endl;
+		cout<<"1. bur26a"<<endl;
+		cout<<"2. bur26b"<<endl;
+		cout<<"3. chr20a"<<endl;
+		cout<<"4. chr25a"<<endl;
+		cout<<"5. els19"<<endl;
+		cout<<"6. esc32a"<<endl;
+		cout<<"7. kra32"<<endl;
+		cout<<"8. lipa90a"<<endl;
+		cout<<"9. nug25"<<endl;
+		cout<<"10. sko42"<<endl;
+		cout<<"11. sko49"<<endl;
+		cout<<"12. tai30a"<<endl;
+		cout<<"13. tai30b"<<endl;
+		cout<<"14. tai35a"<<endl;
+		cout<<"15. tai35b"<<endl;
+		cout<<"16. tai40a"<<endl;
+		cout<<"17. tai50a"<<endl;
+		cout<<"18. tai50b"<<endl;
+		cout<<"19. tai60a"<<endl;
+		cout<<"20. tho40"<<endl;
+		cout<<"21. _try"<<endl;
+		cout<<"22. salir"<<endl;
     
-	do {
-        cin >> val;
-    } while (val < 0 || val > 22);
-    cargarFich(val);
+		do {
+			cin >> val;
+		} while (val < 0 || val > 22);
+
+		cargarFich(val);
+	} else {
+		cout << "Fichero " << num << endl;
+		cargarFich(num);
+	}
 }
 
 /**
  * Menú para seleccionar el algoritmo que se desea ejecutar
+ * @param num Si se especifica este valor se ejecuta el algoritmo sin preguntar
  */
-void Practica::menuAlgoritmo(){
-	int val = 0;
-	cout<<endl;
-	cout<<"Selecciona el algoritmo que deseas usar"<<endl;
-	cout << "1. Busqueda local" << endl;
-	cout << "2. Busqueda tabu" << endl;
-	cout << "3. Algoritmo Greedy" << endl;
+void Practica::menuAlgoritmo(int num){
+	if (num == 0) {
+		int val = 0;
+		cout<<endl;
+		cout<<"Selecciona el algoritmo que deseas usar"<<endl;
+		cout << "1. Busqueda local" << endl;
+		cout << "2. Busqueda tabu" << endl;
+		cout << "3. Algoritmo Greedy" << endl;
     
-	do {
-        cin>>val;
-    } while (val < 1 || val > 3);
-	algoritmo(val);
-  //  return val;
+		do {
+			cin>>val;
+		} while (val < 1 || val > 3);
+		algoritmo(val);
+	} else {
+		cout << "Algoritmo " << num << endl;
+		algoritmo(num);
+	}
 }
 
 /**
