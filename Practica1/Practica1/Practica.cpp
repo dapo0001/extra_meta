@@ -34,9 +34,9 @@ Practica::~Practica()
  * @pre Si las posiciones pasadas no son válidas dará error
  */
 void Practica::cambiarPosicion (int* v, unsigned int pos1, unsigned int pos2) {
-	int valor = solucionActual[pos1];
-	solucionActual[pos1] = solucionActual[pos2];
-	solucionActual[pos2] = valor;
+	int valor = v[pos1];
+	v[pos1] = v[pos2];
+	v[pos2] = valor;
 }
 
 /**
@@ -309,6 +309,7 @@ void Practica::busquedaLocal(){
 	unsigned int val1 = 0;
 	unsigned int val2 = 1;
 	bool* DLB = new bool[n];
+	bool dlbAUno = false;
 
 	for (unsigned int i = 0; i < n; i++) {
 		DLB[i] = false;
@@ -316,7 +317,7 @@ void Practica::busquedaLocal(){
 
 	inicio = clock();
 	
-	while (val1 != n && val2 < n && numIteraciones < 10000) {
+	while (val1 != n && val2 < n && !dlbAUno && numIteraciones < 10000) {
 		if (DLB[val1] == false) {
 			solucionVecina.primero = val1;
 			solucionVecina.segundo = val2;
@@ -346,6 +347,12 @@ void Practica::busquedaLocal(){
 			DLB[val1] = true;
 			val1++;
 			val2 = val1 + 1;
+
+			// Comprobamos si el DLB está entero a 1
+			dlbAUno = true;
+			for (unsigned int i = 0; i < n && dlbAUno; i++) {
+				dlbAUno = dlbAUno && DLB[i];
+			}
 		}
 	}
 
