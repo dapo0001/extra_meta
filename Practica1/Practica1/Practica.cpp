@@ -21,6 +21,7 @@ Practica::Practica(int _semilla):
 	valorSiguiente(99999999)
 {
 	if (_semilla == -1) {
+		cout<<"¡ATENCION! La semilla proporcionada se utilizara durante toda la ejecucion"<<endl<<endl;
 		cout << "Introduzca la semilla ";
 		cin >> semilla;
 	} else {

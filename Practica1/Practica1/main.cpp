@@ -12,8 +12,8 @@ using namespace std;
 #include "Practica.h"
 
 int main(int argc, char** argv) {
-	while(true){
-		Practica prac;
+	Practica prac;
+	while(true){		
 		prac.menuFichero();
 		prac.menuAlgoritmo();
 		system("PAUSE");
