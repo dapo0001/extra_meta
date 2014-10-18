@@ -193,14 +193,16 @@ void Practica::menuFichero(int num){
 		cout<<"18. tai50b"<<endl;
 		cout<<"19. tai60a"<<endl;
 		cout<<"20. tho40"<<endl;
-		cout<<"21. _try"<<endl;
-		cout<<"22. salir"<<endl;
-    
+		cout<<"21. salir"<<endl;
+		cout<<endl;    
 		do {
 			cin >> val;
-		} while (val < 0 || val > 22);
+		} while (val < 0 || val > 21);
+
+		if(val==21) exit(EXIT_SUCCESS);
 
 		cargarFich(val);
+		
 	} else {
 		cout << "Fichero " << num << endl;
 		cargarFich(num);
@@ -219,11 +221,15 @@ void Practica::menuAlgoritmo(int num){
 		cout << "1. Busqueda local" << endl;
 		cout << "2. Busqueda tabu" << endl;
 		cout << "3. Algoritmo Greedy" << endl;
-    
+		cout << "4. Salir" << endl;
+		cout<<endl;
 		do {
 			cin>>val;
-		} while (val < 1 || val > 3);
+		} while (val < 1 || val > 4);
+
+		if(val==4) exit(EXIT_SUCCESS);
 		algoritmo(val);
+			
 	} else {
 		cout << "Algoritmo " << num << endl;
 		algoritmo(num);
@@ -295,10 +301,6 @@ void Practica::cargarFich(int valor){
         case 20:
             matrices.abrir("ficheros/tho40.dat");
             break;
-		case 21:
-			matrices.abrir("ficheros/_try.dat");
-        case 22:
-            system("EXIT");
     }
 
 	n = matrices.getNumComp();

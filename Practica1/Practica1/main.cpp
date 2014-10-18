@@ -12,11 +12,12 @@ using namespace std;
 #include "Practica.h"
 
 int main(int argc, char** argv) {
-	Practica prac;
-
-	prac.menuFichero();
-	prac.menuAlgoritmo();
-
-	system("PAUSE");
+	while(true){
+		Practica prac;
+		prac.menuFichero();
+		prac.menuAlgoritmo();
+		system("PAUSE");
+		system("cls");
+	}
     return 0;
 }
