@@ -48,6 +48,7 @@ public:
 	void setSemilla (int semilla) { this->semilla = semilla; }
 	void setQAP (QAP* qap);
 	int* getSolucionActual () { return solucionActual; }
+	void setSolucionActual (int* _s) { delete solucionActual; solucionActual = _s; }
 	int getValorSolucionActual () { return valorActual; }
 	int getValorSolucionVecina () { return valorSiguiente; }
 	CAMBIO solucionVecina;	///< Valores a cambiar para obtener el vecino deseado
