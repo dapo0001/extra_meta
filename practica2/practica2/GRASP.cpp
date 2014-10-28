@@ -12,11 +12,13 @@ int* GRASP::seleccionarMejorSolucion (int* solucion1, int* solucion2) {
 	return 0;
 }
 
-GRASP::GRASP(QAP& qap) {
-	bool criterioParada = false;
-	int* solucionActual = 0;
-	int* mejorSolucionVecina = 0;
-	int* mejorSolucion = 0;
+
+GRASP::GRASP(QAP& qap,int semilla) {
+	bool criterioParada;
+	int* solucionActual;
+	int* mejorSolucionVecina;
+	int* mejorSolucion;
+
 
 	while (criterioParada) {
 		solucionActual = generarSolucionGreedyAleatorizada();
