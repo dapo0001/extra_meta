@@ -1,19 +1,22 @@
 #include "GRASP.h"
 
-int* generarSolucionGreedyAleatorizada () {
+int* GRASP::generarSolucionGreedyAleatorizada () {
+	return 0;
 }
 
-int* busquedaLocal (int* solucionInicial) {
+int* GRASP::busquedaLocal (int* solucionInicial) {
+	return 0;
 }
 
-int* seleccionarMejorSolucion (int* solucion1, int* solucion2) {
+int* GRASP::seleccionarMejorSolucion (int* solucion1, int* solucion2) {
+	return 0;
 }
 
-GRASP::GRASP() {
-	bool criterioParada;
-	int* solucionActual;
-	int* mejorSolucionVecina;
-	int* mejorSolucion;
+GRASP::GRASP(QAP& qap) {
+	bool criterioParada = false;
+	int* solucionActual = 0;
+	int* mejorSolucionVecina = 0;
+	int* mejorSolucion = 0;
 
 	while (criterioParada) {
 		solucionActual = generarSolucionGreedyAleatorizada();

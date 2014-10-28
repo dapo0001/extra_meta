@@ -1,28 +1,33 @@
 #include "ILS.h"
 
-int* generarSolucionInicial () {
+int* ILS::generarSolucionInicial () {
+	return 0;
 }
 
-int* busquedaLocal (int* solucionInicial) {
+int* ILS::busquedaLocal (int* solucionInicial) {
+	return 0;
 }
 
-int* modificar (int* solucionActual, void* historia) {
+int* ILS::modificar (int* solucionActual, void* historia) {
+	return 0;
 }
 
-int* criterioAceptacion (int* solucionActual, int* solucionVecinaMejorada, void* historia) {
+int* ILS::criterioAceptacion (int* solucionActual, int* solucionVecinaMejorada, void* historia) {
+	return 0;
 }
 
-int* seleccionarMejorSolucion (int* solucionActual, int* mejorSolucion) {
+int* ILS::seleccionarMejorSolucion (int* solucionActual, int* mejorSolucion) {
+	return 0;
 }
 
-ILS::ILS() {
-	bool criterioDeParada;
-	void* historia;
+ILS::ILS(QAP& qap) {
+	bool criterioDeParada = false;
+	void* historia = 0;
 
-	int* solucionActual;
-	int* solucionVecina;
-	int* solucionVecinaMejorada;
-	int* mejorSolucion;
+	int* solucionActual = 0;
+	int* solucionVecina = 0;
+	int* solucionVecinaMejorada = 0;
+	int* mejorSolucion = 0;
 
 	solucionActual = generarSolucionInicial();
 	solucionActual = busquedaLocal(solucionActual);

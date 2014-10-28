@@ -11,13 +11,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AlgoritmoQAP.cpp" />
     <ClCompile Include="GRASP.cpp" />
+    <ClCompile Include="ILS.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Practica.cpp" />
     <ClCompile Include="QAP.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AlgoritmoQAP.h" />
     <ClInclude Include="GRASP.h" />
+    <ClInclude Include="ILS.h" />
+    <ClInclude Include="Practica.h" />
     <ClInclude Include="QAP.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

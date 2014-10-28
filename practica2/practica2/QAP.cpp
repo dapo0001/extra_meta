@@ -69,7 +69,7 @@ void QAP::imprimirMatrizDistancia(){
  *
  */
 QAP::~QAP() {
-	for (unsigned int i = 0; i < numComp; i++) {
+	for (int i = 0; i < numComp; i++) {
 		delete distancia[i];
 		delete flujo[i];
 	}

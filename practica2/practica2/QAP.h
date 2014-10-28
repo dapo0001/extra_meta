@@ -22,6 +22,10 @@ public:
 	void imprimirMatrizDistancia();
 	int getNumComp() const { return numComp; };
 
+	int* generarSolucionInicial();
+	int funcionObjetivo();
+	int funcionObjetivoFactorizada();
+
 private:
     int numComp;
 };
