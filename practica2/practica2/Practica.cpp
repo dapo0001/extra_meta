@@ -48,6 +48,27 @@ void Practica::cambiarPosicion (int* v, unsigned int pos1, unsigned int pos2) {
 }
 
 /**
+ * Se encarga de permutar valores de forma aleatoria seg?n la semilla asignada
+ * @pre La semilla debe ser un valor admisible por srand
+ */
+void Practica::solucionInicial () {
+	for (unsigned int i = 0; i < n; i++) {
+		unsigned int pos1 = rand() % n;
+		unsigned int pos2 = rand() % n;
+		cambiarPosicion(solucionActual, pos1, pos2);
+	}
+
+	cambiarPosicion(solucionActual, 0, 2);
+	cambiarPosicion(solucionActual, 0, 1);
+
+	funcionObjetivo();
+#ifdef DEBUG
+	imprimir();
+	cout << endl << "Nueva: " << valorActual << endl;
+#endif
+}
+
+/**
  * Calcula el valor de la solución actual aplicando la fórmula a todos
  * los operandos de las matrices de flujo y distancia.
  */
@@ -196,16 +217,16 @@ void Practica::busquedaLocal(){
 		}
 	}
 
+#ifdef DEBUG
 	fin = clock();
-	
 	cout << endl <<
 		"Tiempo de ejecución: " << (float) (fin - inicio) / CLOCKS_PER_SEC << "ms"
 		<< endl <<
 		"Número de iteraciones: " << numIteraciones
 		<< endl <<
 		"La mejor solución obtenida es " << valorActual << endl;
-	
 	imprimir();
+#endif
 
 	delete DLB;
 
@@ -295,14 +316,16 @@ void Practica::greedy () {
 		solucionActual[posicionesFlujo[i]] = posicionesDistancia[i];
 	}
 
-	fin = clock();
 	funcionObjetivo();
 
+#ifdef DEBUG
+	fin = clock();
 	cout << endl
 		<< "Tiempo total: " << (float)(fin - inicio)/CLOCKS_PER_SEC << "ms" << endl
 		 << "Valor: " << valorActual << endl;
 
 	imprimir();
+#endif
 
 	delete mediaFlujo;
 	delete mediaDistancia;

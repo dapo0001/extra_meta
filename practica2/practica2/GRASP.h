@@ -5,7 +5,7 @@
 
 class GRASP {
 public:
-	GRASP (QAP& qap);
+	GRASP (QAP& qap, int semilla);
 	int* GRASP::generarSolucionGreedyAleatorizada ();
 	int* GRASP::busquedaLocal (int* solucionInicial);
 	int* GRASP::seleccionarMejorSolucion (int* solucion1, int* solucion2);

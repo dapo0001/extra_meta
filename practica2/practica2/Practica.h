@@ -31,6 +31,7 @@ public:
 	virtual ~Practica();
 
 	// Metodos del proceso
+	void solucionInicial();
 	void cambiarPosicion (int* v, unsigned int pos1,unsigned int pos2);
 	void funcionObjetivo ();
 	void factorizacion ();

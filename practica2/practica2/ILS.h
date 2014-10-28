@@ -2,11 +2,16 @@
 #define ILS_H
 
 #include "QAP.h"
+#include "Practica.h"
 
 class ILS {
 public:
-	ILS (QAP& qap);
+	ILS (QAP& qap, int semilla);
 private:
+	int semilla;
+	QAP* qap;
+	Practica* practica;
+
 	int* generarSolucionInicial();
 	int* busquedaLocal (int* solucionInicial);
 	int* modificar (int* solucionActual, void* historia);

@@ -39,6 +39,7 @@ int main () {
 	// Paso 1: semilla
 	cout << "Semilla: ";
 	cin >> semilla;
+	srand(semilla);
 	cout << endl;
 
 	// Paso 2: algoritmo

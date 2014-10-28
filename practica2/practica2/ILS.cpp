@@ -1,9 +1,5 @@
 #include "ILS.h"
 
-int* ILS::generarSolucionInicial () {
-	return 0;
-}
-
 int* ILS::busquedaLocal (int* solucionInicial) {
 	return 0;
 }
@@ -20,23 +16,40 @@ int* ILS::seleccionarMejorSolucion (int* solucionActual, int* mejorSolucion) {
 	return 0;
 }
 
-ILS::ILS(QAP& qap) {
+ILS::ILS(QAP& qap, int semilla):
+	semilla(semilla),
+	qap(&qap),
+	practica(new Practica())
+{
 	bool criterioDeParada = false;
 	void* historia = 0;
-
 	int* solucionActual = 0;
+	int valorSolucionActual = 0;
 	int* solucionVecina = 0;
+	int valorSolucionVecina = 0;
 	int* solucionVecinaMejorada = 0;
+	int valorSolucionVecinaMejorada = 0;
 	int* mejorSolucion = 0;
+	int valorMejoraSolucion = 0;
 
-	solucionActual = generarSolucionInicial();
-	solucionActual = busquedaLocal(solucionActual);
+	// Generamos una solución incial aleatoria
+	// y le aplicamos la busqueda local
+	practica->solucionInicial();
+	practica->busquedaLocal();
+	solucionActual = practica->getSolucionActual();
+	valorSolucionActual = practica->getValorSolucionActual();
 
 	do {
+		// Generamos una solucion vecina con el historial
 		solucionVecina = modificar(solucionActual, historia);
+
 		solucionVecinaMejorada = busquedaLocal(solucionVecina);
 		solucionActual = criterioAceptacion(solucionActual, solucionVecinaMejorada, historia);
 		mejorSolucion = seleccionarMejorSolucion(solucionActual, mejorSolucion);
-
 	} while (criterioDeParada);
+
+	delete solucionActual;
+	delete solucionVecina;
+	delete solucionVecinaMejorada;
+	delete mejorSolucion;
 }
