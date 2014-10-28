@@ -46,7 +46,7 @@ public:
 
 	// Adaptacion a la nueva practica
 	void setSemilla (int semilla) { this->semilla = semilla; }
-	void setQAP (QAP* qap) { this->matrices = qap; }
+	void setQAP (QAP* qap);
 	int* getSolucionActual () { return solucionActual; }
 	int getValorSolucionActual () { return valorActual; }
 	int getValorSolucionVecina () { return valorSiguiente; }

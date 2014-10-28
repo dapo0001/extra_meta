@@ -18,8 +18,14 @@ using namespace std;
  */
 Practica::Practica(int _semilla):
 	valorActual(99999999),
-	valorSiguiente(99999999)
+	valorSiguiente(99999999),
+	solucionActual(0),
+	n(0),
+	matrices(0)
 {
+	solucionVecina.primero = -1;
+	solucionVecina.segundo = -1;
+
 	if (_semilla == -1) {
 		cout<<"¡ATENCION! La semilla proporcionada se utilizara durante toda la ejecucion"<<endl<<endl;
 		cout << "Introduzca la semilla ";
@@ -331,4 +337,14 @@ void Practica::greedy () {
 	delete mediaDistancia;
 	delete posicionesFlujo;
 	delete posicionesDistancia;
+}
+
+void Practica::setQAP (QAP* qap)  {
+	this->matrices = qap;
+	n = qap->getNumComp();
+	delete solucionActual;
+	this->solucionActual = new int[n];
+	for (unsigned int i = 0; i < n; i++) {
+		this->solucionActual[i] = i;
+	}
 }
