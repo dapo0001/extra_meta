@@ -10,6 +10,16 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AlgoritmoQAP.cpp" />
+    <ClCompile Include="GRASP.cpp" />
+    <ClCompile Include="QAP.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AlgoritmoQAP.h" />
+    <ClInclude Include="GRASP.h" />
+    <ClInclude Include="QAP.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{579299E6-1CC1-4FEA-B9A1-3B9E286CF27B}</ProjectGuid>
     <RootNamespace>practica2</RootNamespace>
