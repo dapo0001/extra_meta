@@ -1,9 +1,7 @@
 #ifndef GRASP_H
 #define GRASP_H
 
-#include "AlgoritmoQAP.h"
-
-class GRASP: public AlgoritmoQAP {
+class GRASP {
 public:
 	GRASP ();
 };
