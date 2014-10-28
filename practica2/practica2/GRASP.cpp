@@ -13,7 +13,7 @@ int* GRASP::seleccionarMejorSolucion (int* solucion1, int* solucion2) {
 }
 
 
-GRASP::GRASP(QAP& qap,int semilla) {
+GRASP::GRASP(QAP& qap) {
 	bool criterioParada;
 	int* solucionActual;
 	int* mejorSolucionVecina;
