@@ -37,31 +37,31 @@ int main () {
 	int fichero;
 	int semillas[25];
 
-	semillas[0] = 0;
-	semillas[1] = 1;
-	semillas[2] = 2;
-	semillas[3] = 3;
-	semillas[4] = 4;
-	semillas[5] = 5;
-	semillas[6] = 6;
-	semillas[7] = 7;
-	semillas[8] = 8;
-	semillas[9] = 9;
-	semillas[10] = 10;
-	semillas[11] = 11;
-	semillas[12] = 12;
-	semillas[13] = 13;
-	semillas[14] = 14;
-	semillas[15] = 15;
-	semillas[16] = 16;
-	semillas[17] = 17;
-	semillas[18] = 18;
-	semillas[19] = 19;
-	semillas[20] = 20;
-	semillas[21] = 21;
-	semillas[22] = 22;
-	semillas[23] = 23;
-	semillas[24] = 24;
+	semillas[0] = 123456;
+	semillas[1] = 912373;
+	semillas[2] = 984359;
+	semillas[3] = 1923312;
+	semillas[4] = 7891237;
+	semillas[5] = 7129323;
+	semillas[6] = 870345;
+	semillas[7] = 123784;
+	semillas[8] = 49785;
+	semillas[9] = 983495;
+	semillas[10] = 89454;
+	semillas[11] = 47895;
+	semillas[12] = 34;
+	semillas[13] = 12398;
+	semillas[14] = 349834;
+	semillas[15] = 12393;
+	semillas[16] = 34983;
+	semillas[17] = 23832;
+	semillas[18] = 12398;
+	semillas[19] = 12093;
+	semillas[20] = 8540;
+	semillas[21] = 934;
+	semillas[22] = 2;
+	semillas[23] = 12323;
+	semillas[24] = 4592;
 
 	// Paso 1: semilla
 	cout << "Semilla (-1 para usar las 25 predeterminadas): ";
@@ -104,6 +104,7 @@ int main () {
 
 	if (semilla == -1) {
 		for (int j = 0; j < 25; j++) {
+			system("cls");
 			srand(semillas[j]);
 			cout <<endl << "---- Semilla " << semillas[j] << " ----" << endl;
 			if (fichero == 0) {
@@ -134,6 +135,7 @@ int main () {
 					cout << endl;
 				}
 			}
+			system("pause");
 		}
 
 	} else {
