@@ -12,11 +12,9 @@ private:
 	QAP* qap;
 	Practica* practica;
 
-	int* generarSolucionInicial();
-	int* busquedaLocal (int* solucionInicial);
-	int* modificar (int* solucionActual, void* historia);
-	int* criterioAceptacion (int* solucionActual, int* solucionVecinaMejorada, void* historia);
-	int* seleccionarMejorSolucion (int* solucionActual, int* mejorSolucion);
+	void clonarSolucion(int* destino, int* origen);
+	void mutarSolucionActual (void* historia);
+	void escogerSolucionActual(int* candidata, int valorCandidata, void* historia);
 };
 
 #endif /* ILS_H */

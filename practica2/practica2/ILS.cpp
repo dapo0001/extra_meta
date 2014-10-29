@@ -1,55 +1,76 @@
 #include "ILS.h"
+#include <iostream>
+using namespace std;
 
-int* ILS::busquedaLocal (int* solucionInicial) {
-	return 0;
+void ILS::clonarSolucion (int* destino, int* origen) {
+	for (unsigned int i = 0; i < qap->getNumComp(); i++) {
+		destino[i] = origen[i];
+	}
 }
 
-int* ILS::modificar (int* solucionActual, void* historia) {
-	return 0;
+void ILS::mutarSolucionActual (void* historia) {
+	int n = qap->getNumComp();
+	int _n = (int)(n * 0.25);
+
+	// Generamos _n mutaciones
+	for (int i = 0; i < _n; i++) {
+		practica->solucionVecina.primero = rand() % qap->getNumComp();
+		practica->solucionVecina.segundo = rand() % qap->getNumComp();
+		practica->aplicarVecindad();
+	}
 }
 
-int* ILS::criterioAceptacion (int* solucionActual, int* solucionVecinaMejorada, void* historia) {
-	return 0;
-}
-
-int* ILS::seleccionarMejorSolucion (int* solucionActual, int* mejorSolucion) {
-	return 0;
+void ILS::escogerSolucionActual (int* candidata, int valorCandidata, void* historia) {
+	if (valorCandidata < practica->getValorSolucionActual()) {
+		practica->setSolucionActual(candidata, valorCandidata);
+	}
 }
 
 ILS::ILS(QAP& qap, int semilla):
 	semilla(semilla),
 	qap(&qap),
-	practica(new Practica())
+	practica(new Practica(semilla))
 {
-	bool criterioDeParada = false;
+	int iteraciones = 0;
 	void* historia = 0;
-	int* solucionActual = 0;
-	int valorSolucionActual = 0;
-	int* solucionVecina = 0;
-	int valorSolucionVecina = 0;
-	int* solucionVecinaMejorada = 0;
-	int valorSolucionVecinaMejorada = 0;
-	int* mejorSolucion = 0;
-	int valorMejoraSolucion = 0;
+	int* solucionVecina = new int[qap.getNumComp()];
+	int valorSolucionVecina = 999999999;
+	int* mejorSolucion = new int[qap.getNumComp()];
+	int valorMejorSolucion = 999999999;
 
 	// Generamos una solución incial aleatoria
 	// y le aplicamos la busqueda local
+	practica->setQAP(&qap);
 	practica->solucionInicial();
 	practica->busquedaLocal();
-	solucionActual = practica->getSolucionActual();
-	valorSolucionActual = practica->getValorSolucionActual();
 
 	do {
-		// Generamos una solucion vecina con el historial
-		solucionVecina = modificar(solucionActual, historia);
+		// Generamos un vecino a partir de la historia y lo almacenamos
+		// copiando el vector por si tenemos que deshacer
+		mutarSolucionActual(historia);
+		clonarSolucion(solucionVecina, practica->getSolucionActual());
+		valorSolucionVecina = practica->getValorSolucionActual();
 
-		solucionVecinaMejorada = busquedaLocal(solucionVecina);
-		solucionActual = criterioAceptacion(solucionActual, solucionVecinaMejorada, historia);
-		mejorSolucion = seleccionarMejorSolucion(solucionActual, mejorSolucion);
-	} while (criterioDeParada);
+		// Mejoramos la solucion vecina con la busqueda local
+		practica->busquedaLocal();
 
-	delete solucionActual;
+		// Comprobamos si nos quedamos con la nueva solucion o con la version anterior
+		// (la obtenida antes de aplicar la busqueda local)
+		escogerSolucionActual(solucionVecina, valorSolucionVecina, historia);
+
+		// Finalmente nos quedamos con la mejor solucion hasta el momento
+		if (practica->getValorSolucionActual() < valorMejorSolucion) {
+			clonarSolucion(mejorSolucion, practica->getSolucionActual());
+			valorMejorSolucion = practica->getValorSolucionActual();
+		}
+	} while (++iteraciones < 1000);
+
+	cout << "Solucion encontrada (" << valorMejorSolucion << ")" << endl;
+	for (unsigned int i = 0; i < qap.getNumComp(); i++) {
+		cout << mejorSolucion[i] << " ";
+	}
+	cout << endl;
+
 	delete solucionVecina;
-	delete solucionVecinaMejorada;
 	delete mejorSolucion;
 }

@@ -59,6 +59,10 @@ void Practica::cambiarPosicion (int* v, unsigned int pos1, unsigned int pos2) {
  */
 void Practica::solucionInicial () {
 	for (unsigned int i = 0; i < n; i++) {
+		this->solucionActual[i] = i;
+	}
+
+	for (unsigned int i = 0; i < n; i++) {
 		unsigned int pos1 = rand() % n;
 		unsigned int pos2 = rand() % n;
 		cambiarPosicion(solucionActual, pos1, pos2);
@@ -344,7 +348,11 @@ void Practica::setQAP (QAP* qap)  {
 	n = qap->getNumComp();
 	delete solucionActual;
 	this->solucionActual = new int[n];
+}
+
+void Practica::setSolucionActual (int* _s, int valor) {
 	for (unsigned int i = 0; i < n; i++) {
-		this->solucionActual[i] = i;
+		solucionActual[i] = _s[i];
 	}
+	valorActual = valor;
 }
