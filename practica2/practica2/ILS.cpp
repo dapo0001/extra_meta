@@ -1,6 +1,10 @@
 #include "ILS.h"
+#include <ctime>
 #include <iostream>
 using namespace std;
+
+// Depuración
+#define DEBUG
 
 void ILS::clonarSolucion (int* destino, int* origen) {
 	for (int i = 0; i < qap->getNumComp(); i++) {
@@ -31,6 +35,11 @@ ILS::ILS(QAP& qap, int semilla):
 	qap(&qap),
 	practica(new Practica(semilla))
 {
+#ifdef DEBUG
+	clock_t inicio, fin;
+	inicio = clock();
+#endif
+
 	int iteraciones = 0;
 	void* historia = 0;
 	int* solucionVecina = new int[qap.getNumComp()];
@@ -66,6 +75,12 @@ ILS::ILS(QAP& qap, int semilla):
 	} while (++iteraciones < 1000);
 
 	cout << "Solucion encontrada (" << valorMejorSolucion << ")" << endl;
+
+#ifdef DEBUG
+	fin = clock();
+	cout << "Tiempo de ejecución: " << (float)(fin - inicio) / CLOCKS_PER_SEC << "s" << endl;
+#endif
+
 	for (int i = 0; i < qap.getNumComp(); i++) {
 		cout << mejorSolucion[i] << " ";
 	}
