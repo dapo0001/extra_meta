@@ -75,6 +75,9 @@ void QAP::imprimirMatrizDistancia(){
 	}
 }
 
+
+
+
 /**
  *
  */
