@@ -3,7 +3,7 @@
 using namespace std;
 
 void ILS::clonarSolucion (int* destino, int* origen) {
-	for (unsigned int i = 0; i < qap->getNumComp(); i++) {
+	for (int i = 0; i < qap->getNumComp(); i++) {
 		destino[i] = origen[i];
 	}
 }
@@ -66,7 +66,7 @@ ILS::ILS(QAP& qap, int semilla):
 	} while (++iteraciones < 1000);
 
 	cout << "Solucion encontrada (" << valorMejorSolucion << ")" << endl;
-	for (unsigned int i = 0; i < qap.getNumComp(); i++) {
+	for (int i = 0; i < qap.getNumComp(); i++) {
 		cout << mejorSolucion[i] << " ";
 	}
 	cout << endl;

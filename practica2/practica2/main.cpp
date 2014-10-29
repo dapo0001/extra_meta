@@ -73,18 +73,21 @@ int main () {
 		<< "20. tho40" << endl
 		<< "0. Todos" << endl;
 	cin >> fichero;
+	cout << endl;
 
 	if (fichero == 0) {
 		for (int i = 1; i <= 20; i++) {
-			cout << endl << "Fichero " << i << endl;
+			cout << endl << "-- Fichero " << i << endl;
 			cargarFichero(i, qap);
 			if (algoritmo == 0 || algoritmo == 1) {
 				cout << "Algoritmo GRASP" << endl;
 				GRASP grasp(qap, semilla);
+				cout << endl;
 			}
 			if (algoritmo == 0 || algoritmo == 2) {
 				cout << "Algoritmo ILS" << endl;
 				ILS ils(qap, semilla);
+				cout << endl;
 			}
 		}
 	} else {
@@ -92,10 +95,12 @@ int main () {
 		if (algoritmo == 0 || algoritmo == 1) {
 			cout << "Algoritmo GRASP" << endl;
 			GRASP grasp(qap, semilla);
+			cout << endl;
 		}
 		if (algoritmo == 0 || algoritmo == 2) {
 			cout << "Algoritmo ILS" << endl;
 			ILS ils(qap, semilla);
+			cout << endl;
 		}
 	}
 

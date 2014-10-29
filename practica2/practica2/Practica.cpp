@@ -175,7 +175,9 @@ void Practica::imprimir(){
 
 
 void Practica::busquedaLocal(){
+#ifdef DEBUG
 	clock_t inicio,fin;
+#endif
 	int numIteraciones = 0;
 	unsigned int val1 = 0;
 	unsigned int val2 = 1;
@@ -186,7 +188,9 @@ void Practica::busquedaLocal(){
 		DLB[i] = false;
 	}
 
+#ifdef DEBUG
 	inicio = clock();
+#endif
 	
 	while (val1 != n && val2 < n && !dlbAUno && numIteraciones < 10000) {
 		if (DLB[val1] == false) {
@@ -243,8 +247,10 @@ void Practica::busquedaLocal(){
 }
 
 void Practica::greedy () {
+#ifdef DEBUG
 	clock_t inicio, fin;
-	
+#endif
+
 	// Valores auxiliares
 	unsigned int i, j;
 	int j1;
@@ -264,8 +270,10 @@ void Practica::greedy () {
 	int* posicionesFlujo = new int[n];
 	int* posicionesDistancia = new int[n];
 
+#ifdef DEBUG
 	// Inicio del reloj
 	inicio = clock();
+#endif
 
 	// Almacena la media de flujos y distancias para cada
 	// edificio/localizacion

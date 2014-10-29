@@ -12,8 +12,9 @@ using namespace std;
 /**
  *
  */
-QAP::QAP(){    
-}
+QAP::QAP():
+	numComp(0)
+{}
 
 /**
  * Método que se encarga de leer el fichero y de asignar 
@@ -22,6 +23,15 @@ QAP::QAP(){
 void QAP::abrir(string nombreFich) {
     ifstream fich;
     fich.open(nombreFich.c_str(),ios::in);
+
+	// Limpiamos el vector si tenía memoria
+	// reservada
+	for (int i = 0; i < numComp; i++) {
+		delete flujo[i];
+		delete distancia[i];
+	}
+	flujo.clear();
+	distancia.clear();
 
     if (fich) {
 		cout << "Fichero abierto correctamente" << endl;
