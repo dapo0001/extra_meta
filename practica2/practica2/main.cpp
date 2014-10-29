@@ -35,11 +35,38 @@ int main () {
 	int semilla;
 	int algoritmo;
 	int fichero;
+	int semillas[25];
+
+	semillas[0] = 0;
+	semillas[1] = 1;
+	semillas[2] = 2;
+	semillas[3] = 3;
+	semillas[4] = 4;
+	semillas[5] = 5;
+	semillas[6] = 6;
+	semillas[7] = 7;
+	semillas[8] = 8;
+	semillas[9] = 9;
+	semillas[10] = 10;
+	semillas[11] = 11;
+	semillas[12] = 12;
+	semillas[13] = 13;
+	semillas[14] = 14;
+	semillas[15] = 15;
+	semillas[16] = 16;
+	semillas[17] = 17;
+	semillas[18] = 18;
+	semillas[19] = 19;
+	semillas[20] = 20;
+	semillas[21] = 21;
+	semillas[22] = 22;
+	semillas[23] = 23;
+	semillas[24] = 24;
 
 	// Paso 1: semilla
-	cout << "Semilla: ";
+	cout << "Semilla (-1 para usar las 25 predeterminadas): ";
 	cin >> semilla;
-	srand(semilla);
+	if (semilla != -1) { srand(semilla); }
 	cout << endl;
 
 	// Paso 2: algoritmo
@@ -75,10 +102,58 @@ int main () {
 	cin >> fichero;
 	cout << endl;
 
-	if (fichero == 0) {
-		for (int i = 1; i <= 20; i++) {
-			cout << endl << "-- Fichero " << i << " ";
-			cargarFichero(i, qap);
+	if (semilla == -1) {
+		for (int j = 0; j < 25; j++) {
+			srand(semillas[j]);
+			cout <<endl << "---- Semilla " << semillas[j] << " ----" << endl;
+			if (fichero == 0) {
+				for (int i = 1; i <= 20; i++) {
+					cout << endl << "-- Fichero " << i << " ";
+					cargarFichero(i, qap);
+					if (algoritmo == 0 || algoritmo == 1) {
+						cout << "Algoritmo GRASP" << endl;
+						GRASP grasp(qap, semillas[j]);
+						cout << endl;
+					}
+					if (algoritmo == 0 || algoritmo == 2) {
+						cout << "Algoritmo ILS" << endl;
+						ILS ils(qap, semillas[j]);
+						cout << endl;
+					}
+				}
+			} else {
+				cargarFichero(fichero, qap);
+				if (algoritmo == 0 || algoritmo == 1) {
+					cout << "Algoritmo GRASP" << endl;
+					GRASP grasp(qap, semillas[j]);
+					cout << endl;
+				}
+				if (algoritmo == 0 || algoritmo == 2) {
+					cout << "Algoritmo ILS" << endl;
+					ILS ils(qap, semillas[j]);
+					cout << endl;
+				}
+			}
+		}
+
+	} else {
+		if (fichero == 0) {
+			for (int i = 1; i <= 20; i++) {
+				cout << endl << "-- Fichero " << i << " ";
+				cargarFichero(i, qap);
+				if (algoritmo == 0 || algoritmo == 1) {
+					cout << "Algoritmo GRASP" << endl;
+					GRASP grasp(qap, semilla);
+					cout << endl;
+				}
+				if (algoritmo == 0 || algoritmo == 2) {
+					cout << "Algoritmo ILS" << endl;
+					ILS ils(qap, semilla);
+					cout << endl;
+				}
+			}
+		} else {
+			cargarFichero(fichero, qap);
 			if (algoritmo == 0 || algoritmo == 1) {
 				cout << "Algoritmo GRASP" << endl;
 				GRASP grasp(qap, semilla);
@@ -89,18 +164,6 @@ int main () {
 				ILS ils(qap, semilla);
 				cout << endl;
 			}
-		}
-	} else {
-		cargarFichero(fichero, qap);
-		if (algoritmo == 0 || algoritmo == 1) {
-			cout << "Algoritmo GRASP" << endl;
-			GRASP grasp(qap, semilla);
-			cout << endl;
-		}
-		if (algoritmo == 0 || algoritmo == 2) {
-			cout << "Algoritmo ILS" << endl;
-			ILS ils(qap, semilla);
-			cout << endl;
 		}
 	}
 
