@@ -6,30 +6,6 @@ using namespace std;
 // Depuración
 #define DEBUG
 
-void ILS::clonarSolucion (int* destino, int* origen) {
-	for (int i = 0; i < qap->getNumComp(); i++) {
-		destino[i] = origen[i];
-	}
-}
-
-void ILS::mutarSolucionActual (void* historia) {
-	int n = qap->getNumComp();
-	int _n = (int)(n * 0.25);
-
-	// Generamos _n mutaciones
-	for (int i = 0; i < _n; i++) {
-		practica->solucionVecina.primero = rand() % qap->getNumComp();
-		practica->solucionVecina.segundo = rand() % qap->getNumComp();
-		practica->aplicarVecindad();
-	}
-}
-
-void ILS::escogerSolucionActual (int* candidata, int valorCandidata, void* historia) {
-	if (valorCandidata < practica->getValorSolucionActual()) {
-		practica->setSolucionActual(candidata, valorCandidata);
-	}
-}
-
 ILS::ILS(QAP& qap, int semilla):
 	semilla(semilla),
 	qap(&qap),
@@ -53,7 +29,15 @@ ILS::ILS(QAP& qap, int semilla):
 	practica->solucionInicial();
 	practica->busquedaLocal();
 
+	// Nuestra primera solución es la mejor hasta el momento
+	clonarSolucion(mejorSolucion, practica->getSolucionActual());
+	valorMejorSolucion = practica->getValorSolucionActual();
+
 	do {
+#ifdef DEBUG
+		cout << ".";
+#endif
+
 		// Generamos un vecino a partir de la historia y lo almacenamos
 		// copiando el vector por si tenemos que deshacer
 		mutarSolucionActual(historia);
@@ -72,20 +56,47 @@ ILS::ILS(QAP& qap, int semilla):
 			clonarSolucion(mejorSolucion, practica->getSolucionActual());
 			valorMejorSolucion = practica->getValorSolucionActual();
 		}
-	} while (++iteraciones < 1000);
-
-	cout << "Solucion encontrada (" << valorMejorSolucion << ")" << endl;
+	} while (++iteraciones < 24);
 
 #ifdef DEBUG
+	cout << endl << "Solucion encontrada (" << valorMejorSolucion << ")" << endl;
+	
 	fin = clock();
 	cout << "Tiempo de ejecución: " << (float)(fin - inicio) / CLOCKS_PER_SEC << "s" << endl;
-#endif
 
 	for (int i = 0; i < qap.getNumComp(); i++) {
 		cout << mejorSolucion[i] << " ";
 	}
 	cout << endl;
+#endif
 
 	delete solucionVecina;
 	delete mejorSolucion;
+}
+
+void ILS::clonarSolucion (int* destino, int* origen) {
+	for (int i = 0; i < qap->getNumComp(); i++) {
+		destino[i] = origen[i];
+	}
+}
+
+void ILS::mutarSolucionActual (void* historia) {
+	const int n = qap->getNumComp();
+	const int t = n / 4;
+	int inicioMutacion = rand() % (n - t);
+	int finMutacion = inicioMutacion + t;
+
+	for (int i = inicioMutacion; i < finMutacion; i++) {
+		// Cambiamos el elemento actual
+		practica->solucionVecina.primero = i;
+		// Por uno al azar de la sublista mutada
+		practica->solucionVecina.segundo = (rand() % t) + inicioMutacion;
+		practica->aplicarVecindad();
+	}
+}
+
+void ILS::escogerSolucionActual (int* candidata, int valorCandidata, void* historia) {
+	if (valorCandidata < practica->getValorSolucionActual()) {
+		practica->setSolucionActual(candidata, valorCandidata);
+	}
 }
