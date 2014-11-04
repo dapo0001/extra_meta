@@ -7,8 +7,10 @@
 class GRASP {
 public:
 	GRASP (QAP& qap, int semilla);
-	int* GRASP::generarSolucionGreedyAleatorizada ();
-	int* GRASP::seleccionarMejorSolucion (int* solucion1, int* solucion2);
+	int* generarSolucionGreedyAleatorizada ();
+	int* seleccionarMejorSolucion (int* solucion1, int* solucion2);
+	int* etapa1();
+	int* etapa2();
 private:
 	int semilla;
 	QAP* qap;
