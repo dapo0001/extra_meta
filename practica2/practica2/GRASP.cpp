@@ -1,17 +1,16 @@
 #include "GRASP.h"
 #include <ctime>
 #include <iostream>
-#include <vector>
 using namespace std;
 
 #define DEBUG
 
-int* GRASP::etapa1(){
+vector<CASILLA> GRASP::etapa1(){
 
 	//Inicializaciones
 	int nComp = qap->getNumComp();
 	int flujo=0,distancia=0;
-	int* solucion = new int[4];
+	vector<CASILLA> solucion;
 	vector<float> vecflujo;
 	vector<float> vecdistan;
 	vector<int> LCun;
@@ -81,23 +80,67 @@ int* GRASP::etapa1(){
 	}
 
 	//Construimos la solución parcial y la retornamos
-	solucion[0] = rand()%LCun.size();
-	solucion[2] = rand()%LCun.size();
-	solucion[1] = rand()%LCloc.size();
-	solucion[3] = rand()%LCloc.size();
+	CASILLA c1,c2;
+	c1.i = rand()%LCun.size();
+	c1.j = rand()%LCloc.size();
+	c2.i = rand()%LCun.size();
+	c2.j = rand()%LCloc.size();
+	solucion.push_back(c1);
+	solucion.push_back(c2);
 
 	return solucion;
 
 }
 
 int* GRASP::etapa2(){
+	int nComp = qap->getNumComp();
+	//Realizamos la etapa 1
+	vector<CASILLA> solucionParcial = etapa1();
+	vector<CASILLA> LC;
+	float costeMinimo=99999,costeMaximo=0,alpha=0.3;
+
+	//Se rellena la lista de candidatos con todos las combinaciones posibles menos las que ya están en la solución
+	for(int i=0;i<nComp;i++){
+		for(int j=0;j<nComp;j++){
+			for(int k=0;k<solucionParcial.size();k++){
+				if(i!=solucionParcial[k].i && j!=solucionParcial[k].j){
+					CASILLA casilla;
+					casilla.i=i;
+					casilla.j=j;
+					LC.push_back(casilla);
+				}
+			}
+		}
+	}
+
+	//Calculamos el coste de cada uno de la LC
+	for(int i=0;i<LC.size();i++){
+		for(int j=0;j<nComp;j++){
+			for(int k=0;k<nComp;k++){
+				int valor=
+				qap->flujo[LC[i].i]->at(j) *
+				qap->distancia[LC[i].j]->at(k);	
+				if(valor < costeMinimo){
+					costeMinimo = valor;
+				}
+				if(costeMaximo < valor){
+					costeMaximo = valor;
+				}
+			}
+		}
+	}
+
+
+
+	return 0;
 
 }
 
 int* GRASP::generarSolucionGreedyAleatorizada () {
 
-	//Realizamos la etapa 1
-	int* solucionParcial = etapa1();
+
+
+	return 0;
 	
 }
 
@@ -112,9 +155,10 @@ GRASP::GRASP(QAP& qap, int semilla) :
 {
 	practica->setQAP(&qap);
 	bool criterioParada = true;
-	int* solucionActual = 0;
+	valorActual = 0;
 	int* mejorSolucionVecina = 0;
 	int* mejorSolucion = 0;
+
 
 	//while (criterioParada) {
 		solucionActual = generarSolucionGreedyAleatorizada();
