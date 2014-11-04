@@ -9,7 +9,10 @@ using namespace std;
 ILS::ILS(QAP& qap, int semilla):
 	semilla(semilla),
 	qap(&qap),
-	practica(new Practica(semilla))
+	practica(new Practica(semilla)),
+	solucion(0),
+	valorSolucion(0),
+	tiempoEjecucion(0)
 {
 #ifdef DEBUG
 	clock_t inicio, fin;
@@ -62,7 +65,8 @@ ILS::ILS(QAP& qap, int semilla):
 	cout << endl << "Solucion encontrada (" << valorMejorSolucion << ")" << endl;
 	
 	fin = clock();
-	cout << "Tiempo de ejecución: " << (float)(fin - inicio) / CLOCKS_PER_SEC << "s" << endl;
+	this->tiempoEjecucion = (float)(fin - inicio) / CLOCKS_PER_SEC;
+	cout << "Tiempo de ejecución: " << this->tiempoEjecucion << "s" << endl;
 
 	for (int i = 0; i < qap.getNumComp(); i++) {
 		cout << mejorSolucion[i] << " ";
@@ -71,13 +75,18 @@ ILS::ILS(QAP& qap, int semilla):
 #endif
 
 	delete solucionVecina;
-	delete mejorSolucion;
+	this->solucion = mejorSolucion;
+	this->valorSolucion = valorMejorSolucion;
 }
 
 void ILS::clonarSolucion (int* destino, int* origen) {
 	for (int i = 0; i < qap->getNumComp(); i++) {
 		destino[i] = origen[i];
 	}
+}
+
+ILS::~ILS () {
+	delete solucion;
 }
 
 void ILS::mutarSolucionActual (void* historia) {

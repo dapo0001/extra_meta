@@ -7,10 +7,20 @@
 class ILS {
 public:
 	ILS (QAP& qap, int semilla);
+	~ILS();
+
+	int* getSolucion() const { return solucion; }
+	float getTiempoEjecucion() const { return tiempoEjecucion; }
+	int getValorSolucion() const { return valorSolucion; }
+
 private:
 	int semilla;
 	QAP* qap;
 	Practica* practica;
+
+	int* solucion;
+	float tiempoEjecucion;
+	long int valorSolucion;
 
 	void clonarSolucion(int* destino, int* origen);
 	void mutarSolucionActual (void* historia);
