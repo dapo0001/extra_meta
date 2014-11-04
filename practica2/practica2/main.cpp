@@ -35,9 +35,13 @@ int main () {
 	int semilla;
 	int algoritmo;
 	int fichero;
-	int semillas[25];
 
-	semillas[0] = 123456;
+	const int numSemillas = 25;
+	int semillas[numSemillas];
+	float mediaTiempoEjecucion = 0;
+	long int mediaValorSolucion = 0;
+
+	semillas[0] = 5538;
 	semillas[1] = 912373;
 	semillas[2] = 984359;
 	semillas[3] = 1923312;
@@ -64,7 +68,7 @@ int main () {
 	semillas[24] = 4592;
 
 	// Paso 1: semilla
-	cout << "Semilla (-1 para usar las 25 predeterminadas): ";
+	cout << "Semilla (-1 para usar las " << numSemillas << " predeterminadas): ";
 	cin >> semilla;
 	if (semilla != -1) { srand(semilla); }
 	cout << endl;
@@ -103,8 +107,7 @@ int main () {
 	cout << endl;
 
 	if (semilla == -1) {
-		for (int j = 0; j < 25; j++) {
-			system("cls");
+		for (int j = 0; j < numSemillas; j++) {
 			srand(semillas[j]);
 			cout <<endl << "---- Semilla " << semillas[j] << " ----" << endl;
 			if (fichero == 0) {
@@ -122,6 +125,8 @@ int main () {
 						cout << endl;
 					}
 				}
+				system("pause");
+				system("cls");
 			} else {
 				cargarFichero(fichero, qap);
 				if (algoritmo == 0 || algoritmo == 1) {
@@ -132,11 +137,16 @@ int main () {
 				if (algoritmo == 0 || algoritmo == 2) {
 					cout << "Algoritmo ILS" << endl;
 					ILS ils(qap, semillas[j]);
+
+					mediaTiempoEjecucion += ils.getTiempoEjecucion();
+					mediaValorSolucion += ils.getValorSolucion();
 					cout << endl;
 				}
 			}
-			system("pause");
 		}
+
+		cout << "Media tiempo ejecucion: " << mediaTiempoEjecucion / numSemillas << endl;
+		cout << "Media valor solución: " << mediaValorSolucion / numSemillas << endl;
 
 	} else {
 		if (fichero == 0) {
