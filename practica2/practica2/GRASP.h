@@ -18,6 +18,7 @@ public:
 	void seleccionarMejorSolucion (int* andidata, float valorCandidata);
 	vector<CASILLA> etapa1();
 	vector<CASILLA> etapa2();
+	virtual ~GRASP();
 private:
 	int semilla;
 	QAP* qap;

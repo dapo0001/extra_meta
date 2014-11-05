@@ -180,6 +180,11 @@ void GRASP::seleccionarMejorSolucion (int* candidata, float valorCandidata) {
 	}
 }
 
+GRASP::~GRASP(){
+
+	delete solucionActual;
+}
+
 GRASP::GRASP(QAP& qap, int semilla) :
 	semilla(semilla),
 	qap(&qap),
