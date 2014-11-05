@@ -364,3 +364,10 @@ void Practica::setSolucionActual (int* _s, int valor) {
 	}
 	valorActual = valor;
 }
+
+void Practica::setSolucionActual (int* _s) {
+	for (unsigned int i = 0; i < n; i++) {
+		solucionActual[i] = _s[i];
+	}
+	funcionObjetivo();
+}

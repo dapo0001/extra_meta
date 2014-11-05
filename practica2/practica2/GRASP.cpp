@@ -193,8 +193,8 @@ GRASP::GRASP(QAP& qap, int semilla) :
 	int valorMejorSolucion = 999999999;
 	int numEjec = 0;
 
-		solucionActual = generarSolucionGreedyAleatorizada();
-
+	solucionActual = generarSolucionGreedyAleatorizada();
+	practica->setSolucionActual(solucionActual);
 
 	cout<<"Solucion Acutal"<<endl;
 	for(int i=0;i<qap.getNumComp();i++){

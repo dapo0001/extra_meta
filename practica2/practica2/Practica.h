@@ -49,6 +49,7 @@ public:
 	void setQAP (QAP* qap);
 	int* getSolucionActual () { return solucionActual; }
 	void setSolucionActual (int* _s, int valor);
+	void setSolucionActual (int* _s);
 	int getValorSolucionActual () { return valorActual; }
 	int getValorSolucionVecina () { return valorSiguiente; }
 	CAMBIO solucionVecina;	///< Valores a cambiar para obtener el vecino deseado
