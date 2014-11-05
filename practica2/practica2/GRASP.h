@@ -15,14 +15,15 @@ class GRASP {
 public:
 	GRASP (QAP& qap, int semilla);
 	int* generarSolucionGreedyAleatorizada ();
-	int* seleccionarMejorSolucion (int* solucion1, int* solucion2);
+	void seleccionarMejorSolucion (int* andidata, float valorCandidata);
 	vector<CASILLA> etapa1();
-	int* etapa2();
+	vector<CASILLA> etapa2();
 private:
 	int semilla;
 	QAP* qap;
 	Practica* practica;
-	int valorActual;
+	int* solucionActual;
+	float calcularCoste(vector<CASILLA> vector);
 };
 
 #endif /* GRASP_H */
