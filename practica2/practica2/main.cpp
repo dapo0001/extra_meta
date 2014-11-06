@@ -115,12 +115,11 @@ int main () {
 					cout << endl << "-- Fichero " << i << " ";
 					cargarFichero(i, qap);
 					if (algoritmo == 0 || algoritmo == 1) {
-						cout << "Algoritmo GRASP" << endl;
+						cout << "GRASP ";
 						GRASP grasp(qap, semillas[j]);
-						cout << endl;
 					}
 					if (algoritmo == 0 || algoritmo == 2) {
-						cout << "Algoritmo ILS" << endl;
+						cout << "ILS ..";
 						ILS ils(qap, semillas[j]);
 						cout << endl;
 					}

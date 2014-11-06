@@ -34,7 +34,7 @@ void QAP::abrir(string nombreFich) {
 	distancia.clear();
 
     if (fich) {
-		cout << "Fichero abierto correctamente" << endl;
+		//cout << "Fichero abierto correctamente" << endl;
         int num;
         fich >> numComp;
 

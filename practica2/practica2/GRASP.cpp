@@ -167,6 +167,10 @@ GRASP::GRASP(QAP& qap, int semilla) :
 	qap(&qap),
 	practica(new Practica(semilla))
 {
+#ifdef DEBUG
+	clock_t inicio, fin;
+	inicio = clock();
+#endif
 	practica->setQAP(&qap);
 	bool criterioParada = true;
 	int* solucionVecina = 0;
@@ -180,23 +184,18 @@ GRASP::GRASP(QAP& qap, int semilla) :
 	solucionActual = generarSolucionGreedyAleatorizada();
 	practica->setSolucionActual(solucionActual);
 
-	cout<<"Solucion Acutal"<<endl;
-	for(int i=0;i<qap.getNumComp();i++){
-		cout<<solucionActual[i]<<" ";
-	}
-	cout<<endl;
-
-
-		solucionVecina = solucionActual;
-		mejorSolucion = solucionActual;
-		valorSolVecina = (float) practica->getValorSolucionActual();
-		valorMejorSolucion = valorSolVecina;
-		practica->setSolucionActual(solucionActual, (int) valorSolVecina);
-		practica->busquedaLocal();
-		seleccionarMejorSolucion(solucionVecina, valorSolVecina);
+	solucionVecina = solucionActual;
+	mejorSolucion = solucionActual;
+	valorSolVecina = (float) practica->getValorSolucionActual();
+	valorMejorSolucion = valorSolVecina;
+	practica->setSolucionActual(solucionActual, (int) valorSolVecina);
+	practica->busquedaLocal();
+	seleccionarMejorSolucion(solucionVecina, valorSolVecina);
 
 	while (numEjec < 24) {
-		cout<<"NUMERO DE EJECUCIONES "<<numEjec<<endl;
+#ifdef DEBUG
+		cout << ".";
+#endif
 		solucionActual = generarSolucionGreedyAleatorizada();
 		solucionVecina = solucionActual;
 		valorSolVecina = (float) practica->getValorSolucionActual();
@@ -209,12 +208,15 @@ GRASP::GRASP(QAP& qap, int semilla) :
 		numEjec++;
 	}
 
-	cout<<"Valor de la mejor solucion " <<valorMejorSolucion<<endl;
-	cout<<"Solucion"<<endl;
-	for(int i=0;i<qap.getNumComp();i++){
-		cout<<mejorSolucion[i]<<" ";
-	}
-	cout<<endl;
+#ifdef DEBUG
+	cout << endl << "Solución encontrada: " << (int) valorMejorSolucion << endl;
+	fin = clock();
+	cout << "Tiempo de ejecución: " << (float)(fin - inicio) / CLOCKS_PER_SEC << "s" << endl;
+	//for (int i = 0; i < qap.getNumComp(); i++) {
+	//	cout << mejorSolucion[i] << " ";
+	//}
+	//cout << endl;
+#endif
 }
 
 /**
@@ -222,10 +224,6 @@ GRASP::GRASP(QAP& qap, int semilla) :
  */
 void GRASP::generarValoresComponentes () {
 	unsigned int n = (unsigned int) this->qap->getNumComp();
-#ifdef DEBUG
-	clock_t inicio = clock(), fin;
-	cout << "Generando valores iniciales... ";
-#endif
 	LC_valores = new float*[n];
 	for (unsigned int i = 0; i < n; i++) {
 		LC_valores[i] = new float[n];
@@ -241,8 +239,4 @@ void GRASP::generarValoresComponentes () {
 			}
 		}
 	}
-#ifdef DEBUG
-	fin = clock();
-	cout << (fin - inicio) / CLOCKS_PER_SEC << "s" << endl;
-#endif
 }

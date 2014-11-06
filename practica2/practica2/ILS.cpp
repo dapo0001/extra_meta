@@ -62,16 +62,14 @@ ILS::ILS(QAP& qap, int semilla):
 	} while (++iteraciones < 24);
 
 #ifdef DEBUG
-	cout << endl << "Solucion encontrada (" << valorMejorSolucion << ")" << endl;
-	
+	cout << endl << "Solucion encontrada: " << valorMejorSolucion << endl;
 	fin = clock();
 	this->tiempoEjecucion = (float)(fin - inicio) / CLOCKS_PER_SEC;
 	cout << "Tiempo de ejecución: " << this->tiempoEjecucion << "s" << endl;
-
-	for (int i = 0; i < qap.getNumComp(); i++) {
-		cout << mejorSolucion[i] << " ";
-	}
-	cout << endl;
+	//for (int i = 0; i < qap.getNumComp(); i++) {
+	//	cout << mejorSolucion[i] << " ";
+	//}
+	//cout << endl;
 #endif
 
 	delete solucionVecina;
