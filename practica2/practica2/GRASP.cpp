@@ -5,63 +5,61 @@ using namespace std;
 
 #define DEBUG
 
-
-
-
-
 vector<CASILLA> GRASP::etapa1(){
 	//Inicializaciones
 	int nComp = qap->getNumComp();
-	int flujo=0,distancia=0;
+	float
+		flujo = 0,
+		distancia = 0;
 	vector<CASILLA> solucion;
 	vector<float> vecflujo;
 	vector<float> vecdistan;
 	vector<int> LCun;
 	vector<int> LCloc;
-	int flujomin=999999,flujomax=0,distanciamin=99999,distanciamax=0;
-	float alpha = 0.3,umbralFlujo=0,umbralDistancia=0;
+	
+	float
+		flujomin = 99999999.0f,
+		flujomax = 0,
+		distanciamin = 99999999.0f,
+		distanciamax = 0;
+	
+	float
+		alpha = 0.3f,
+		umbralFlujo = 0,
+		umbralDistancia = 0;
 
 	//Calculamos el coste e introducimos en el vector correspondiente
 	for(int i=0;i<nComp;i++){	
 		flujo = 0;
 		distancia = 0;
+		
 		for(int j=0;j<nComp;j++){
 			flujo += (qap->flujo[i]->at(j) + qap->flujo[j]->at(i));
 			distancia += (qap->distancia[i]->at(j) + qap->distancia[j]->at(i));			
 		}
+
 		vecflujo.push_back(flujo);
 		vecdistan.push_back(distancia);
-	}
-	//Calculamos el rango minimo y máximo de los flujos y distancias
-	for(int i=0;i<vecflujo.size();i++){
-		//Para Flujo
-		if(vecflujo[i] < flujomin){
-			flujomin = vecflujo[i];
-		}
-		if(vecflujo[i] > flujomax){
-			flujomax = vecflujo[i];
-		}
-		//Para distancia
-		if(vecdistan[i] < distanciamin){
-			distanciamin = vecdistan[i];
-		}
-		if(vecdistan[i] > distanciamax){
-			distanciamax = vecdistan[i];
-		}
+
+		// Guardamos el flujo/distancia minimo/maximo
+
+		if (flujo < flujomin) { flujomin = flujo; }
+		if (flujo > flujomax) { flujomax = flujo; }
+		if (distancia < distanciamin) { distanciamin = distancia; }
+		if (distancia > distanciamax) { distanciamax = distancia; }
 	}
 
 	//Calculamos el umbral
-	umbralFlujo = flujomax - alpha*(flujomax - flujomin);
-	umbralDistancia = distanciamin + alpha*(distanciamax - distanciamin);
+	umbralFlujo = flujomin + alpha * (flujomax - flujomin);
+	umbralDistancia = distanciamax - alpha * (distanciamax - distanciamin);
 
 	//insertamos en la lista de candidatos los elementos que superan el umbral
-	for(int i=0;i<vecflujo.size();i++){
-		if(vecflujo[i] > umbralFlujo){
+	for(int i=0;i<nComp;i++){
+		if(vecflujo[i] >= umbralFlujo){
 			LCun.push_back(i);
 		}
-	}
-	for(int i=0;i<vecdistan.size();i++){
-		if(vecdistan[i] < umbralDistancia){
+
+		if(vecdistan[i] <= umbralDistancia){
 			LCloc.push_back(i);
 		}
 	}
@@ -78,39 +76,26 @@ vector<CASILLA> GRASP::etapa1(){
 
 }
 
-
-float GRASP::calcularCoste(vector<CASILLA> vector){
-	float valor = 0;
-	for(int i=0;i<vector.size();i++){		
-		for(int j=0;j<vector.size();j++){
-			for(int k=0;k<vector.size();k++){
-				valor=
-				qap->flujo[vector[i].i]->at(j) *
-				qap->distancia[vector[i].j]->at(k);	
-
-			}
-		}
-	}
-	return valor;
-}
-
-
-
-
 vector<CASILLA> GRASP::etapa2(){
 	int nComp = qap->getNumComp();
 	//Realizamos la etapa 1
 	vector<CASILLA> solucionParcial = etapa1();
 	vector<CASILLA> LC;
 	vector<CASILLA> LRC;
-	vector<pair<CASILLA,float> > vecCostes;
-	float costeMinimo=99999,costeMaximo=0,alpha=0.3;
+	float
+		costeMinimo,
+		costeMaximo,
+		alpha=0.3f;
+
 	do{
+		costeMinimo = 99999999.0f;
+		costeMaximo = 0.0f;
+
 		//Se rellena la lista de candidatos con todos las combinaciones posibles menos las que ya están en la solución
 		for(int i=0;i<nComp;i++){
 			for(int j=0;j<nComp;j++){
 				bool esta=false;
-				for(int k=0;k<solucionParcial.size();k++){
+				for(unsigned int k=0;k<solucionParcial.size();k++){
 					if(i==solucionParcial[k].i ){
 						esta=true;
 					}
@@ -123,42 +108,29 @@ vector<CASILLA> GRASP::etapa2(){
 				}
 			}
 		}
-	
-		//Calculamos el coste de cada uno de la LC
-		for(int i=0;i<LC.size();i++){
-			float valor = 0;
-			for(int j=0;j<nComp;j++){
-				for(int k=0;k<nComp;k++){
-					valor=
-					qap->flujo[LC[i].i]->at(j) *
-					qap->distancia[LC[i].j]->at(k);	
 
-				}
-			}
-			pair<CASILLA,float> p(LC[i],valor);
-			vecCostes.push_back(p);
-			if(valor < costeMinimo){
-				costeMinimo = valor;
-			}
-			if(costeMaximo < valor){
-				costeMaximo = valor;
-			}
+		//Calculamos el coste de cada uno de la LC
+		for(unsigned int i = 0; i < LC.size(); i++){
+			float valor = LC_valores[LC[i].i][LC[i].j];
+			if (valor < costeMinimo) { costeMinimo = valor; }
+			if (valor > costeMaximo) { costeMaximo = valor; }
 		}
 
 		//Creamos la LRC con las restricciones
-		float umbral = costeMinimo + alpha*(costeMaximo-costeMinimo);
-		for(int i=0;i<vecCostes.size();i++){
-			if(vecCostes[i].second <= umbral){
-				LRC.push_back(vecCostes[i].first);
+		float umbral = costeMinimo + alpha * (costeMaximo - costeMinimo);
+		
+		for (unsigned int i = 0; i < LC.size(); i++){
+			if(LC_valores[LC[i].i][LC[i].j] <= umbral){
+				LRC.push_back(LC[i]);
 			}
 		}
+
 		//Se inserta en la solución parcial una nueva parte
 		int posAlea = rand() % LRC.size();
 		solucionParcial.push_back(LRC[posAlea]);
 
 		LC.clear();
 		LRC.clear();
-		vecCostes.clear();
 	}while(solucionParcial.size() != nComp);
 
 	return solucionParcial;
@@ -168,7 +140,7 @@ vector<CASILLA> GRASP::etapa2(){
 int* GRASP::generarSolucionGreedyAleatorizada () {
 	vector<CASILLA> et = etapa2();
 	int* solActual = new int[et.size()];
-	for(int i=0;i<et.size();i++){
+	for(unsigned int i=0;i<et.size();i++){
 		solActual[i] = et[i].i;
 	}
 	return solActual;
@@ -176,13 +148,18 @@ int* GRASP::generarSolucionGreedyAleatorizada () {
 
 void GRASP::seleccionarMejorSolucion (int* candidata, float valorCandidata) {
 	if (valorCandidata < practica->getValorSolucionActual()) {
-		practica->setSolucionActual(candidata, valorCandidata);
+		practica->setSolucionActual(candidata, (int) valorCandidata);
 	}
 }
 
 GRASP::~GRASP(){
-
 	delete solucionActual;
+
+	unsigned int n = (unsigned int) this->qap->getNumComp();
+	for (unsigned int i = 0; i < n; i++) {
+		delete LC_valores[i];
+	}
+	delete LC_valores;
 }
 
 GRASP::GRASP(QAP& qap, int semilla) :
@@ -195,8 +172,10 @@ GRASP::GRASP(QAP& qap, int semilla) :
 	int* solucionVecina = 0;
 	float valorSolVecina = 0;
 	int* mejorSolucion = new int[qap.getNumComp()];
-	int valorMejorSolucion = 999999999;
+	float valorMejorSolucion = 999999999.0f;
 	int numEjec = 0;
+
+	this->generarValoresComponentes();
 
 	solucionActual = generarSolucionGreedyAleatorizada();
 	practica->setSolucionActual(solucionActual);
@@ -210,9 +189,9 @@ GRASP::GRASP(QAP& qap, int semilla) :
 
 		solucionVecina = solucionActual;
 		mejorSolucion = solucionActual;
-		valorSolVecina = practica->getValorSolucionActual();
+		valorSolVecina = (float) practica->getValorSolucionActual();
 		valorMejorSolucion = valorSolVecina;
-		practica->setSolucionActual(solucionActual,valorSolVecina);
+		practica->setSolucionActual(solucionActual, (int) valorSolVecina);
 		practica->busquedaLocal();
 		seleccionarMejorSolucion(solucionVecina, valorSolVecina);
 
@@ -220,12 +199,12 @@ GRASP::GRASP(QAP& qap, int semilla) :
 		cout<<"NUMERO DE EJECUCIONES "<<numEjec<<endl;
 		solucionActual = generarSolucionGreedyAleatorizada();
 		solucionVecina = solucionActual;
-		valorSolVecina = practica->getValorSolucionActual();
+		valorSolVecina = (float) practica->getValorSolucionActual();
 		practica->busquedaLocal();
 		seleccionarMejorSolucion(solucionVecina, valorSolVecina);
 		if(valorMejorSolucion > practica->getValorSolucionActual()){
 			mejorSolucion = practica->getSolucionActual();
-			valorMejorSolucion = practica->getValorSolucionActual();
+			valorMejorSolucion = (float) practica->getValorSolucionActual();
 		}
 		numEjec++;
 	}
@@ -236,4 +215,34 @@ GRASP::GRASP(QAP& qap, int semilla) :
 		cout<<mejorSolucion[i]<<" ";
 	}
 	cout<<endl;
+}
+
+/**
+ * Genera todos los valores para todos los componentes una sola vez
+ */
+void GRASP::generarValoresComponentes () {
+	unsigned int n = (unsigned int) this->qap->getNumComp();
+#ifdef DEBUG
+	clock_t inicio = clock(), fin;
+	cout << "Generando valores iniciales... ";
+#endif
+	LC_valores = new float*[n];
+	for (unsigned int i = 0; i < n; i++) {
+		LC_valores[i] = new float[n];
+		for (unsigned int j = 0; j < n; j++) {
+			LC_valores[i][j] = 0;
+
+			for (unsigned int k = 0; k < n; k++) {
+				for (unsigned int l = 0; l < n; l++) {
+					LC_valores[i][j] +=
+						qap->flujo[i]->at(k) *
+						qap->distancia[j]->at(l);
+				}
+			}
+		}
+	}
+#ifdef DEBUG
+	fin = clock();
+	cout << (fin - inicio) / CLOCKS_PER_SEC << "s" << endl;
+#endif
 }

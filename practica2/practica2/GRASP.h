@@ -20,6 +20,9 @@ public:
 	vector<CASILLA> etapa2();
 	virtual ~GRASP();
 private:
+	void generarValoresComponentes();
+	float** LC_valores;
+
 	int semilla;
 	QAP* qap;
 	Practica* practica;
