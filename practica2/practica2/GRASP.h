@@ -3,6 +3,7 @@
 
 #include "QAP.h"
 #include "Practica.h"
+#include "Algoritmo.h"
 #include <vector>
 
 typedef struct {
@@ -11,9 +12,11 @@ typedef struct {
 } CASILLA;
 
 
-class GRASP {
+class GRASP: public Algoritmo {
 public:
-	GRASP (QAP& qap, int semilla);
+	GRASP();
+	void ejecutar (QAP& qap, int semilla);
+
 	int* generarSolucionGreedyAleatorizada ();
 	void seleccionarMejorSolucion (int* andidata, float valorCandidata);
 	vector<CASILLA> etapa1();

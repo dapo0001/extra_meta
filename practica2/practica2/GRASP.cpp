@@ -162,11 +162,18 @@ GRASP::~GRASP(){
 	delete LC_valores;
 }
 
-GRASP::GRASP(QAP& qap, int semilla) :
-	semilla(semilla),
-	qap(&qap),
-	practica(new Practica(semilla))
-{
+GRASP::GRASP():
+	semilla(0),
+	qap(0),
+	practica(0)
+{}
+
+void GRASP::ejecutar(QAP& qap, int semilla) {
+	delete this->practica;
+	this->semilla = semilla;
+	this->qap = &qap;
+	this->practica = new Practica(semilla);
+
 #ifdef DEBUG
 	clock_t inicio, fin;
 	inicio = clock();
@@ -211,12 +218,15 @@ GRASP::GRASP(QAP& qap, int semilla) :
 #ifdef DEBUG
 	cout << endl << "Solución encontrada: " << (int) valorMejorSolucion << endl;
 	fin = clock();
-	cout << "Tiempo de ejecución: " << (float)(fin - inicio) / CLOCKS_PER_SEC << "s" << endl;
+	this->tiempoEjecucion = (float)(fin - inicio) / CLOCKS_PER_SEC;
+	cout << "Tiempo de ejecución: " << this->tiempoEjecucion << "s" << endl;
 	//for (int i = 0; i < qap.getNumComp(); i++) {
 	//	cout << mejorSolucion[i] << " ";
 	//}
 	//cout << endl;
 #endif
+
+	this->valorSolucion = valorMejorSolucion;
 }
 
 /**

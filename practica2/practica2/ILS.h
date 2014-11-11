@@ -3,15 +3,13 @@
 
 #include "QAP.h"
 #include "Practica.h"
+#include "Algoritmo.h"
 
-class ILS {
+class ILS: public Algoritmo {
 public:
-	ILS (QAP& qap, int semilla);
+	ILS ();
+	void ejecutar(QAP& qap, int semilla);
 	~ILS();
-
-	int* getSolucion() const { return solucion; }
-	float getTiempoEjecucion() const { return tiempoEjecucion; }
-	int getValorSolucion() const { return valorSolucion; }
 
 private:
 	int semilla;
@@ -19,9 +17,6 @@ private:
 	Practica* practica;
 
 	int* solucion;
-	float tiempoEjecucion;
-	long int valorSolucion;
-
 	void clonarSolucion(int* destino, int* origen);
 	void mutarSolucionActual (void* historia);
 	void escogerSolucionActual(int* candidata, int valorCandidata, void* historia);

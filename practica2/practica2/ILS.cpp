@@ -6,14 +6,22 @@ using namespace std;
 // Depuración
 #define DEBUG
 
-ILS::ILS(QAP& qap, int semilla):
-	semilla(semilla),
-	qap(&qap),
-	practica(new Practica(semilla)),
-	solucion(0),
-	valorSolucion(0),
-	tiempoEjecucion(0)
-{
+ILS::ILS ():
+	semilla(0),
+	qap(0),
+	practica(0),
+	solucion(0)
+{}
+
+void ILS::ejecutar(QAP& qap, int semilla) {
+	delete this->practica;
+	this->semilla = semilla;
+	this->qap = &qap;
+	this->practica = new Practica(semilla);
+	this->solucion = 0;
+	this->valorSolucion = -1;
+	this->tiempoEjecucion = -1;
+
 #ifdef DEBUG
 	clock_t inicio, fin;
 	inicio = clock();
@@ -73,7 +81,6 @@ ILS::ILS(QAP& qap, int semilla):
 #endif
 
 	delete solucionVecina;
-	this->solucion = mejorSolucion;
 	this->valorSolucion = valorMejorSolucion;
 }
 
