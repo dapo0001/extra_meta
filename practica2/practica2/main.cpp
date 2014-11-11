@@ -149,6 +149,8 @@ int main () {
 				}
 
 				cout << endl
+					<< "Algoritmo: " << nombresAlgoritmos[j] << endl
+					<< "Fichero: " << ficheros[j] << endl
 					<< "Tiempo medio: " << (mediaTiempoEjecucion / numSemillas) << "s" << endl
 					<< "Valor medio: " << (mediaValorSolucion / numSemillas) << endl;
 			} else {
