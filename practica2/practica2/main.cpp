@@ -2,179 +2,164 @@
 using namespace std;
 
 #include "QAP.h"
+#include "Algoritmo.h"
 #include "GRASP.h"
 #include "ILS.h"
 
-void cargarFichero (int fichero, QAP& qap) {
-	switch(fichero){
-		case 1: cout << "(bur26a)" << endl; qap.abrir("ficheros/bur26a.dat"); break;
-		case 2: cout << "(bur26b)" << endl; qap.abrir("ficheros/bur26b.dat"); break;
-		case 3: cout << "(chr20a)" << endl; qap.abrir("ficheros/chr20a.dat"); break;
-		case 4: cout << "(chr25a)" << endl; qap.abrir("ficheros/chr25a.dat"); break;
-		case 5: cout << "(els19)" << endl; qap.abrir("ficheros/els19.dat"); break;
-		case 6: cout << "(esc32a)" << endl; qap.abrir("ficheros/esc32a.dat"); break;
-		case 7: cout << "(kra32)" << endl; qap.abrir("ficheros/kra32.dat"); break;
-		case 8: cout << "(lipa90a)" << endl; qap.abrir("ficheros/lipa90a.dat"); break;
-		case 9: cout << "(nug25)" << endl; qap.abrir("ficheros/nug25.dat"); break;
-		case 10: cout << "(sko42)" << endl; qap.abrir("ficheros/sko42.dat"); break;
-		case 11: cout << "(sko49)" << endl; qap.abrir("ficheros/sko49.dat"); break;
-		case 12: cout << "(tai30a)" << endl; qap.abrir("ficheros/tai30a.dat"); break;
-		case 13: cout << "(tai30b)" << endl; qap.abrir("ficheros/tai30b.dat"); break;
-		case 14: cout << "(tai35a)" << endl; qap.abrir("ficheros/tai35a.dat"); break;
-		case 15: cout << "(tai35b)" << endl; qap.abrir("ficheros/tai35b.dat"); break;
-		case 16: cout << "(tai40a)" << endl; qap.abrir("ficheros/tai40a.dat"); break;
-		case 17: cout << "(tai50a)" << endl; qap.abrir("ficheros/tai50a.dat"); break;
-		case 18: cout << "(tai50b)" << endl; qap.abrir("ficheros/tai50b.dat"); break;
-		case 19: cout << "(tai60a)" << endl; qap.abrir("ficheros/tai60a.dat"); break;
-		case 20: cout << "(tho40)" << endl; qap.abrir("ficheros/tho40.dat"); break;
-	}
+int seleccionarSemilla (const int semillas[], const int numSemillas) {
+	int semilla;
+	do {
+		cout << "Selecciona una semilla: ";
+		cin >> semilla;
+	} while (semilla < -1);
+
+	return semilla;
+}
+
+int seleccionarFichero (const char* ficheros[], const int numFicheros) {
+	int fichero;
+	do {
+		cout << "Selecciona un fichero:" << endl;
+		for (int i = 0; i < numFicheros; i++) {
+			cout << "  " << i << ". " << ficheros[i] << endl;
+		}
+		cin >> fichero;
+	} while (fichero < -1 || fichero >= numFicheros);
+	return fichero;
+}
+
+int seleccionarAlgoritmo (const char* nombresAlgoritmos[], const int numAlgoritmos) {
+	int algoritmo;
+	do {
+		cout << "Selecciona un algoritmo:" << endl;
+		for (int i = 0; i < numAlgoritmos; i++) {
+			cout << "  " << i << ". " << nombresAlgoritmos[i] << endl;
+		}
+		cin >> algoritmo;
+	} while (algoritmo < -1 || algoritmo >= numAlgoritmos);
+	return algoritmo;
+}
+
+void ejecutar (int semilla, const char* fichero, Algoritmo* algoritmo, QAP* qap) {
+	qap->abrir(("ficheros/" + string(fichero) + ".dat").c_str());
+	algoritmo->ejecutar(*qap, semilla);
 }
 
 int main () {
 	QAP qap;
-	int semilla;
-	int algoritmo;
-	int fichero;
 
 	const int numSemillas = 25;
-	int semillas[numSemillas];
-	float mediaTiempoEjecucion = 0;
-	long int mediaValorSolucion = 0;
+	int semilla = 0;
+	int inicioSemilla = 0;
+	int finSemilla = numSemillas;
+	const int semillas[] = {
+		5538,
+		912373,
+		984359,
+		1923312,
+		7891237,
+		7129323,
+		870345,
+		123784,
+		49785,
+		983495,
+		89454,
+		47895,
+		34,
+		12398,
+		349834,
+		12393,
+		34983,
+		23832,
+		12398,
+		12093,
+		8540,
+		934,
+		2,
+		12323,
+		4592
+	};
 
-	semillas[0] = 5538;
-	semillas[1] = 912373;
-	semillas[2] = 984359;
-	semillas[3] = 1923312;
-	semillas[4] = 7891237;
-	semillas[5] = 7129323;
-	semillas[6] = 870345;
-	semillas[7] = 123784;
-	semillas[8] = 49785;
-	semillas[9] = 983495;
-	semillas[10] = 89454;
-	semillas[11] = 47895;
-	semillas[12] = 34;
-	semillas[13] = 12398;
-	semillas[14] = 349834;
-	semillas[15] = 12393;
-	semillas[16] = 34983;
-	semillas[17] = 23832;
-	semillas[18] = 12398;
-	semillas[19] = 12093;
-	semillas[20] = 8540;
-	semillas[21] = 934;
-	semillas[22] = 2;
-	semillas[23] = 12323;
-	semillas[24] = 4592;
+	const int numFicheros = 20;
+	int fichero = 0;
+	int inicioFichero = 0;
+	int finFichero = numFicheros;
+	const char* ficheros[] = {
+		"bur26a",
+		"bur26b",
+		"chr20a",
+		"chr25a",
+		"els19",
+		"esc32a",
+		"kra32",
+		"lipa90a",
+		"nug25",
+		"sko42",
+		"sko49",
+		"tai30a",
+		"tai30b",
+		"tai35a",
+		"tai35b",
+		"tai40a",
+		"tai50a",
+		"tai50b",
+		"tai60a",
+		"tho40"
+	};
 
-	// Paso 1: semilla
-	cout << "Semilla (-1 para usar las " << numSemillas << " predeterminadas): ";
-	cin >> semilla;
-	if (semilla != -1) { srand(semilla); }
-	cout << endl;
+	const int numAlgoritmos = 2;
+	int algoritmo = 0;
+	int inicioAlgoritmo = 0;
+	int finAlgoritmo = numAlgoritmos;
+	char* nombresAlgoritmos[] = {
+		"ILS",
+		"GRASP"
+	};
+	Algoritmo* algoritmos[] = {
+		new ILS(),
+		new GRASP()
+	};
 
-	// Paso 2: algoritmo
-	cout << "Algoritmo: " << endl
-		<< "1. GRASP" << endl
-		<< "2. ILS" << endl
-		<< "0. Todos" << endl;
-	cin >> algoritmo;
+	semilla = seleccionarSemilla(semillas, numSemillas);
+	if (semilla != -1) { inicioSemilla = semilla; finSemilla = semilla + 1; }
+	fichero = seleccionarFichero(ficheros, numFicheros);
+	if (fichero != -1) { inicioFichero = fichero; finFichero = fichero + 1; }
+	algoritmo = seleccionarAlgoritmo((const char**)nombresAlgoritmos, numAlgoritmos);
+	if (algoritmo != -1) { inicioAlgoritmo = algoritmo; finAlgoritmo = algoritmo + 1; }
 
-	// Paso 3: ficheros
-	cout << endl << "Fichero: " << endl
-		<< "1. bur26a" << endl
-		<< "2. bur26b" << endl
-		<< "3. chr20a" << endl
-		<< "4. chr25a" << endl
-		<< "5. els19" << endl
-		<< "6. esc32a" << endl
-		<< "7. kra32" << endl
-		<< "8. lipa90a" << endl
-		<< "9. nug25" << endl
-		<< "10. sko42" << endl
-		<< "11. sko49" << endl
-		<< "12. tai30a" << endl
-		<< "13. tai30b" << endl
-		<< "14. tai35a" << endl
-		<< "15. tai35b" << endl
-		<< "16. tai40a" << endl
-		<< "17. tai50a" << endl
-		<< "18. tai50b" << endl
-		<< "19. tai60a" << endl
-		<< "20. tho40" << endl
-		<< "0. Todos" << endl;
-	cin >> fichero;
-	cout << endl;
+	for (int i = inicioFichero; i < finFichero; i++) {
+		for (int j = inicioAlgoritmo; j < finAlgoritmo; j++) {
+			system("cls");
+			cout << nombresAlgoritmos[j] << " | " << ficheros[i];
 
-	if (semilla == -1) {
-		for (int j = 0; j < numSemillas; j++) {
-			srand(semillas[j]);
-			cout <<endl << "---- Semilla " << semillas[j] << " ----" << endl;
-			if (fichero == 0) {
-				for (int i = 1; i <= 20; i++) {
-					cout << endl << "-- Fichero " << i << " ";
-					cargarFichero(i, qap);
-					if (algoritmo == 0 || algoritmo == 1) {
-						cout << "GRASP ";
-						GRASP grasp(qap, semillas[j]);
-					}
-					if (algoritmo == 0 || algoritmo == 2) {
-						cout << "ILS ..";
-						ILS ils(qap, semillas[j]);
-						cout << endl;
-					}
+			if (semilla == -1) {
+				cout << endl << endl;
+
+				float mediaTiempoEjecucion = 0;
+				int mediaValorSolucion = 0;
+
+				for (int k = inicioSemilla; k < finSemilla; k++) {
+					cout << semillas[k] << endl;
+
+					ejecutar(semillas[k], ficheros[i], algoritmos[j], &qap);
+					mediaTiempoEjecucion += algoritmos[j]->getTiempoEjecucion();
+					mediaValorSolucion += algoritmos[j]->getValorSolucion();
+
+					cout << endl;
 				}
-				system("pause");
-				system("cls");
+
+				cout << endl
+					<< "Tiempo medio: " << (mediaTiempoEjecucion / numSemillas) << "s" << endl
+					<< "Valor medio: " << (mediaValorSolucion / numSemillas) << endl;
 			} else {
-				cargarFichero(fichero, qap);
-				if (algoritmo == 0 || algoritmo == 1) {
-					cout << "GRASP ";
-					GRASP grasp(qap, semillas[j]);
-				}
-				if (algoritmo == 0 || algoritmo == 2) {
-					cout << "ILS ..";
-					ILS ils(qap, semillas[j]);
+				cout << " | " << semilla << endl;
+				ejecutar(semilla, ficheros[i], algoritmos[j], &qap);
+			}
 
-					mediaTiempoEjecucion += ils.getTiempoEjecucion();
-					mediaValorSolucion += ils.getValorSolucion();
-					cout << endl;
-				}
-			}
-		}
-
-		cout << "Media tiempo ejecucion: " << mediaTiempoEjecucion / numSemillas << endl;
-		cout << "Media valor solución: " << mediaValorSolucion / numSemillas << endl;
-
-	} else {
-		if (fichero == 0) {
-			for (int i = 1; i <= 20; i++) {
-				cout << endl << "-- Fichero " << i << " ";
-				cargarFichero(i, qap);
-				if (algoritmo == 0 || algoritmo == 1) {
-					cout << "GRASP ";
-					GRASP grasp(qap, semilla);
-				}
-				if (algoritmo == 0 || algoritmo == 2) {
-					cout << "ILS ..";
-					ILS ils(qap, semilla);
-					cout << endl;
-				}
-			}
-		} else {
-			cargarFichero(fichero, qap);
-			if (algoritmo == 0 || algoritmo == 1) {
-				cout << "GRASP ";
-				GRASP grasp(qap, semilla);
-			}
-			if (algoritmo == 0 || algoritmo == 2) {
-				cout << "ILS ..";
-				ILS ils(qap, semilla);
-				cout << endl;
-			}
+			cout << endl;
+			system("pause");
 		}
 	}
 
-	system("pause");
 	return 0;
 }
