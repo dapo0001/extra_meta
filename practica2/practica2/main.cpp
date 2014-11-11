@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 #include "QAP.h"
@@ -46,6 +47,8 @@ void ejecutar (int semilla, const char* fichero, Algoritmo* algoritmo, QAP* qap)
 }
 
 int main () {
+	system("rmdir /s /q resultados");
+	system("mkdir resultados");
 	QAP qap;
 
 	const int numSemillas = 25;
@@ -127,40 +130,56 @@ int main () {
 	algoritmo = seleccionarAlgoritmo((const char**)nombresAlgoritmos, numAlgoritmos);
 	if (algoritmo != -1) { inicioAlgoritmo = algoritmo; finAlgoritmo = algoritmo + 1; }
 
-	for (int i = inicioFichero; i < finFichero; i++) {
-		for (int j = inicioAlgoritmo; j < finAlgoritmo; j++) {
+	for (int i = inicioAlgoritmo; i < finAlgoritmo; i++) {
+		ofstream outputFile;
+		string	 outputName("resultados/");
+		outputName += nombresAlgoritmos[i];
+		outputName += ".csv";
+		outputFile.open(outputName, ios::out);
+
+		for (int j = inicioFichero; j < finFichero; j++) {
 			system("cls");
-			cout << nombresAlgoritmos[j] << " | " << ficheros[i];
+			cout << nombresAlgoritmos[i] << " | " << ficheros[j];
+
+			float mediaTiempoEjecucion = 0;
+			long double mediaValorSolucion = 0;
 
 			if (semilla == -1) {
 				cout << endl << endl;
 
-				float mediaTiempoEjecucion = 0;
-				long double mediaValorSolucion = 0;
-
 				for (int k = inicioSemilla; k < finSemilla; k++) {
 					cout << semillas[k] << endl;
 
-					ejecutar(semillas[k], ficheros[i], algoritmos[j], &qap);
-					mediaTiempoEjecucion += algoritmos[j]->getTiempoEjecucion();
-					mediaValorSolucion += algoritmos[j]->getValorSolucion();
+					ejecutar(semillas[k], ficheros[j], algoritmos[i], &qap);
+					mediaTiempoEjecucion += algoritmos[i]->getTiempoEjecucion();
+					mediaValorSolucion += algoritmos[i]->getValorSolucion();
 
 					cout << endl;
 				}
 
 				cout << endl
-					<< "Algoritmo: " << nombresAlgoritmos[j] << endl
-					<< "Fichero: " << ficheros[i] << endl
+					<< "Algoritmo: " << nombresAlgoritmos[i] << endl
+					<< "Fichero: " << ficheros[j] << endl
 					<< "Tiempo medio: " << (mediaTiempoEjecucion / numSemillas) << "s" << endl
 					<< "Valor medio: " << (int)(mediaValorSolucion / numSemillas) << endl;
+
 			} else {
 				cout << " | " << semilla << endl;
-				ejecutar(semilla, ficheros[i], algoritmos[j], &qap);
+				ejecutar(semilla, ficheros[j], algoritmos[i], &qap);
+				mediaValorSolucion = algoritmos[i]->getValorSolucion();
+				mediaTiempoEjecucion = algoritmos[i]->getTiempoEjecucion();
 			}
+
+			outputFile
+				<< ficheros[j] << ";"
+				<< (int)(mediaValorSolucion / numSemillas) << ";"
+				<< (mediaTiempoEjecucion / numSemillas) << endl;
 
 			cout << endl;
 			system("pause");
 		}
+
+		outputFile.close();
 	}
 
 	return 0;
