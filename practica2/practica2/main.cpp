@@ -136,7 +136,7 @@ int main () {
 				cout << endl << endl;
 
 				float mediaTiempoEjecucion = 0;
-				int mediaValorSolucion = 0;
+				long double mediaValorSolucion = 0;
 
 				for (int k = inicioSemilla; k < finSemilla; k++) {
 					cout << semillas[k] << endl;
@@ -152,7 +152,7 @@ int main () {
 					<< "Algoritmo: " << nombresAlgoritmos[j] << endl
 					<< "Fichero: " << ficheros[i] << endl
 					<< "Tiempo medio: " << (mediaTiempoEjecucion / numSemillas) << "s" << endl
-					<< "Valor medio: " << (mediaValorSolucion / numSemillas) << endl;
+					<< "Valor medio: " << (int)(mediaValorSolucion / numSemillas) << endl;
 			} else {
 				cout << " | " << semilla << endl;
 				ejecutar(semilla, ficheros[i], algoritmos[j], &qap);
