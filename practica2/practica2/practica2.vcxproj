@@ -18,6 +18,7 @@
     <ClCompile Include="QAP.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Algoritmo.h" />
     <ClInclude Include="GRASP.h" />
     <ClInclude Include="ILS.h" />
     <ClInclude Include="Practica.h" />
