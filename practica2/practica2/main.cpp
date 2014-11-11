@@ -85,26 +85,26 @@ int main () {
 	int inicioFichero = 0;
 	int finFichero = numFicheros;
 	const char* ficheros[] = {
-		"bur26a",
-		"bur26b",
+		"els19",
 		"chr20a",
 		"chr25a",
-		"els19",
-		"esc32a",
-		"kra32",
-		"lipa90a",
 		"nug25",
-		"sko42",
-		"sko49",
+		"bur26a",
+		"bur26b",
 		"tai30a",
 		"tai30b",
+		"esc32a",
+		"kra32",
 		"tai35a",
 		"tai35b",
+		"tho40",
 		"tai40a",
+		"sko42",
+		"sko49",
 		"tai50a",
 		"tai50b",
 		"tai60a",
-		"tho40"
+		"lipa90a"
 	};
 
 	const int numAlgoritmos = 2;
