@@ -47,8 +47,6 @@ void ejecutar (int semilla, const char* fichero, Algoritmo* algoritmo, QAP* qap)
 }
 
 int main () {
-	system("rmdir /s /q resultados");
-	system("mkdir resultados");
 	QAP qap;
 
 	const int numSemillas = 25;
