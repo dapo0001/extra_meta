@@ -149,8 +149,8 @@ int main () {
 					cout << semillas[k] << endl;
 
 					ejecutar(semillas[k], ficheros[j], algoritmos[i], &qap);
-					mediaTiempoEjecucion += algoritmos[i]->getTiempoEjecucion();
-					mediaValorSolucion += algoritmos[i]->getValorSolucion();
+					mediaTiempoEjecucion += algoritmos[i]->getTiempoEjecucion() / numSemillas;
+					mediaValorSolucion += algoritmos[i]->getValorSolucion() / numSemillas;
 
 					cout << endl;
 				}
@@ -158,20 +158,20 @@ int main () {
 				cout << endl
 					<< "Algoritmo: " << nombresAlgoritmos[i] << endl
 					<< "Fichero: " << ficheros[j] << endl
-					<< "Tiempo medio: " << (mediaTiempoEjecucion / numSemillas) << "s" << endl
-					<< "Valor medio: " << (int)(mediaValorSolucion / numSemillas) << endl;
+					<< "Tiempo medio: " << (mediaTiempoEjecucion) << "s" << endl
+					<< "Valor medio: " << (int)(mediaValorSolucion) << endl;
 
 			} else {
 				cout << " | " << semilla << endl;
 				ejecutar(semilla, ficheros[j], algoritmos[i], &qap);
-				mediaValorSolucion = algoritmos[i]->getValorSolucion();
 				mediaTiempoEjecucion = algoritmos[i]->getTiempoEjecucion();
+				mediaValorSolucion = algoritmos[i]->getValorSolucion();
 			}
 
 			outputFile
 				<< ficheros[j] << ";"
-				<< (int)(mediaValorSolucion / numSemillas) << ";"
-				<< (mediaTiempoEjecucion / numSemillas) << endl;
+				<< (int)(mediaValorSolucion) << ";"
+				<< (mediaTiempoEjecucion) << endl;
 
 			cout << endl;
 			system("pause");
