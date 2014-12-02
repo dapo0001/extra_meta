@@ -15,12 +15,14 @@ public:
 		unsigned int tamPoblacion = 50,
 		float probabilidadCruce = 0.7,
 		float probabilidadMutacion = 0.01);
+	virtual ~Poblacion();
 
-	static Poblacion* combinar(Poblacion* p1, Poblacion* p2);
+	Poblacion* combinar(Poblacion* p1);
 
 	Poblacion* clonar();
 	void cruzar();
 	void mutar();
+	void seleccion();
 	Solucion* getMejorIndividuo() const { return mejorIndividuo; }
 
 private:
@@ -34,7 +36,7 @@ private:
 	unsigned int mutacionesEsperadas;
 
 	Solucion* mejorIndividuo;
-	vector<Solucion> individuos;
+	vector<Solucion*> individuos;
 };
 
 #endif

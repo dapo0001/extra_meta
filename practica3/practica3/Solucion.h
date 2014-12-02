@@ -52,6 +52,8 @@ public:
 	int getValorSolucionActual () { return valorActual; }
 	int getValorSolucionVecina () { return valorSiguiente; }
 	CAMBIO solucionVecina;	///< Valores a cambiar para obtener el vecino deseado
+
+	Solucion* cruzarPosicion (Solucion* s);
 private:
 	unsigned int n;			///< Tamaño de las matrices y la solucion
 	int* solucionActual;	///< Solución actual

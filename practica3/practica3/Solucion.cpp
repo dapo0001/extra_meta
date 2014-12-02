@@ -363,3 +363,36 @@ void Solucion::setSolucionActual (int* _s) {
 	}
 	funcionObjetivo();
 }
+
+Solucion* Solucion::cruzarPosicion (Solucion* s) {
+	// this posicion
+	// s flujo
+
+	Solucion* hijo = new Solucion();
+	hijo->setQAP(matrices);
+	hijo->setSolucionActual(this->solucionActual, this->n);
+
+	vector<int> saco;
+
+	for (unsigned int i = 0; i < n; i++) {
+		if (this->solucionActual[i] != s->solucionActual[i]) {
+			saco.push_back(this->solucionActual[i]);
+		}
+	}
+
+	int randomPosition;
+	vector<int>::iterator it;
+
+	for (unsigned int i = 0; i < n; i++) {
+		if (this->solucionActual[i] != s->solucionActual[i]) {
+			randomPosition = rand() % saco.size();
+			hijo->solucionActual[i] = saco.at(randomPosition);
+
+			it = saco.begin();
+			it += randomPosition;
+			saco.erase(it);
+		}
+	}
+
+	return hijo;
+}
