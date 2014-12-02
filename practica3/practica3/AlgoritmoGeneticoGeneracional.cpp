@@ -14,7 +14,7 @@ void AlgoritmoGeneticoGeneracional::ejecutar (QAP& qap, int semilla) {
 	Poblacion* poblacionVecina = 0;
 	Poblacion* nuevaPoblacion = 0;
 
-	poblacionActual = new Poblacion(qap.getNumComp());
+	poblacionActual = new Poblacion(&qap, qap.getNumComp());
 
 	while (generaciones++ < 25) {
 		poblacionVecina = poblacionActual->clonar();
@@ -27,6 +27,6 @@ void AlgoritmoGeneticoGeneracional::ejecutar (QAP& qap, int semilla) {
 		poblacionActual = nuevaPoblacion;
 	}
 
-	valorSolucion = poblacionActual->getMejorIndividuo()->getValor();
+	valorSolucion = poblacionActual->getMejorIndividuo()->getValorSolucionActual();
 	this->finalizarTiempoEjecucion();
 }

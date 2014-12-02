@@ -8,8 +8,9 @@ using namespace std;
 
 class Poblacion {
 public:
-	Poblacion();
+	Poblacion(QAP* _qap);
 	Poblacion(
+		QAP* _qap,
 		unsigned int tamIndividuo,
 		unsigned int tamPoblacion = 50,
 		float probabilidadCruce = 0.7,
@@ -23,6 +24,7 @@ public:
 	Solucion* getMejorIndividuo() const { return mejorIndividuo; }
 
 private:
+	QAP* qap;
 	unsigned int tamIndividuo;
 
 	float probabilidadCruce;

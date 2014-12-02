@@ -16,7 +16,7 @@ using namespace std;
 /**
  * @param _semilla Si se especifica no se pide semilla
  */
-Solucion::Solucion(int _semilla):
+Solucion::Solucion():
 	valorActual(99999999),
 	valorSiguiente(99999999),
 	solucionActual(0),
@@ -25,14 +25,6 @@ Solucion::Solucion(int _semilla):
 {
 	solucionVecina.primero = -1;
 	solucionVecina.segundo = -1;
-
-	if (_semilla == -1) {
-		cout<<"¡ATENCION! La semilla proporcionada se utilizara durante toda la ejecucion"<<endl<<endl;
-		cout << "Introduzca la semilla ";
-		cin >> semilla;
-	} else {
-		semilla = _semilla;
-	}
 }
 
 Solucion::~Solucion()

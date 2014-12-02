@@ -44,12 +44,16 @@
   <ItemGroup>
     <ClInclude Include="Algoritmo.h" />
     <ClInclude Include="AlgoritmoGeneticoGeneracional.h" />
+    <ClInclude Include="Poblacion.h" />
     <ClInclude Include="QAP.h" />
+    <ClInclude Include="Solucion.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlgoritmoGeneticoGeneracional.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Poblacion.cpp" />
     <ClCompile Include="QAP.cpp" />
+    <ClCompile Include="Solucion.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{680299B4-6F36-4246-BCD5-CCC3F5E1E791}</ProjectGuid>

@@ -27,7 +27,7 @@ typedef struct {
  */
 class Solucion {
 public:
-	Solucion (int _semilla = -1);
+	Solucion ();
 	virtual ~Solucion();
 
 	// Metodos del proceso
@@ -45,7 +45,6 @@ public:
 	void imprimir ();
 
 	// Adaptacion a la nueva Solucion
-	void setSemilla (int semilla) { this->semilla = semilla; }
 	void setQAP (QAP* qap);
 	int* getSolucionActual () { return solucionActual; }
 	void setSolucionActual (int* _s, int valor);
@@ -54,7 +53,6 @@ public:
 	int getValorSolucionVecina () { return valorSiguiente; }
 	CAMBIO solucionVecina;	///< Valores a cambiar para obtener el vecino deseado
 private:
-	int semilla;			///< Valor usado para generar números aleatorios
 	unsigned int n;			///< Tamaño de las matrices y la solucion
 	int* solucionActual;	///< Solución actual
 	QAP* matrices;			///< Matrices de flujo y distancia que determinan la calidad de la solución
