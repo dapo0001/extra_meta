@@ -25,6 +25,7 @@ public:
 	void seleccion();
 	Solucion* getMejorIndividuo() const { return mejorIndividuo; }
 
+
 private:
 	QAP* qap;
 	unsigned int tamIndividuo;

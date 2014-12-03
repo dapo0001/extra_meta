@@ -391,6 +391,8 @@ Solucion* Solucion::cruzarPosicion (Solucion* s) {
 			it = saco.begin();
 			it += randomPosition;
 			saco.erase(it);
+		}else{
+			hijo->solucionActual[i] = this->solucionActual[i];
 		}
 	}
 

@@ -36,7 +36,6 @@ Poblacion::Poblacion(
 	individuos[0] = new Solucion();
 	individuos[0]->setQAP(qap);
 	individuos[0]->solucionInicial();
-	individuos[0]->getSolucionActual();
 	mejorIndividuo = individuos[0];
 	for (unsigned int i = 1; i < _tamPoblacion; i++) {
 		individuos[i] = new Solucion();
@@ -100,11 +99,14 @@ Poblacion* Poblacion::combinar (Poblacion* p1) {
 	for(unsigned int i=0;i<p1->individuos.size();i++){
 		Solucion* nuevaSolucion = new Solucion();
 		nuevaSolucion->setQAP(qap);
-		nuevaSolucion->setSolucionActual(individuos[i]->getSolucionActual(),individuos[i]->getValorSolucionActual());
+		nuevaSolucion->setSolucionActual(p1->individuos[i]->getSolucionActual(),p1->individuos[i]->getValorSolucionActual());
 		nuevaPoblacion->individuos.push_back(nuevaSolucion);
+		/*
+		cout<<"Mejor ind "<<mejorIndividuo->getValorSolucionActual()<<" nueva sol "<<nuevaSolucion->getValorSolucionActual()<<endl;
 		if(mejorIndividuo->getValorSolucionActual() > nuevaSolucion->getValorSolucionActual()){
 			mejorIndividuo = nuevaSolucion;
 		}
+		*/
 	}
 
 	while(nuevaPoblacion->individuos.size() > 50){
@@ -128,13 +130,24 @@ Poblacion* Poblacion::combinar (Poblacion* p1) {
 	}
 
 
+	nuevaPoblacion->mejorIndividuo = nuevaPoblacion->individuos[0];
+	for(unsigned int i=1;i<nuevaPoblacion->individuos.size();i++){
+		cout<<"Mejor ind "<<nuevaPoblacion->mejorIndividuo->getValorSolucionActual()<<" nueva sol "<<nuevaPoblacion->individuos[i]->getValorSolucionActual()<<endl;
+		if(nuevaPoblacion->mejorIndividuo->getValorSolucionActual() > nuevaPoblacion->individuos[i]->getValorSolucionActual()){
+			nuevaPoblacion->mejorIndividuo = nuevaPoblacion->individuos[i];
+		}
+	
+	}
+
+
 	return nuevaPoblacion;
 }
 
 void Poblacion::cruzar() {
 	// Cruzamos individuos de la poblacion actual segun la esperanza de cruce
 	for (unsigned int i=0;i<crucesEsperados;i++){
-		Solucion* hijo = individuos[i]->cruzarPosicion(individuos[rand()%individuos.size()]);
+		int alea = rand()%individuos.size();
+		Solucion* hijo = individuos[i]->cruzarPosicion(individuos[alea]);
 		individuos.push_back(hijo);
 	}
 }
