@@ -19,16 +19,18 @@ void AlgoritmoGeneticoGeneracional::ejecutar (QAP& qap, int semilla) {
 
 	while (generaciones++ < 2) {
 		poblacionVecina = poblacionActual->clonar();
-		poblacionActual->seleccion();
-		poblacionActual->cruzar();
-		poblacionActual->mutar();
-		nuevaPoblacion = poblacionVecina->combinar(poblacionActual);
+		poblacionVecina->getMejorIndividuo()->imprimir();
+		poblacionVecina->seleccion();
+		poblacionVecina->cruzar();
+		poblacionVecina->mutar();
+		poblacionVecina->getMejorIndividuo()->imprimir();
+		nuevaPoblacion = poblacionActual->combinar(poblacionVecina);
 		
-		delete poblacionActual;
-		delete poblacionVecina;
-		poblacionActual = nuevaPoblacion;
+		cout<<"Generacion "<<generaciones<<endl;
+		poblacionActual = nuevaPoblacion->clonar();
+		nuevaPoblacion->getMejorIndividuo()->imprimir();
 	}
-
+	//poblacionActual->getMejorIndividuo()->imprimir();
 	valorSolucion = poblacionActual->getMejorIndividuo()->getValorSolucionActual();
 	cout << valorSolucion << endl;
 	this->finalizarTiempoEjecucion();

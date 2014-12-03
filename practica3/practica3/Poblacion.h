@@ -19,6 +19,7 @@ public:
 
 	Poblacion* combinar(Poblacion* p1);
 
+
 	Poblacion* clonar();
 	void cruzar();
 	void mutar();

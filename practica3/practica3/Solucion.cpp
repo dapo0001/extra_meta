@@ -395,6 +395,7 @@ Solucion* Solucion::cruzarPosicion (Solucion* s) {
 			hijo->solucionActual[i] = this->solucionActual[i];
 		}
 	}
+	hijo->funcionObjetivo();
 
 	return hijo;
 }

@@ -101,12 +101,12 @@ Poblacion* Poblacion::combinar (Poblacion* p1) {
 		nuevaSolucion->setQAP(qap);
 		nuevaSolucion->setSolucionActual(p1->individuos[i]->getSolucionActual(),p1->individuos[i]->getValorSolucionActual());
 		nuevaPoblacion->individuos.push_back(nuevaSolucion);
-		/*
-		cout<<"Mejor ind "<<mejorIndividuo->getValorSolucionActual()<<" nueva sol "<<nuevaSolucion->getValorSolucionActual()<<endl;
+		
+		//cout<<"Mejor ind "<<mejorIndividuo->getValorSolucionActual()<<" nueva sol "<<nuevaSolucion->getValorSolucionActual()<<endl;
 		if(mejorIndividuo->getValorSolucionActual() > nuevaSolucion->getValorSolucionActual()){
 			mejorIndividuo = nuevaSolucion;
 		}
-		*/
+		
 	}
 
 	while(nuevaPoblacion->individuos.size() > 50){
@@ -129,7 +129,7 @@ Poblacion* Poblacion::combinar (Poblacion* p1) {
 		nuevaPoblacion->individuos.erase(it);
 	}
 
-
+	/*
 	nuevaPoblacion->mejorIndividuo = nuevaPoblacion->individuos[0];
 	for(unsigned int i=1;i<nuevaPoblacion->individuos.size();i++){
 		cout<<"Mejor ind "<<nuevaPoblacion->mejorIndividuo->getValorSolucionActual()<<" nueva sol "<<nuevaPoblacion->individuos[i]->getValorSolucionActual()<<endl;
@@ -138,7 +138,7 @@ Poblacion* Poblacion::combinar (Poblacion* p1) {
 		}
 	
 	}
-
+	*/
 
 	return nuevaPoblacion;
 }
