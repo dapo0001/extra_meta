@@ -24,6 +24,8 @@ public:
 	void cruzar();
 	void mutar();
 	void seleccion();
+	void cruzarPMX();
+
 	Solucion* getMejorIndividuo() const { return mejorIndividuo; }
 
 

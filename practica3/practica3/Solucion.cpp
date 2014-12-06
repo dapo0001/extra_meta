@@ -399,3 +399,4 @@ Solucion* Solucion::cruzarPosicion (Solucion* s) {
 
 	return hijo;
 }
+

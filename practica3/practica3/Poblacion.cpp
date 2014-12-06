@@ -143,6 +143,82 @@ void Poblacion::cruzar() {
 	}
 }
 
+
+
+void Poblacion::cruzarPMX(){
+	//Cruzamos los 2 padres y generamos 2 hijos
+	int numIndividuos = individuos.size(); //El número de padres, ya que el vector se va incrementadon y puede ser que el hijo sea padre
+
+	for(unsigned int i=0;i<crucesEsperados;i++){
+		int alea = rand()%numIndividuos;
+		int* padre1 = individuos[i]->getSolucionActual();
+		int* padre2 = individuos[alea]->getSolucionActual();
+		int* hijo1 = new int[tamIndividuo];
+		int* hijo2 = new int[tamIndividuo];
+
+		Solucion* hijo_1 = new Solucion();
+		Solucion* hijo_2 = new Solucion();
+		hijo_1->setQAP(qap);
+		hijo_2->setQAP(qap);
+
+
+		//Se calcula el corte intermedio
+		int corte1 = rand()%tamIndividuo;
+		int corte2 = rand()%tamIndividuo;
+		if(corte1 > corte2){
+			int c = corte1;
+			corte1 = corte2;
+			corte2 = c;
+		}
+
+		//Se guardan las correspondencias dentro del corte
+		vector<pair<int,int> > correspondencias;
+		int corte = corte1;
+		while(corte<=corte2){
+			hijo1[corte] = padre2[corte];
+			hijo2[corte] = padre1[corte];
+			correspondencias.push_back(pair<int,int>(padre1[corte],padre2[corte]));
+			corte++;
+		}
+
+
+		//hijo1
+		for(unsigned int j=0;j<tamIndividuo;j++){
+			if(j<corte1 || j>corte2){
+				int valor = padre1[j];
+				for(int k=0;k<correspondencias.size();k++){
+					if(correspondencias[k].second == valor){
+						valor = correspondencias[k].first;
+					}
+				}
+				hijo1[j] = valor;
+			}
+		}
+
+		//hijo2
+		for(unsigned int j=0;j<tamIndividuo;j++){
+			if(j<corte1 || j>corte2){
+				int valor = padre2[j];
+				for(int k=0;k<correspondencias.size();k++){
+					if(correspondencias[k].first == valor){
+						valor = correspondencias[k].second;
+					}
+				}
+				hijo2[j] = valor;
+			}
+		}
+
+		//Se guardan los hijos
+		hijo_1->setSolucionActual(hijo1);
+		hijo_2->setSolucionActual(hijo2);
+		individuos.push_back(hijo_1);
+		individuos.push_back(hijo_2);
+	}
+}
+
+
+
+
 void Poblacion::mutar() {
 	// Mutamos individuos de la poblacion actual segun la esperanza de mutacion
 	for (unsigned int i = 0; i < mutacionesEsperadas; i++) {
