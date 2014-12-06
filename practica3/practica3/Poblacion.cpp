@@ -79,7 +79,7 @@ Poblacion* Poblacion::clonar () {
 }
 
 void Poblacion::seleccion(){
-	for(unsigned int i=0;i<individuos.size();i++){
+	for(unsigned int i=0;i<individuos.size();i+=2){
 		vector<Solucion*>::iterator it = individuos.begin();
 		if(individuos[i]->getValorSolucionActual() > individuos[i+1]->getValorSolucionActual()){			
 			it+=i+1;	
@@ -105,40 +105,31 @@ Poblacion* Poblacion::combinar (Poblacion* p1) {
 		//cout<<"Mejor ind "<<mejorIndividuo->getValorSolucionActual()<<" nueva sol "<<nuevaSolucion->getValorSolucionActual()<<endl;
 		if(mejorIndividuo->getValorSolucionActual() > nuevaSolucion->getValorSolucionActual()){
 			mejorIndividuo = nuevaSolucion;
-		}
-		
+		}		
 	}
 
+	//Se eliminan individuos aleatoriamente enfrentandolos entre sí
 	while(nuevaPoblacion->individuos.size() > 50){
 		int numAl1 = rand() % nuevaPoblacion->individuos.size();
 		int numAl2 = rand() % nuevaPoblacion->individuos.size();
 		vector<Solucion*>::iterator it = nuevaPoblacion->individuos.begin();
 		if(nuevaPoblacion->individuos[numAl1]->getValorSolucionActual() < nuevaPoblacion->individuos[numAl2]->getValorSolucionActual()){			
 			it+=numAl2;	
-			if (nuevaPoblacion->individuos[numAl2] == nuevaPoblacion->mejorIndividuo) {
-				nuevaPoblacion->mejorIndividuo = nuevaPoblacion->individuos[numAl1];
-			}
 			delete nuevaPoblacion->individuos[numAl2];
 		}else{
 			it+=numAl1;
-			if (nuevaPoblacion->individuos[numAl1] == nuevaPoblacion->mejorIndividuo) {
-				nuevaPoblacion->mejorIndividuo = nuevaPoblacion->individuos[numAl2];
-			}
 			delete nuevaPoblacion->individuos[numAl1];
 		}
 		nuevaPoblacion->individuos.erase(it);
 	}
 
-	/*
+	//Se busca el mejor individuo de nuevo por si se ha perdido en el anterior proceso
 	nuevaPoblacion->mejorIndividuo = nuevaPoblacion->individuos[0];
 	for(unsigned int i=1;i<nuevaPoblacion->individuos.size();i++){
-		cout<<"Mejor ind "<<nuevaPoblacion->mejorIndividuo->getValorSolucionActual()<<" nueva sol "<<nuevaPoblacion->individuos[i]->getValorSolucionActual()<<endl;
 		if(nuevaPoblacion->mejorIndividuo->getValorSolucionActual() > nuevaPoblacion->individuos[i]->getValorSolucionActual()){
 			nuevaPoblacion->mejorIndividuo = nuevaPoblacion->individuos[i];
-		}
-	
-	}
-	*/
+		}	
+	}	
 
 	return nuevaPoblacion;
 }
