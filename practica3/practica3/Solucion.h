@@ -54,6 +54,7 @@ public:
 	CAMBIO solucionVecina;	///< Valores a cambiar para obtener el vecino deseado
 
 	Solucion* cruzarPosicion (Solucion* s);
+	void  cruzarPosicion(Solucion* padre2, Solucion* &hijo1,Solucion* &hijo2);
 private:
 	unsigned int n;			///< Tamaño de las matrices y la solucion
 	int* solucionActual;	///< Solución actual

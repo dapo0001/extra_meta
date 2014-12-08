@@ -5,6 +5,7 @@ using namespace std;
 #include "QAP.h"
 #include "Algoritmo.h"
 #include "AlgoritmoGeneticoGeneracional.h"
+#include "AlgoritmoGeneticoEstacionario.h"
 
 int seleccionarSemilla (const int semillas[], const int numSemillas) {
 	int semilla;
@@ -107,15 +108,17 @@ int main () {
 		"lipa90a"
 	};
 
-	const int numAlgoritmos = 1;
+	const int numAlgoritmos = 2;
 	int algoritmo = 0;
 	int inicioAlgoritmo = 0;
 	int finAlgoritmo = numAlgoritmos;
 	char* nombresAlgoritmos[] = {
-		"Algoritmo genético generacional"
+		"Algoritmo genético generacional",
+		"Algoritmo genético estacionario"
 	};
 	Algoritmo* algoritmos[] = {
-		new AlgoritmoGeneticoGeneracional()
+		new AlgoritmoGeneticoGeneracional(),
+		new AlgoritmoGeneticoEstacionario()
 	};
 
 	semilla = seleccionarSemilla(semillas, numSemillas);

@@ -21,10 +21,15 @@ public:
 
 
 	Poblacion* clonar();
+
+	//Para algoritmo generacional
 	void cruzar();
 	void mutar();
 	void seleccion();
 	void cruzarPMX();
+
+	//Para algoritmo estacionario
+	void seleccioncrucemutacion();
 
 	Solucion* getMejorIndividuo() const { return mejorIndividuo; }
 

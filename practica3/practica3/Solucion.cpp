@@ -400,3 +400,49 @@ Solucion* Solucion::cruzarPosicion (Solucion* s) {
 	return hijo;
 }
 
+
+void Solucion::cruzarPosicion(Solucion* padre2, Solucion* &hijo1,Solucion* &hijo2){
+
+	hijo1 = new Solucion();
+	hijo2 = new Solucion();
+	hijo1->setQAP(matrices);
+	hijo2->setQAP(matrices);
+	hijo1->setSolucionActual(this->solucionActual, this->n);
+	hijo2->setSolucionActual(this->solucionActual, this->n);
+
+	vector<int> saco1,saco2;
+
+	for (unsigned int i = 0; i < n; i++) {
+		if (this->solucionActual[i] != padre2->solucionActual[i]) {
+			saco1.push_back(this->solucionActual[i]);
+		}
+	}
+	saco2 = saco1;
+
+	int randomPosition,randomPosition2;
+	vector<int>::iterator it;
+
+	for (unsigned int i = 0; i < n; i++) {
+		if (this->solucionActual[i] != padre2->solucionActual[i]) {
+			randomPosition = rand() % saco1.size();
+			randomPosition2 = rand() % saco2.size();
+			hijo1->solucionActual[i] = saco1.at(randomPosition);
+			hijo2->solucionActual[i] = saco2.at(randomPosition2);
+
+			it = saco1.begin();
+			it += randomPosition;
+			saco1.erase(it);
+
+			it = saco2.begin();
+			it+=randomPosition2;
+			saco2.erase(it);
+		}else{
+			hijo1->solucionActual[i] = this->solucionActual[i];
+			hijo2->solucionActual[i] = this->solucionActual[i];
+		}
+	}
+
+
+	//hijo1->funcionObjetivo();
+	//hijo2->funcionObjetivo();
+}
