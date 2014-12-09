@@ -16,18 +16,10 @@ void AlgoritmoGeneticoEstacionario::ejecutar (QAP& qap, int semilla) {
 
 	poblacionActual = new Poblacion(&qap, qap.getNumComp());
 	cout << poblacionActual->getMejorIndividuo()->getValorSolucionActual() << endl;
-
-	while (generaciones++ < 20000) {
-		//poblacionVecina = poblacionActual->clonar();
-		poblacionActual->seleccioncrucemutacion();
-		//poblacionVecina->seleccion();
-		//poblacionVecina->cruzar();
-		//poblacionVecina->cruzarPMX();
-		//poblacionVecina->mutar();
-		//nuevaPoblacion = poblacionActual->combinar(poblacionVecina);
-		
-		//cout<<"Generacion "<<generaciones<<endl;
-		//poblacionActual = nuevaPoblacion->clonar();
+	Solucion::llamadasAFuncionObjetivo = 0;
+	while (Solucion::llamadasAFuncionObjetivo < 20000) {
+		//poblacionActual->seleccioncrucemutacion();
+		poblacionActual->seleccioncrucePMXmutacion();
 	}
 	valorSolucion = poblacionActual->getMejorIndividuo()->getValorSolucionActual();
 	cout << valorSolucion << endl;

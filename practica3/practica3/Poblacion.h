@@ -15,12 +15,14 @@ public:
 		unsigned int tamPoblacion = 50,
 		float probabilidadCruce = 0.7,
 		float probabilidadMutacion = 0.01);
+
 	virtual ~Poblacion();
 
 	Poblacion* combinar(Poblacion* p1);
 
 
 	Poblacion* clonar();
+	void crucePMX(Solucion* padre1,Solucion* padre2,Solucion* hijo_1,Solucion* hijo_2);
 
 	//Para algoritmo generacional
 	void cruzar();
@@ -29,7 +31,9 @@ public:
 	void cruzarPMX();
 
 	//Para algoritmo estacionario
+
 	void seleccioncrucemutacion();
+	void seleccioncrucePMXmutacion();
 
 	Solucion* getMejorIndividuo() const { return mejorIndividuo; }
 
