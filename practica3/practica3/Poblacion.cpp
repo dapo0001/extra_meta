@@ -223,7 +223,6 @@ void Poblacion::seleccioncrucemutacion(){
 
 }
 
-
 void Poblacion::cruzarPMX(){
 	//Cruzamos los 2 padres y generamos 2 hijos
 	int numIndividuos = individuos.size(); //El número de padres, ya que el vector se va incrementadon y puede ser que el hijo sea padre
@@ -251,12 +250,10 @@ void Poblacion::cruzarPMX(){
 		}
 
 		//Se guardan las correspondencias dentro del corte
-		vector<pair<int,int> > correspondencias;
 		int corte = corte1;
 		while(corte<=corte2){
 			hijo1[corte] = padre2[corte];
 			hijo2[corte] = padre1[corte];
-			correspondencias.push_back(pair<int,int>(padre1[corte],padre2[corte]));
 			corte++;
 		}
 
@@ -265,11 +262,16 @@ void Poblacion::cruzarPMX(){
 		for(unsigned int j=0;j<tamIndividuo;j++){
 			if(j<corte1 || j>corte2){
 				int valor = padre1[j];
-				for(int k=0;k<correspondencias.size();k++){
-					if(correspondencias[k].second == valor){
-						valor = correspondencias[k].first;
+				bool valorRepetido;
+				do {
+					valorRepetido = false;
+					for (unsigned int _i = corte1; _i <= corte2; _i++) {
+						if (valor == padre2[_i]) {
+							valorRepetido = true;
+							valor = padre1[_i];
+						}
 					}
-				}
+				} while (valorRepetido);
 				hijo1[j] = valor;
 			}
 		}
@@ -278,11 +280,16 @@ void Poblacion::cruzarPMX(){
 		for(unsigned int j=0;j<tamIndividuo;j++){
 			if(j<corte1 || j>corte2){
 				int valor = padre2[j];
-				for(int k=0;k<correspondencias.size();k++){
-					if(correspondencias[k].first == valor){
-						valor = correspondencias[k].second;
+				bool valorRepetido;
+				do {
+					valorRepetido = false;
+					for (unsigned int _i = corte1; _i <= corte2; _i++) {
+						if (valor == padre1[_i]) {
+							valorRepetido = true;
+							valor = padre2[_i];
+						}
 					}
-				}
+				} while (valorRepetido);
 				hijo2[j] = valor;
 			}
 		}
@@ -290,6 +297,7 @@ void Poblacion::cruzarPMX(){
 		//Se guardan los hijos
 		hijo_1->setSolucionActual(hijo1);
 		hijo_2->setSolucionActual(hijo2);
+
 		individuos.push_back(hijo_1);
 		individuos.push_back(hijo_2);
 	}
