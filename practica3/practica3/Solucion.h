@@ -55,7 +55,10 @@ public:
 
 	Solucion* cruzarPosicion (Solucion* s);
 	void  cruzarPosicion(Solucion* padre2, Solucion* &hijo1,Solucion* &hijo2);
+
+	static int llamadasAFuncionObjetivo;
 private:
+	
 	unsigned int n;			///< Tamaño de las matrices y la solucion
 	int* solucionActual;	///< Solución actual
 	QAP* matrices;			///< Matrices de flujo y distancia que determinan la calidad de la solución

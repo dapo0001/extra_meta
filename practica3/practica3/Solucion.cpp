@@ -13,6 +13,8 @@
 #include <ctime>
 using namespace std;
 
+int Solucion::llamadasAFuncionObjetivo = 0;
+
 /**
  * @param _semilla Si se especifica no se pide semilla
  */
@@ -75,6 +77,7 @@ void Solucion::solucionInicial () {
  * los operandos de las matrices de flujo y distancia.
  */
 void Solucion::funcionObjetivo(){
+	Solucion::llamadasAFuncionObjetivo += 1;
 	valorActual = 0;
 
 	for (unsigned int i = 0; i < n; i++) {
