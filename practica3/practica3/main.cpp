@@ -146,7 +146,7 @@ int main () {
 				cout << endl << endl;
 
 				for (int k = inicioSemilla; k < finSemilla; k++) {
-					cout << semillas[k] << endl;
+					cout << "Semilla:\t\t" << semillas[k] << endl;
 
 					ejecutar(semillas[k], ficheros[j], algoritmos[i], &qap);
 					mediaTiempoEjecucion += algoritmos[i]->getTiempoEjecucion() / numSemillas;
@@ -156,10 +156,10 @@ int main () {
 				}
 
 				cout << endl
-					<< "Algoritmo: " << nombresAlgoritmos[i] << endl
-					<< "Fichero: " << ficheros[j] << endl
-					<< "Tiempo medio: " << (mediaTiempoEjecucion) << "s" << endl
-					<< "Valor medio: " << (int)(mediaValorSolucion) << endl;
+					<< "Algoritmo:\t" << nombresAlgoritmos[i] << endl
+					<< "Fichero:\t" << ficheros[j] << endl
+					<< "Tiempo medio:\t" << (mediaTiempoEjecucion) << "s" << endl
+					<< "Valor medio:\t" << (int)(mediaValorSolucion) << endl;
 
 			} else {
 				cout << " | " << semilla << endl;
