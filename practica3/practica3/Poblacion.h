@@ -22,6 +22,8 @@ public:
 
 
 	Poblacion* clonar();
+
+	//Cruce PMX común
 	void crucePMX(Solucion* padre1,Solucion* padre2,Solucion* hijo_1,Solucion* hijo_2);
 
 	//Para algoritmo generacional
@@ -31,7 +33,6 @@ public:
 	void cruzarPMX();
 
 	//Para algoritmo estacionario
-
 	void seleccioncrucemutacion();
 	void seleccioncrucePMXmutacion();
 

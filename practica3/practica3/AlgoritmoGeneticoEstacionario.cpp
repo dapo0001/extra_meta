@@ -15,15 +15,15 @@ void AlgoritmoGeneticoEstacionario::ejecutar (QAP& qap, int semilla) {
 	Poblacion* nuevaPoblacion = 0;
 
 	poblacionActual = new Poblacion(&qap, qap.getNumComp());
-	cout << poblacionActual->getMejorIndividuo()->getValorSolucionActual() << endl;
+	this->valorSolucionInicial = poblacionActual->getMejorIndividuo()->getValorSolucionActual();
 	Solucion::llamadasAFuncionObjetivo = 0;
 	while (Solucion::llamadasAFuncionObjetivo < 20000) {
-		//poblacionActual->seleccioncrucemutacion();
-		poblacionActual->seleccioncrucePMXmutacion();
+		poblacionActual->seleccioncrucemutacion();
+		//poblacionActual->seleccioncrucePMXmutacion();
 	}
 	valorSolucion = poblacionActual->getMejorIndividuo()->getValorSolucionActual();
-	cout << valorSolucion << endl;
 	this->finalizarTiempoEjecucion();
+	this->mostrarResultados();
 
 	delete poblacionActual;
 }
