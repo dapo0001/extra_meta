@@ -7,7 +7,7 @@ using namespace std;
 
 #define DEBUG
 
-void AlgoritmoGeneticoGeneracional::ejecutar (QAP& qap, int semilla) {
+void AlgoritmoGeneticoGeneracional::ejecutar (QAP& qap, int semilla,int tipo) {
 	this->iniciarTiempoEjecucion();
 
 	Poblacion* poblacionActual = 0;
@@ -20,8 +20,11 @@ void AlgoritmoGeneticoGeneracional::ejecutar (QAP& qap, int semilla) {
 	while (Solucion::llamadasAFuncionObjetivo < 20000) {
 		poblacionVecina = poblacionActual->clonar();
 		poblacionVecina->seleccion();
-	//	poblacionVecina->cruzar();
-		poblacionVecina->cruzarPMX();
+		if(tipo == 0){
+			poblacionVecina->cruzar();
+		}else{
+			poblacionVecina->cruzarPMX();
+		}
 		poblacionVecina->mutar();
 		poblacionActual = poblacionActual->combinar(poblacionVecina);
 	}

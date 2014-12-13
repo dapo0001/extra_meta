@@ -19,29 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ficheros\bur26a.dat" />
-    <None Include="ficheros\bur26b.dat" />
-    <None Include="ficheros\chr20a.dat" />
-    <None Include="ficheros\chr25a.dat" />
-    <None Include="ficheros\els19.dat" />
-    <None Include="ficheros\esc32a.dat" />
-    <None Include="ficheros\kra32.dat" />
-    <None Include="ficheros\lipa90a.dat" />
-    <None Include="ficheros\nug25.dat" />
-    <None Include="ficheros\sko42.dat" />
-    <None Include="ficheros\sko49.dat" />
-    <None Include="ficheros\tai30a.dat" />
-    <None Include="ficheros\tai30b.dat" />
-    <None Include="ficheros\tai35a.dat" />
-    <None Include="ficheros\tai35b.dat" />
-    <None Include="ficheros\tai40a.dat" />
-    <None Include="ficheros\tai50a.dat" />
-    <None Include="ficheros\tai50b.dat" />
-    <None Include="ficheros\tai60a.dat" />
-    <None Include="ficheros\tho40.dat" />
-    <None Include="ficheros\_try.dat" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Algoritmo.h" />
     <ClInclude Include="AlgoritmoGeneticoEstacionario.h" />
     <ClInclude Include="AlgoritmoGeneticoGeneracional.h" />

@@ -6,7 +6,7 @@ using namespace std;
 
 #define DEBUG
 
-void AlgoritmoGeneticoEstacionario::ejecutar (QAP& qap, int semilla) {
+void AlgoritmoGeneticoEstacionario::ejecutar (QAP& qap, int semilla,int tipo) {
 	this->iniciarTiempoEjecucion();
 	int generaciones = 0;
 
@@ -14,10 +14,15 @@ void AlgoritmoGeneticoEstacionario::ejecutar (QAP& qap, int semilla) {
 	Poblacion* poblacionVecina = 0;
 	Poblacion* nuevaPoblacion = 0;
 
-	poblacionActual = new Poblacion(&qap, qap.getNumComp());
+	poblacionActual = new Poblacion(&qap, qap.getNumComp(),50,1);
 	this->valorSolucionInicial = poblacionActual->getMejorIndividuo()->getValorSolucionActual();
 	Solucion::llamadasAFuncionObjetivo = 0;
 	while (Solucion::llamadasAFuncionObjetivo < 20000) {
+		if(tipo == 0){
+			poblacionActual->seleccioncrucemutacion();
+		}else{
+			poblacionActual->seleccioncrucePMXmutacion();
+		}
 		poblacionActual->seleccioncrucemutacion();
 		//poblacionActual->seleccioncrucePMXmutacion();
 	}

@@ -4,7 +4,7 @@
 #include "Algoritmo.h"
 
 class AlgoritmoGeneticoGeneracional: public Algoritmo {
-	void ejecutar (QAP& qap, int semilla);
+	void ejecutar (QAP& qap, int semilla,int tipo);
 };
 
 #endif

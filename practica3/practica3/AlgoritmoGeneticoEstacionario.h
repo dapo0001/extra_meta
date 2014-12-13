@@ -4,6 +4,6 @@
 class AlgoritmoGeneticoEstacionario: public Algoritmo
 {
 public:
-	void ejecutar (QAP& qap, int semilla);
+	void ejecutar (QAP& qap, int semilla,int tipo);
 };
 

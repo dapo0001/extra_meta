@@ -8,7 +8,7 @@ using namespace std;
 
 class Algoritmo {
 public:
-	virtual void ejecutar (QAP& qap, int semilla) = 0;
+	virtual void ejecutar (QAP& qap, int semilla,int tipo) = 0;
 
 	int getValorSolucion () const { return valorSolucion; }
 	float getTiempoEjecucion () const { return tiempoEjecucion; }

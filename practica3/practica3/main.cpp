@@ -41,9 +41,22 @@ int seleccionarAlgoritmo (const char* nombresAlgoritmos[], const int numAlgoritm
 	return algoritmo;
 }
 
-void ejecutar (int semilla, const char* fichero, Algoritmo* algoritmo, QAP* qap) {
+int seleccionarTipoAlgoritmo (const char* tipoAlgoritmo[], const int numAlgoritmos) {
+	int algoritmo;
+	do {
+		cout << "Selecciona un tipo de cruce:" << endl;
+		for (int i = 0; i < numAlgoritmos; i++) {
+			cout << "  " << i << ". " << tipoAlgoritmo[i] << endl;
+		}
+		cin >> algoritmo;
+	} while (algoritmo < -1 || algoritmo >= numAlgoritmos);
+	return algoritmo;
+}
+
+
+void ejecutar (int semilla, const char* fichero, Algoritmo* algoritmo, int tipo, QAP* qap) {
 	qap->abrir(("ficheros/" + string(fichero) + ".dat").c_str());
-	algoritmo->ejecutar(*qap, semilla);
+	algoritmo->ejecutar(*qap, semilla,tipo);
 }
 
 int main () {
@@ -110,11 +123,18 @@ int main () {
 
 	const int numAlgoritmos = 2;
 	int algoritmo = 0;
+	int tipoAlg = 0;
 	int inicioAlgoritmo = 0;
+	int inicioTipo = 0;
 	int finAlgoritmo = numAlgoritmos;
+	int finTipo = numAlgoritmos;
 	char* nombresAlgoritmos[] = {
 		"Algoritmo genético generacional",
 		"Algoritmo genético estacionario"
+	};
+	char* tipoAlgoritmo[] = {
+		"Cruce por posición",
+		"Cruce PMX"
 	};
 	Algoritmo* algoritmos[] = {
 		new AlgoritmoGeneticoGeneracional(),
@@ -126,58 +146,64 @@ int main () {
 	fichero = seleccionarFichero(ficheros, numFicheros);
 	if (fichero != -1) { inicioFichero = fichero; finFichero = fichero + 1; }
 	algoritmo = seleccionarAlgoritmo((const char**)nombresAlgoritmos, numAlgoritmos);
+	tipoAlg = seleccionarTipoAlgoritmo((const char**)tipoAlgoritmo, numAlgoritmos);
 	if (algoritmo != -1) { inicioAlgoritmo = algoritmo; finAlgoritmo = algoritmo + 1; }
+	if (tipoAlg != -1) { inicioTipo = tipoAlg; finTipo = tipoAlg + 1; }
 
 	for (int i = inicioAlgoritmo; i < finAlgoritmo; i++) {
-		ofstream outputFile;
-		string	 outputName("resultados/");
-		outputName += nombresAlgoritmos[i];
-		outputName += ".csv";
-		outputFile.open(outputName, ios::out);
+		for(int l = inicioTipo; l < finTipo; l++){
+			ofstream outputFile;
+			string	 outputName("resultados/");
+			outputName += nombresAlgoritmos[i];
+			outputName += tipoAlgoritmo[l];
+			outputName += ".csv";
+			outputFile.open(outputName, ios::out);
+			for (int j = inicioFichero; j < finFichero; j++) {
+				system("cls");
+				cout << nombresAlgoritmos[i] << " | " << ficheros[j];
 
-		for (int j = inicioFichero; j < finFichero; j++) {
-			system("cls");
-			cout << nombresAlgoritmos[i] << " | " << ficheros[j];
+				float mediaTiempoEjecucion = 0;
+				long double mediaValorSolucion = 0;
 
-			float mediaTiempoEjecucion = 0;
-			long double mediaValorSolucion = 0;
+				if (semilla == -1) {
+					cout << endl << endl;
 
-			if (semilla == -1) {
-				cout << endl << endl;
+					for (int k = inicioSemilla; k < finSemilla; k++) {
+						cout << "Semilla:\t\t" << semillas[k] << endl;
 
-				for (int k = inicioSemilla; k < finSemilla; k++) {
-					cout << "Semilla:\t\t" << semillas[k] << endl;
+						ejecutar(semillas[k], ficheros[j], algoritmos[i], l, &qap);
+						mediaTiempoEjecucion += algoritmos[i]->getTiempoEjecucion() / numSemillas;
+						mediaValorSolucion += algoritmos[i]->getValorSolucion() / numSemillas;
 
-					ejecutar(semillas[k], ficheros[j], algoritmos[i], &qap);
-					mediaTiempoEjecucion += algoritmos[i]->getTiempoEjecucion() / numSemillas;
-					mediaValorSolucion += algoritmos[i]->getValorSolucion() / numSemillas;
+						cout << endl;
+					}
 
-					cout << endl;
+					cout << endl
+						<< "Algoritmo:\t" << nombresAlgoritmos[i] << endl
+						<< "Fichero:\t" << ficheros[j] << endl
+						<< "Tiempo medio:\t" << (mediaTiempoEjecucion) << "s" << endl
+						<< "Valor medio:\t" << (int)(mediaValorSolucion) << endl;
+
+				} else {
+					cout << " | " << semilla << endl;
+					ejecutar(semilla, ficheros[j], algoritmos[i], l,&qap);
+					mediaTiempoEjecucion = algoritmos[i]->getTiempoEjecucion();
+					mediaValorSolucion = algoritmos[i]->getValorSolucion();
 				}
 
-				cout << endl
-					<< "Algoritmo:\t" << nombresAlgoritmos[i] << endl
-					<< "Fichero:\t" << ficheros[j] << endl
-					<< "Tiempo medio:\t" << (mediaTiempoEjecucion) << "s" << endl
-					<< "Valor medio:\t" << (int)(mediaValorSolucion) << endl;
+				outputFile
+					<< ficheros[j] << ";"
+					<< (int)(mediaValorSolucion) << ";"
+					<< (mediaTiempoEjecucion) << endl;
 
-			} else {
-				cout << " | " << semilla << endl;
-				ejecutar(semilla, ficheros[j], algoritmos[i], &qap);
-				mediaTiempoEjecucion = algoritmos[i]->getTiempoEjecucion();
-				mediaValorSolucion = algoritmos[i]->getValorSolucion();
+				cout << endl;
+				system("pause");
 			}
+		
 
-			outputFile
-				<< ficheros[j] << ";"
-				<< (int)(mediaValorSolucion) << ";"
-				<< (mediaTiempoEjecucion) << endl;
+			outputFile.close();
 
-			cout << endl;
-			system("pause");
 		}
-
-		outputFile.close();
 	}
 
 	return 0;
