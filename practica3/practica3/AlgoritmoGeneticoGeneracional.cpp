@@ -27,6 +27,7 @@ void AlgoritmoGeneticoGeneracional::ejecutar (QAP& qap, int semilla,int tipo) {
 		}
 		poblacionVecina->mutar();
 		poblacionActual = poblacionActual->combinar(poblacionVecina);
+		delete poblacionVecina;
 	}
 	valorSolucion = poblacionActual->getMejorIndividuo()->getValorSolucionActual();
 	

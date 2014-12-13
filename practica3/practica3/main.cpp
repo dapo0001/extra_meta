@@ -133,7 +133,7 @@ int main () {
 		"Algoritmo genético estacionario"
 	};
 	char* tipoAlgoritmo[] = {
-		"Cruce por posición",
+		"Cruce por posicion",
 		"Cruce PMX"
 	};
 	Algoritmo* algoritmos[] = {
@@ -160,7 +160,7 @@ int main () {
 			outputFile.open(outputName, ios::out);
 			for (int j = inicioFichero; j < finFichero; j++) {
 				system("cls");
-				cout << nombresAlgoritmos[i] << " | " << ficheros[j];
+				cout << nombresAlgoritmos[i] <<" | "<<tipoAlgoritmo[l] <<" | " << ficheros[j];
 
 				float mediaTiempoEjecucion = 0;
 				long double mediaValorSolucion = 0;
@@ -179,7 +179,7 @@ int main () {
 					}
 
 					cout << endl
-						<< "Algoritmo:\t" << nombresAlgoritmos[i] << endl
+						<< "Algoritmo:\t" << nombresAlgoritmos[i] <<" "<<tipoAlgoritmo[l]<< endl
 						<< "Fichero:\t" << ficheros[j] << endl
 						<< "Tiempo medio:\t" << (mediaTiempoEjecucion) << "s" << endl
 						<< "Valor medio:\t" << (int)(mediaValorSolucion) << endl;
