@@ -18,16 +18,17 @@ void AlgoritmoGeneticoGeneracional::ejecutar (QAP& qap, int semilla,int tipo) {
 
 	Solucion::llamadasAFuncionObjetivo = 0;
 	while (Solucion::llamadasAFuncionObjetivo < 20000) {
-		poblacionVecina = poblacionActual->clonar();
-		poblacionVecina->seleccion();
+		//poblacionVecina = poblacionActual;
+		poblacionActual->seleccion();
 		if(tipo == 0){
-			poblacionVecina->cruzar();
+			poblacionActual->cruzar();
 		}else{
-			poblacionVecina->cruzarPMX();
+			poblacionActual->cruzarPMX();
 		}
-		poblacionVecina->mutar();
-		poblacionActual = poblacionActual->combinar(poblacionVecina);
-		delete poblacionVecina;
+		poblacionActual->mutar();
+		//poblacionActual = poblacionVecina;
+		//poblacionActual = poblacionActual->combinar(poblacionVecina);
+		//delete poblacionVecina;
 	}
 	valorSolucion = poblacionActual->getMejorIndividuo()->getValorSolucionActual();
 	

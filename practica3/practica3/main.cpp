@@ -155,6 +155,7 @@ int main () {
 			ofstream outputFile;
 			string	 outputName("resultados/");
 			outputName += nombresAlgoritmos[i];
+			outputName += " ";
 			outputName += tipoAlgoritmo[l];
 			outputName += ".csv";
 			outputFile.open(outputName, ios::out);
@@ -197,7 +198,7 @@ int main () {
 					<< (mediaTiempoEjecucion) << endl;
 
 				cout << endl;
-				system("pause");
+				//system("pause");
 			}
 		
 

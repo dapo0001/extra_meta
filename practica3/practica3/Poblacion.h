@@ -51,6 +51,7 @@ private:
 
 	Solucion* mejorIndividuo;
 	vector<Solucion*> individuos;
+	vector<Solucion*> candidatos;
 };
 
 #endif
