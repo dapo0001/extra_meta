@@ -86,11 +86,17 @@ Poblacion* Poblacion::clonar () {
 //Se seleccionan los mejores individuos en torneos
 void Poblacion::seleccion(){
 	candidatos.clear();
-	for(unsigned int i=0;i<individuos.size()-1;i++){
-		if(individuos[i]->getValorSolucionActual() > individuos[i+1]->getValorSolucionActual()){	
-			candidatos.push_back(individuos[i+1]);
+	for(unsigned int i=0;i<individuos.size();i++){
+		if(individuos[i]->getValorSolucionActual() > individuos[(i+1)%individuos.size()]->getValorSolucionActual()){	
+			Solucion *s = new Solucion();
+			s->setQAP(qap);
+			s->setSolucionActual(individuos[(i+1)%individuos.size()]->getSolucionActual(),individuos[(i+1)%individuos.size()]->getValorSolucionActual());
+			candidatos.push_back(s);
 		}else{
-			candidatos.push_back(individuos[i]);
+			Solucion *s = new Solucion();
+			s->setQAP(qap);
+			s->setSolucionActual(individuos[(i)%individuos.size()]->getSolucionActual(),individuos[(i)%individuos.size()]->getValorSolucionActual());
+			candidatos.push_back(s);
 		}		
 	}
 }
@@ -103,13 +109,10 @@ void Poblacion::cruzar() {
 	for (unsigned int i=0;i<numPadres;i+=2){
 		Solucion* hijo = candidatos[i]->cruzarPosicion(candidatos[i+1]);
 		Solucion* hijo2 = candidatos[i+1]->cruzarPosicion(candidatos[i]);
+		delete candidatos[i];
+		delete candidatos[i+1];
 		candidatos[i] = hijo;
 		candidatos[i+1] = hijo2;
-	}
-
-	for(int i=0;i<numPadres;i++){
-		delete individuos[i];
-		individuos[i] = candidatos[i];
 	}
 }
 
@@ -117,8 +120,8 @@ void Poblacion::cruzar() {
 void Poblacion::cruzarPMX(){
 	//Cruzamos los 2 padres y generamos 2 hijos
 	int numIndividuos = individuos.size(); //El número de padres, ya que el vector se va incrementadon y puede ser que el hijo sea padre
-
-	for(unsigned int i=0;i<crucesEsperados;i++){
+	int numPadres = crucesEsperados*2;
+	for(unsigned int i=0;i<numPadres;i++){
 		int alea = rand()%numIndividuos;
 		Solucion* hijo_1 = new Solucion();
 		Solucion* hijo_2 = new Solucion();
@@ -126,10 +129,10 @@ void Poblacion::cruzarPMX(){
 		hijo_2->setQAP(qap);
 
 		crucePMX(individuos[i],individuos[alea],hijo_1,hijo_2);
-		
-
-		individuos.push_back(hijo_1);
-		individuos.push_back(hijo_2);
+		delete candidatos[i];
+		delete candidatos[alea];
+		candidatos[i] = hijo_1;
+		candidatos[alea] = hijo_2;
 	}
 }
 
@@ -137,11 +140,14 @@ void Poblacion::cruzarPMX(){
 void Poblacion::mutar() {
 	// Mutamos individuos de la poblacion actual segun la esperanza de mutacion
 	for (unsigned int i = 0; i < mutacionesEsperadas; i++) {
-		Solucion* individuoMutado = individuos[rand() % individuos.size()];
+		Solucion* individuoMutado = candidatos[rand() % candidatos.size()];
 		individuoMutado->cambiarPosicion(individuoMutado->getSolucionActual(), rand() % tamIndividuo, rand() % tamIndividuo);
 	}
 
-
+	for(int i=0;i<individuos.size();i++){
+		delete individuos[i];
+		individuos[i] = candidatos[i];
+	}
 	
 	for(unsigned int i=0;i<individuos.size();i++){
 		if(mejorIndividuo->getValorSolucionActual() > individuos[i]->getValorSolucionActual()) {
