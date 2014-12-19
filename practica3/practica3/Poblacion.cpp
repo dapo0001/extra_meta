@@ -119,7 +119,7 @@ void Poblacion::cruzar() {
 //Método para algoritmo genético generacional
 void Poblacion::cruzarPMX(){
 	//Cruzamos los 2 padres y generamos 2 hijos
-	int numIndividuos = individuos.size(); //El número de padres, ya que el vector se va incrementadon y puede ser que el hijo sea padre
+	int numIndividuos = individuos.size(); //El número de padres
 	int numPadres = crucesEsperados*2;
 	for(unsigned int i=0;i<numPadres;i++){
 		int alea = rand()%numIndividuos;
