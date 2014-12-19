@@ -119,20 +119,18 @@ void Poblacion::cruzar() {
 //Método para algoritmo genético generacional
 void Poblacion::cruzarPMX(){
 	//Cruzamos los 2 padres y generamos 2 hijos
-	int numIndividuos = individuos.size(); //El número de padres
 	int numPadres = crucesEsperados*2;
-	for(unsigned int i=0;i<numPadres;i++){
-		int alea = rand()%numIndividuos;
+	for(unsigned int i=0;i<numPadres;i+=2){
 		Solucion* hijo_1 = new Solucion();
 		Solucion* hijo_2 = new Solucion();
 		hijo_1->setQAP(qap);
 		hijo_2->setQAP(qap);
 
-		crucePMX(individuos[i],individuos[alea],hijo_1,hijo_2);
+		crucePMX(individuos[i],individuos[i+1],hijo_1,hijo_2);
 		delete candidatos[i];
-		delete candidatos[alea];
+		delete candidatos[i+1];
 		candidatos[i] = hijo_1;
-		candidatos[alea] = hijo_2;
+		candidatos[i+1] = hijo_2;
 	}
 }
 
@@ -173,31 +171,6 @@ Poblacion* Poblacion::combinar (Poblacion* p1) {
 		}		
 	}
 
-	/*
-	//Se eliminan individuos aleatoriamente enfrentandolos entre sí
-	while(nuevaPoblacion->individuos.size() > 50){
-		int numAl1 = rand() % nuevaPoblacion->individuos.size();
-		int numAl2 = rand() % nuevaPoblacion->individuos.size();
-		vector<Solucion*>::iterator it = nuevaPoblacion->individuos.begin();
-		if(nuevaPoblacion->individuos[numAl1]->getValorSolucionActual() < nuevaPoblacion->individuos[numAl2]->getValorSolucionActual()){			
-			it+=numAl2;	
-			delete nuevaPoblacion->individuos[numAl2];
-		}else{
-			it+=numAl1;
-			delete nuevaPoblacion->individuos[numAl1];
-		}
-		nuevaPoblacion->individuos.erase(it);
-	}
-	*/
-	/*
-	//Se busca el mejor individuo de nuevo por si se ha perdido en el anterior proceso
-	nuevaPoblacion->mejorIndividuo = nuevaPoblacion->individuos[0];
-	for(unsigned int i=1;i<nuevaPoblacion->individuos.size();i++){
-		if(nuevaPoblacion->mejorIndividuo->getValorSolucionActual() > nuevaPoblacion->individuos[i]->getValorSolucionActual()){
-			nuevaPoblacion->mejorIndividuo = nuevaPoblacion->individuos[i];
-		}	
-	}	
-	*/
 	return nuevaPoblacion;
 }
 
@@ -289,10 +262,8 @@ void Poblacion::seleccioncrucemutacion(){
 	int alea1 = rand()%individuos.size();
 	int alea2 = rand()%individuos.size();
 
-	Solucion* hijo1 = new Solucion();
-	Solucion* hijo2 = new Solucion();
-	hijo1->setQAP(qap);
-	hijo2->setQAP(qap);
+	Solucion* hijo1;
+	Solucion* hijo2;
 
 	//cruce
 	individuos[alea1]->cruzarPosicion(individuos[alea2],hijo1,hijo2);
@@ -332,34 +303,34 @@ void Poblacion::seleccioncrucemutacion(){
 	}
 
 	//Los 2 peores individuos compiten con los hijos generados
-	vector<Solucion*>::iterator it;
-	bool padre1borrado = false,padre2borrado = false;
-	it = individuos.begin();
+	bool padre1borrado = false,padre2borrado = false,hijo1insertado=false,hijo2insertado=false;
 	
 	//Para el hijo1
 	if(individuos[alea1]->getValorSolucionActual() > hijo1->getValorSolucionActual()){		
-		it+=alea1;
-		individuos.erase(it);
-		individuos.push_back(hijo1);
+		delete individuos[alea1];
+		individuos[alea1] = hijo1;
 		padre1borrado = true;
+		hijo1insertado = true;
 	}else if(individuos[alea2]->getValorSolucionActual() > hijo1->getValorSolucionActual()){
-		it+=alea2;
-		individuos.erase(it);
-		individuos.push_back(hijo1);
+		delete individuos[alea2];
+		individuos[alea2] = hijo1;
 		padre2borrado = true;
+		hijo1insertado = true;
 	}
 
 	//Para el hijo2
-	it = individuos.begin();
 	if(!padre1borrado && individuos[alea1]->getValorSolucionActual() > hijo2->getValorSolucionActual()){		
-		it+=alea1;
-		individuos.erase(it);
-		individuos.push_back(hijo2);
+		delete individuos[alea1];
+		individuos[alea1] = hijo2;
+		hijo2insertado = true;
 	}else if(!padre2borrado && individuos[alea2]->getValorSolucionActual() > hijo2->getValorSolucionActual()){
-		it+=alea2;
-		individuos.erase(it);
-		individuos.push_back(hijo2);
+		delete individuos[alea2];
+		individuos[alea2] = hijo2;
+		hijo2insertado = true;
 	}
+
+	if(!hijo1insertado) delete hijo1;
+	if(!hijo2insertado) delete hijo2;
 
 	//Se busca el mejor individuo
 	mejorIndividuo = individuos[0];
@@ -421,36 +392,29 @@ void Poblacion::seleccioncrucePMXmutacion(){
 	}
 
 	//Los 2 peores individuos compiten con los hijos generados
-	vector<Solucion*>::iterator it;
 	bool padre1borrado = false,padre2borrado = false,hijo1insertado=false,hijo2insertado=false;
-	it = individuos.begin();
 
 	//Para el hijo1
 	if(individuos[alea1]->getValorSolucionActual() > hijo_1->getValorSolucionActual()){		
-		it+=alea1;
-		individuos.erase(it);
-		individuos.push_back(hijo_1);
+		delete individuos[alea1];
+		individuos[alea1] = hijo_1;
 		padre1borrado = true;
 		hijo1insertado = true;
 	}else if(individuos[alea2]->getValorSolucionActual() > hijo_1->getValorSolucionActual()){
-		it+=alea2;
-		individuos.erase(it);
-		individuos.push_back(hijo_1);
+		delete individuos[alea2];
+		individuos[alea2] = hijo_1;
 		padre2borrado = true;
 		hijo1insertado = true;
 	}
 
 	//Para el hijo2
-	it = individuos.begin();
 	if(!padre1borrado && individuos[alea1]->getValorSolucionActual() > hijo_2->getValorSolucionActual()){		
-		it+=alea1;
-		individuos.erase(it);
-		individuos.push_back(hijo_2);
+		delete individuos[alea1];
+		individuos[alea1] = hijo_2;
 		hijo2insertado = true;
 	}else if(!padre2borrado && individuos[alea2]->getValorSolucionActual() > hijo_2->getValorSolucionActual()){
-		it+=alea2;
-		individuos.erase(it);
-		individuos.push_back(hijo_2);
+		delete individuos[alea2];
+		individuos[alea2] = hijo_2;
 		hijo2insertado = true;
 	}
 

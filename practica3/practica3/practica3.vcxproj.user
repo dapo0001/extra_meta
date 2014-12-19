@@ -4,6 +4,6 @@
     <LocalDebuggerDebuggerType>GPUOnly</LocalDebuggerDebuggerType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerDebuggerType>Auto</LocalDebuggerDebuggerType>
+    <LocalDebuggerDebuggerType>GPUOnly</LocalDebuggerDebuggerType>
   </PropertyGroup>
 </Project>
