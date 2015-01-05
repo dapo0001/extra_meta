@@ -192,7 +192,7 @@ int main () {
 				outputName += ".csv";
 				outputFile.open(outputName.c_str(), ios::out);
 				for (int j = inicioFichero; j < finFichero; j++) {
-//					system("cls");
+					system("cls");
 					cout << nombresAlgoritmos[i] <<" | "<< tipoAlgoritmo[l] << " | " << hibridaciones[m] << " | " << ficheros[j];
 
 					float mediaTiempoEjecucion = 0;
@@ -228,7 +228,7 @@ int main () {
 						<< (mediaTiempoEjecucion) << endl;
 
 					cout << endl;
-					//system("pause");
+					system("pause");
 				}
 		
 
