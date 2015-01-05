@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Archivos de código fuente">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Archivos de encabezado">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Archivos de recursos">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AlgoritmoMemetico.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="Poblacion.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="QAP.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="Solucion.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Algoritmo.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="AlgoritmoMemetico.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Poblacion.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="QAP.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Solucion.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ficheros\bur26a.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\bur26b.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\chr20a.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\chr25a.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\els19.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\esc32a.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\kra32.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\lipa90a.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\nug25.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\sko42.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\sko49.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\tai30a.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\tai30b.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\tai35a.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\tai35b.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\tai40a.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\tai50a.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\tai50b.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\tai60a.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+    <None Include="ficheros\tho40.dat">
+      <Filter>Archivos de recursos</Filter>
+    </None>
+  </ItemGroup>
+</Project>
